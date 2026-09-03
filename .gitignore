@@ -230,4 +230,8 @@ web/dist/
 web/public/data/
 .vite/
 
+# Poetry lock file
 poetry.lock
+
+# VSCode settings
+settings.json
