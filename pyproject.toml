@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "war-civilian-violence"
+version = "0.1.0"
+description = "Analysis of UCDP Georeferenced Event Dataset (GED) with respect to Patterns of One-Sided Violence in the Sudan Conflict"
+authors = ["PayThePizzo <872966@stud.unive.it>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+poetry = "1.8.5"
+numpy = "^2.1.2"
+pandas = "^2.2.3"
+matplotlib = "^3.9.2"
+seaborn = "^0.13.2"
+scipy = "^1.14.1"
+scikit-learn = "^1.5.2"
+scikit-image = "^0.25.0"
+pydantic = "^2.11.5"
+pyyaml = "^6.0.2"
+geopandas = "^1.1.4"
+shapely = "^2.1.2"
+pyarrow = "^25.0.1"
+jupyter = "^1.1.1"
+markdown = "^3.10.3"
+
+
+[tool.poetry.group.notebook.dependencies]
+jupyterlab = "^4.2.5"
+notebook = "^7.2.2"
+
+
+[tool.poetry.group.test.dependencies]
+psutil = "^6.1.0"
+logging = "^0.4.9.6"
+
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.1.1"
+flake8-docstrings = "^1.7.0"
+flake8-bugbear = "^24.8.19"
+flake8-comprehensions = "^3.15.0"
+flake8-bandit = "^4.1.1"
+flake8-simplify = "^0.21.0"
+flake8-warnings = "^0.4.1"
+flake8-clean-block = "^0.1.2"
+flake8-literal = "^1.4.0"
+flake8-quotes = "^3.4.0"
+flake8-functions-names = "^0.4.0"
+flake8-variables-names = "^0.0.6"
+flake8-functions = "^0.0.8"
+flake8-docstring-checker = "^1.2"
+black = "^24.10.0"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-dracula-theme = "^1.0.9"
+mkdocstrings = "^1.0.3"
+mkdocstrings-python = "^2.0.3"
+mkdocs-jupyter = "^0.25.1"
+mkdocs-mermaid2-plugin = "^1.2.3"
+mkdocs-panzoom-plugin = "^0.5.2"
+mkdocs-video = "^1.5.0"
+mkdocs-autorefs = "^1.4.4"
+mkdocs-macros-plugin = "^1.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+dependencies = [
+    "mkdocstrings-python",
+]
