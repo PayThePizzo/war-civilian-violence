@@ -13,16 +13,18 @@ validation:
   unrecognized_links: warn
 
 nav:
-- Home: index.md
+- Home: index.md 
 - Getting Started:
   - Installation: getting_started/installation.md
   - Configuration: getting_started/configuration.md
   - Usage: getting_started/usage.md
-# - Project Technical Details:
-- Phase 1 - Dataset: phase_1/dataset.md
-- Phase 2 - Domain Knowledge: phase_2/domain_knowledge.md
-# - Phase 3 - Visual Design:
-- Phase 4 - Tangible Design: phase_4/tangible_design.md
+# - Project Technical Details:                              # Technical details of the project
+- Phase 1 - Dataset: phase_1/dataset.md                     # Report/Deliverables for Phase 1
+- Phase 2 - Domain Knowledge: phase_2/domain_knowledge.md   # Report/Deliverables for Phase 2
+# - Phase 3 - Visual Design:                                # Report/Deliverables for Phase 3
+- Phase 4 - Tangible Design: phase_4/tangible_design.md     # Report/Deliverables for Phase 4
+# - Python Scripts Reference:                               # Documentation for Python Scripts
+# - Python Tests Reference:                                 # Documentation for Python Tests
 
 theme:
   name: dracula
