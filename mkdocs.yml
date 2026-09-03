@@ -14,20 +14,15 @@ validation:
 
 nav:
 - Home: index.md
-# TODO: Complete the "Getting Started" section with the following pages:
 - Getting Started:
   - Installation: getting_started/installation.md
   - Configuration: getting_started/configuration.md
   - Usage: getting_started/usage.md
-# TODO: Complete the "Technical Documentation"
-# - Technical Documentation:
-# TODO: Complete the "Python Scripts Reference
-# - Python Scripts Reference:
-# TODO: Complete the "Python Tests Reference"
-# - Python Tests Reference:
-# TODO: Complete the "Report" 
-# - Academic Report:
-
+# - Project Technical Details:
+- Phase 1 - Dataset: phase_1/dataset.md
+- Phase 2 - Domain Knowledge: phase_2/domain_knowledge.md
+# - Phase 3 - Visual Design:
+- Phase 4 - Tangible Design: phase_4/tangible_design.md
 
 theme:
   name: dracula
