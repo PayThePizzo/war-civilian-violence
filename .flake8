@@ -1,0 +1,29 @@
+[flake8]
+count = true
+
+ignore =
+    C401,
+    CFQ002,
+    CFQ004,
+    D406,
+    D407,
+    E226,
+    E402,
+    LIT001,
+    MD060,
+    Q000,
+    S311,
+    S614,
+    VNE001,
+    W504,
+
+
+#per-file-ignores =
+max-complexity = 20
+max-function-length = 130
+max-line-length = 130
+show_source = False
+statistics = False
+
+accept-encodings = utf-8
+docstring-convention = google
