@@ -1,0 +1,121 @@
+site_name: "War Civilian Violence"
+site_description: "Analysis of UCDP Georeferenced Event Dataset (GED) with respect to Patterns of One-Sided Violence in the Sudan Conflict"
+site_author: "Gianmaria Pizzo"
+site_url: "https://github.com/PayThePizzo/war-civilian-violence"
+repo_name: "PayThePizzo/war-civilian-violence"
+repo_url: "https://github.com/PayThePizzo/war-civilian-violence"
+
+watch: [mkdocs.yml, README.md, scripts, notebooks]
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+nav:
+- Home: index.md
+# TODO: Complete the "Getting Started" section with the following pages:
+- Getting Started:
+  - Installation: getting_started/installation.md
+  - Configuration: getting_started/configuration.md
+  - Usage: getting_started/usage.md
+# TODO: Complete the "Technical Documentation"
+# - Technical Documentation:
+# TODO: Complete the "Python Scripts Reference
+# - Python Scripts Reference:
+# TODO: Complete the "Python Tests Reference"
+# - Python Tests Reference:
+# TODO: Complete the "Report" 
+# - Academic Report:
+
+
+theme:
+  name: dracula
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.b64
+  - pymdownx.betterem
+  - pymdownx.blocks.admonition
+  - pymdownx.blocks.definition
+  - pymdownx.blocks.details
+  - pymdownx.blocks.html
+  - pymdownx.blocks.tab
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.escapeall
+  - pymdownx.extra
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.pathconverter
+  - pymdownx.progressbar
+  - pymdownx.saneheaders
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.striphtml
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.tilde
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+- search
+- autorefs
+# - macros
+- mermaid2
+# - panzoom
+# - mkdocs-video
+- mkdocstrings:
+    enabled: true
+    handlers:
+      python:
+        setup_commands:
+          - import sys
+          - sys.path.append("scripts")
+          - sys.path.append("notebooks")
+        import:
+        - https://docs.python-requests.org/en/master/objects.inv
+        - https://docs.python.org/3/objects.inv
+        - https://mkdocstrings.github.io/objects.inv
+        - https://mkdocstrings.github.io/autorefs/objects.inv
+        - https://mkdocstrings.github.io/griffe/objects.inv
+        - https://python-markdown.github.io/objects.inv
+        paths: [scripts, notebooks, .]
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          docstring_style: google
+          docstring_section_style: list
+          heading_level: 2
+          inherited_members: true
+          merge_init_into_class: true
+          parameter_headings: true
+          separate_signature: true
+          show_bases: false
+          show_inheritance_diagram: false
+          show_root_heading: true
+          show_root_full_path: false
+          show_source: true
+          show_signature_annotations: true
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          signature_crossrefs: true
+          summary: true
