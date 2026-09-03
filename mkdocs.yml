@@ -21,7 +21,12 @@ nav:
 # - Project Technical Details:                              # Technical details of the project
 - Phase 1 - Dataset: phase_1/dataset.md                     # Report/Deliverables for Phase 1
 - Phase 2 - Domain Knowledge: phase_2/domain_knowledge.md   # Report/Deliverables for Phase 2
-# - Phase 3 - Visual Design:                                # Report/Deliverables for Phase 3
+- Phase 3 - Visual Design:                                  # Report/Deliverables for Phase 3
+  - Project Intro and Idea: phase_3/idea.md
+  - Methodology: phase_3/methodology.md
+  - Design Decisions: phase_3/design_decisions.md
+  - Web Visualizations: phase_3/web_visualizations.md
+  - Social Media Visualizations: phase_3/social_posts.md
 - Phase 4 - Tangible Design: phase_4/tangible_design.md     # Report/Deliverables for Phase 4
 # - Python Scripts Reference:                               # Documentation for Python Scripts
 # - Python Tests Reference:                                 # Documentation for Python Tests
