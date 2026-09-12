@@ -349,9 +349,8 @@ def build_canonical_actor_names(actor_df: pd.DataFrame) -> pd.Series:
     counts = actor_df.dropna(subset=["actor_name"]).groupby(["actor_id", "actor_name"]).size()
     counts = counts.rename("count").reset_index()
 
-    # TODO: Use name_counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True]) instead for explicit tie-breaking?
     return (
-        counts.sort_values(["actor_id", "count"], ascending=[True, False])
+        counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True])
         .drop_duplicates(subset="actor_id", keep="first")
         .set_index("actor_id")["actor_name"]
     )
