@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore temporal, geographic, and actor patterns of violence in Sudan." />
+    <title>From Battlefield to Civilians</title>
+  </head>
+  <body>
+    <div id="app" aria-busy="true">
+      <header id="hero">
+        <h1>From Battlefield to Civilians</h1>
+        <p>How does one-sided violence against civilians relate to patterns of combat in Sudan?</p>
+      </header>
+      <p id="app-status" role="status">Loading data…</p>
+      <nav id="scope-bar" aria-label="Analysis scope"></nav>
+      <main>
+        <section id="when" aria-labelledby="when-title">
+          <h2 id="when-title">01 / WHEN?</h2>
+          <p>How does violence change over time?</p>
+          <div id="when-viz"></div>
+        </section>
+        <section id="where" aria-labelledby="where-title">
+          <h2 id="where-title">02 / WHERE?</h2>
+          <p>Where does violence concentrate?</p>
+        </section>
+        <section id="who" aria-labelledby="who-title">
+          <h2 id="who-title">03 / WHO?</h2>
+          <p>How do actors differ?</p>
+        </section>
+        <section id="before-after" aria-labelledby="before-after-title">
+          <h2 id="before-after-title">04 / BEFORE &amp; AFTER</h2>
+          <p>What surrounds peaks of one-sided violence?</p>
+        </section>
+      </main>
+      <footer id="methodology">
+        <p id="analysis-period"></p>
+        <p>Source: UCDP Georeferenced Event Dataset. These views describe associations, not causal effects.</p>
+      </footer>
+    </div>
+    <noscript>This visualization requires JavaScript to load the data.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

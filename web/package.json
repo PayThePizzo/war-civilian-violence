@@ -1,0 +1,27 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "sync-data": "node scripts/sync-data.mjs",
+    "dev": "npm run sync-data && vite",
+    "build": "npm run sync-data && tsc && vite build",
+    "test": "node --test tests/*.test.mjs",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^9.4.0",
+    "@deck.gl/geo-layers": "^9.4.0",
+    "@deck.gl/layers": "^9.4.0",
+    "@deck.gl/maplibre": "^9.4.0",
+    "d3": "^7.9.0",
+    "h3-js": "^4.5.0",
+    "maplibre-gl": "^6.9.0"
+  }
+}

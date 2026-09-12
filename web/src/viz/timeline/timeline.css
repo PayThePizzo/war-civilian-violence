@@ -1,0 +1,54 @@
+.timeline { margin-top: 1rem; }
+
+.timeline-controls { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+.timeline-controls button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+}
+.timeline-controls button[aria-pressed="true"] { background: #20252b; color: #fff; border-color: #20252b; }
+
+.timeline-chart { position: relative; }
+.timeline-svg { display: block; width: 100%; height: auto; }
+
+.timeline .axis path { stroke: #c3c2b7; }
+.timeline .axis line { stroke: #e1e0d9; }
+.timeline .axis text { fill: var(--muted); font-size: 0.7rem; }
+
+.hover-line { stroke: #898781; stroke-width: 1; stroke-dasharray: 3, 3; pointer-events: none; }
+.focus-line { stroke: #20252b; stroke-width: 2; pointer-events: none; }
+.overlay { fill: transparent; cursor: crosshair; }
+.overlay:focus-visible { outline: 2px solid #20252b; outline-offset: 2px; }
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-size: 0.8rem;
+  max-width: 240px;
+}
+.tooltip-heading { margin: 0 0 0.35rem; font-weight: 600; }
+.tooltip-row { display: flex; align-items: center; gap: 0.4rem; justify-content: space-between; }
+.tooltip-key { width: 0.6rem; height: 0.15rem; border-radius: 2px; flex: 0 0 auto; }
+.tooltip-label { color: var(--muted); flex: 1 1 auto; }
+.tooltip-value { font-variant-numeric: tabular-nums; }
+
+.timeline-empty { color: var(--muted); }
+
+.timeline-table { margin-top: 0.75rem; font-size: 0.85rem; }
+.timeline-table table { border-collapse: collapse; width: 100%; margin-top: 0.5rem; }
+.timeline-table th,
+.timeline-table td {
+  text-align: right;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.timeline-table th:first-child,
+.timeline-table td:first-child { text-align: left; font-variant-numeric: normal; }
