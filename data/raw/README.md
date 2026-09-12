@@ -1,0 +1,1 @@
+Download UCDP GED Global v26.1 and place the CSV file here: data/raw/GEDEvent_v26_1.csv
