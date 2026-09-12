@@ -30,6 +30,7 @@ actors:
 episodes:
   # Metric used to identify peaks of one-sided violence
   metric: "one_sided_civilian_fatalities"
+  only_eligible_actors: false
 
   # Temporal window around each detected peak
   before_weeks: 8
