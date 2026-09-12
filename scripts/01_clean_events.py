@@ -496,7 +496,9 @@ def normalize_text_fields(df: pd.DataFrame, columns: list) -> pd.DataFrame:
     """
     df = df.copy()
     for col in columns:
-        df[col] = df[col].astype(str).str.strip().replace({"nan": np.nan})
+        original_notna = df[col].notna()
+        stripped = df[col].astype(str).str.strip()
+        df[col] = stripped.where(original_notna, np.nan)
     return df
 
 
@@ -560,6 +562,12 @@ def main() -> None:
     country_count = len(df)
 
     df = filter_period(df, config)
+
+    if df.empty:
+        raise ValueError(
+            "No events remain after filtering the configured analysis period."
+        )
+
     period_count = len(df)
 
     validate_violence_type(df, config)

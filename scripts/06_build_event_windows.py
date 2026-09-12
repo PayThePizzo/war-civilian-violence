@@ -160,7 +160,7 @@ config = load_from_config(conf_path)
 
 ALL_ACTOR_ID = "__ALL__"
 
-ONLY_ELIGIBLE_ACTORS = False
+ONLY_ELIGIBLE_ACTORS = config.episodes.only_eligible_actors
 
 WEEKLY_METRICS_REQUIRED_COLUMNS = {
     "week_start",
@@ -414,13 +414,19 @@ def build_window_rows(episode: dict, actor_name: str, actor_weekly: pd.DataFrame
     """
     before = config.episodes.before_weeks
     after = config.episodes.after_weeks
-    start = pd.Timestamp(config.analysis.start_date)
-    end = pd.Timestamp(config.analysis.end_date)
+
+    # Compared against week-start Mondays (calendar_week is always
+    # week-aligned), not the raw configured dates, which need not fall on a
+    # Monday themselves — this must match 03_build_weekly_metrics.py's
+    # build_full_week_grid exactly, or a real week present in the weekly
+    # grid can get misclassified as unobserved.
+    first_observed_week = pd.Timestamp(config.analysis.start_date).to_period("W-SUN").start_time
+    last_observed_week = pd.Timestamp(config.analysis.end_date).to_period("W-SUN").start_time
 
     rows = []
     for relative_week in range(-before, after + 1):
         calendar_week = episode["t0_date"] + pd.Timedelta(weeks=relative_week)
-        is_observed = start <= calendar_week <= end
+        is_observed = first_observed_week <= calendar_week <= last_observed_week
 
         row = {
             "episode_id": episode["episode_id"],
@@ -550,6 +556,12 @@ def main() -> None:
     and the final write to `data/derived/event_windows.csv`.
     """
     metric_column = config.episodes.metric
+
+    if metric_column not in WINDOW_METRIC_COLUMNS:
+        raise ValueError(
+            f"Episode metric {metric_column!r} is not supported "
+            "by event_windows output."
+        )
 
     weekly_df = load_weekly_metrics(weekly_metrics)
     profiles_df = load_actor_profiles(actor_profiles)
