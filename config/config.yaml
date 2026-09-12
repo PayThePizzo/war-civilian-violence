@@ -1,0 +1,42 @@
+# =============================================================================
+# Project configuration
+# =============================================================================
+
+analysis:
+  country: "Sudan"
+  start_date: "2023-04-15"
+  end_date: "2025-12-31"
+
+  # UCDP type_of_violence codes
+  violence_types:
+    state_based: 1
+    non_state: 2
+    one_sided: 3
+
+temporal:
+  # Main aggregation used by the temporal visualizations
+  resolution: "week"
+  week_start: "Monday"
+
+spatial:
+  # H3 resolution used for the spatial aggregation
+  h3_resolution: 5
+
+actors:
+  # Minimum number of events required for an actor to be shown
+  # by default in the actor-comparison visualization
+  min_events: 5
+
+episodes:
+  # Metric used to identify peaks of one-sided violence
+  metric: "one_sided_civilian_fatalities"
+
+  # Temporal window around each detected peak
+  before_weeks: 8
+  after_weeks: 8
+
+  # Minimum separation between two episodes of the same actor
+  min_gap_weeks: 6
+
+  # Maximum number of episodes retained per actor
+  top_k_per_actor: 10
