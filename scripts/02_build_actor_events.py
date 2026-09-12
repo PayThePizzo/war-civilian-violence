@@ -291,6 +291,15 @@ def build_actor_id_series(new_id: pd.Series, name: pd.Series) -> tuple:
     Returns:
         tuple: (actor_id (pd.Series[str]), used_fallback (pd.Series[bool])).
     """
+    missing_identity = new_id.isna() & (
+        name.isna() | name.astype("string").str.strip().eq("")
+    )
+
+    if missing_identity.any():
+        raise ValueError(
+            "Actor rows found with neither a stable UCDP id nor a usable actor name."
+        )
+
     has_id = new_id.notna()
 
     actor_id = pd.Series(index=new_id.index, dtype=object)
@@ -405,6 +414,7 @@ def build_actor_lookup(df: pd.DataFrame) -> pd.DataFrame:
     if ambiguous_ids:
         print(f"WARNING: {len(ambiguous_ids)} actor_id values map to multiple actor_name variants: {ambiguous_ids[:10]}")
 
+    # TODO: Use name_counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True]) instead for explicit tie-breaking?
     canonical_name = (
         name_counts.sort_values(["actor_id", "count"], ascending=[True, False])
         .drop_duplicates(subset="actor_id", keep="first")

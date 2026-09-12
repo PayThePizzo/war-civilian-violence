@@ -317,6 +317,8 @@ def build_canonical_actor_names(actor_df: pd.DataFrame) -> pd.Series:
     """
     counts = actor_df.dropna(subset=["actor_name"]).groupby(["actor_id", "actor_name"]).size()
     counts = counts.rename("count").reset_index()
+
+    # TODO: Use name_counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True]) instead for explicit tie-breaking?
     return (
         counts.sort_values(["actor_id", "count"], ascending=[True, False])
         .drop_duplicates(subset="actor_id", keep="first")
@@ -468,11 +470,13 @@ def validate_h3_metrics(df: pd.DataFrame, events_df: pd.DataFrame) -> None:
     check["week_start"] = compute_week_start(check["date_start"])
     expected = check.groupby("week_start")["event_id"].nunique()
 
-    mismatch = expected.reindex(per_week_sum.index, fill_value=0) != per_week_sum
+    actual = per_week_sum.reindex(expected.index, fill_value=0)
+    mismatch = actual != expected
     if mismatch.any():
-        bad_weeks = per_week_sum.index[mismatch].tolist()
+        bad_weeks = expected.index[mismatch].tolist()
         raise ValueError(
-            f"__ALL__ H3 event_count does not sum to spatially eligible events_clean counts for weeks: {bad_weeks[:10]}"
+            "__ALL__ H3 event_count does not match "
+            f"spatially eligible event counts for weeks: {bad_weeks[:10]}"
         )
 
 

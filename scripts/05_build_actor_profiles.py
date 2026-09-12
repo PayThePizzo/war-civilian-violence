@@ -203,19 +203,31 @@ def validate_inputs(actor_df: pd.DataFrame, lookup_df: pd.DataFrame) -> None:
         ValueError: If required columns are missing, if `(event_id, actor_id)`
             is not unique, or if `actor_id` is not unique in the lookup.
     """
-    missing_actor = ACTOR_EVENTS_REQUIRED_COLUMNS - set(actor_df.columns)
-    if missing_actor:
-        raise ValueError(f"actor_events.parquet is missing required columns: {sorted(missing_actor)}")
+    if actor_df["actor_id"].isna().any():
+        raise ValueError(
+            "actor_events.parquet contains null actor_id values."
+        )
 
-    missing_lookup = ACTOR_LOOKUP_REQUIRED_COLUMNS - set(lookup_df.columns)
-    if missing_lookup:
-        raise ValueError(f"actor_lookup.csv is missing required columns: {sorted(missing_lookup)}")
+    if lookup_df["actor_id"].isna().any():
+        raise ValueError(
+            "actor_lookup.csv contains null actor_id values."
+        )
 
     if actor_df[["event_id", "actor_id"]].duplicated().any():
         raise ValueError("actor_events.parquet does not have a valid unique (event_id, actor_id) pair.")
 
+    # TODO: Should I use `if not lookup_df["actor_id"].is_unique` or `if lookup_df["actor_id"].duplicated().any()` ?
     if not lookup_df["actor_id"].is_unique:
         raise ValueError("actor_lookup.csv does not have a unique actor_id.")
+
+    missing_actor = ACTOR_EVENTS_REQUIRED_COLUMNS - set(actor_df.columns)
+    missing_lookup = ACTOR_LOOKUP_REQUIRED_COLUMNS - set(lookup_df.columns)
+
+    if missing_actor:
+        raise ValueError(f"actor_events.parquet is missing required columns: {sorted(missing_actor)}")
+
+    if missing_lookup:
+        raise ValueError(f"actor_lookup.csv is missing required columns: {sorted(missing_lookup)}")
 
 
 def compute_week_start(dates: pd.Series) -> pd.Series:
@@ -247,6 +259,13 @@ def assign_h3_cells(df: pd.DataFrame, resolution: int) -> pd.DataFrame:
     df["h3_id"] = df.apply(
         lambda row: h3.latlng_to_cell(row["latitude"], row["longitude"], resolution), axis=1
     )
+
+    wrong_resolution = (df["h3_id"].apply(h3.get_resolution)!= resolution)
+
+    if wrong_resolution.any():
+        raise ValueError(
+            "Generated H3 cells do not match the configured resolution."
+        )
 
     invalid = ~df["h3_id"].apply(h3.is_valid_cell)
     if invalid.any():
