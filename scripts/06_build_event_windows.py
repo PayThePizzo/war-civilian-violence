@@ -145,7 +145,6 @@ against civilians.
 
 import os
 import sys
-
 import numpy as np
 import pandas as pd
 
@@ -153,7 +152,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Now seeing outside the scripts folder, so we can import from the project root
 
 from project_paths import conf_path, weekly_metrics, actor_profiles, event_windows, derived_data_dir
-from config.config_parser import AppConfig, load_from_config
+from config.config_parser import load_from_config
 
 config = load_from_config(conf_path)
 

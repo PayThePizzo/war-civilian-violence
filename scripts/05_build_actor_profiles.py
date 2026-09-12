@@ -103,7 +103,6 @@ throughout the web application.
 
 import os
 import sys
-
 import h3
 import numpy as np
 import pandas as pd
@@ -112,7 +111,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Now seeing outside the scripts folder, so we can import from the project root
 
 from project_paths import conf_path, actor_events, actor_lookup, actor_profiles, derived_data_dir
-from config.config_parser import AppConfig, load_from_config
+from config.config_parser import load_from_config
 
 config = load_from_config(conf_path)
 
@@ -260,7 +259,7 @@ def assign_h3_cells(df: pd.DataFrame, resolution: int) -> pd.DataFrame:
         lambda row: h3.latlng_to_cell(row["latitude"], row["longitude"], resolution), axis=1
     )
 
-    wrong_resolution = (df["h3_id"].apply(h3.get_resolution)!= resolution)
+    wrong_resolution = (df["h3_id"].apply(h3.get_resolution) != resolution)
 
     if wrong_resolution.any():
         raise ValueError(

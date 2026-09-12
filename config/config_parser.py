@@ -94,7 +94,7 @@ class EpisodesConfig(BaseModel):
     """
 
     metric: str = "one_sided_civilian_fatalities"
-    only_eligible_actors : bool = False
+    only_eligible_actors: bool = False
     before_weeks: int = 8
     after_weeks: int = 8
     min_gap_weeks: int = 6

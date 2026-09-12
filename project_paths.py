@@ -46,7 +46,7 @@ processed_data_dir = os.path.abspath(os.path.join(data_dir, "processed"))
 validation_data_dir = os.path.abspath(os.path.join(data_dir, "validation"))
 social_data_dir = os.path.abspath(os.path.join(data_dir, "social"))
 
-# Datasets and outputs 
+# Datasets and outputs
 raw_dataset_csv = os.path.abspath(os.path.join(raw_data_dir, "GEDEvent_v26_1.csv"))
 
 # Event-level cleaned dataset produced by 01_clean_events.py

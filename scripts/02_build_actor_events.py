@@ -132,7 +132,6 @@ actor profiles, and event-centred analyses.
 import os
 import re
 import sys
-
 import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
