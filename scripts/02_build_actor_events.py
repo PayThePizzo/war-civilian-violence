@@ -413,9 +413,8 @@ def build_actor_lookup(df: pd.DataFrame) -> pd.DataFrame:
     if ambiguous_ids:
         print(f"WARNING: {len(ambiguous_ids)} actor_id values map to multiple actor_name variants: {ambiguous_ids[:10]}")
 
-    # TODO: Use name_counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True]) instead for explicit tie-breaking?
     canonical_name = (
-        name_counts.sort_values(["actor_id", "count"], ascending=[True, False])
+        name_counts.sort_values(["actor_id", "count", "actor_name"], ascending=[True, False, True])
         .drop_duplicates(subset="actor_id", keep="first")
         .set_index("actor_id")["actor_name"]
     )

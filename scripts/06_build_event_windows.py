@@ -29,11 +29,11 @@ The weekly dataset must contain complete zero-filled actor time series over
 the analysis period.
 
 `actor_profiles.csv` is loaded and schema-validated because it is a declared
-input, but `eligible_for_web3` is not used to restrict episode detection by
-default: `ONLY_ELIGIBLE_ACTORS = False` below. SCRIPTS.md leaves this choice
-configurable but `config/config.yaml` has no corresponding key, so all
-actors present in `weekly_metrics.csv` are eligible for episode detection
-unless that constant is flipped.
+input. Whether `eligible_for_web3` restricts episode detection is controlled
+by `config.episodes.only_eligible_actors` (`config/config.yaml`), read once
+into `ONLY_ELIGIBLE_ACTORS` below. Defaults to `False`, so all actors present
+in `weekly_metrics.csv` are eligible for episode detection unless the config
+key is set to `true`.
 
 Episode detection
 -----------------
