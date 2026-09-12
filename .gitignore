@@ -235,3 +235,7 @@ poetry.lock
 
 # VSCode settings
 settings.json
+
+# Build artifacts
+data/derived/build_manifest.json
+data/derived/metadata.json
