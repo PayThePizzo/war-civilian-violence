@@ -26,7 +26,6 @@ they need it to exist.
 
 import os
 
-from shapely import validation
 
 # Root directory of the repository, resolved as an absolute path so that every
 # constant derived from it is absolute regardless of the caller's working
