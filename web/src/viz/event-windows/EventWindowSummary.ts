@@ -3,7 +3,7 @@ import { area as d3Area, axisBottom, axisLeft, line as d3Line, max, scaleLinear,
 import { violenceColors } from "../../utils/colors";
 import { formatCount } from "../../utils/format";
 import { medianBand } from "./eventWindowMath";
-import type { BackgroundMetric, Episode } from "./eventWindowMath";
+import type { BackgroundMetric, BandPoint, Episode } from "./eventWindowMath";
 
 const MARGIN = { top: 12, right: 16, bottom: 24, left: 44 };
 const HEIGHT = 140;
@@ -73,17 +73,21 @@ export class EventWindowSummary {
     const yMax = Math.max(1, max(points, (p) => p.q3 ?? 0) ?? 1);
     const yScale = scaleLinear().domain([0, yMax]).range([HEIGHT, 0]);
 
-    const observed = points.filter((p): p is typeof p & { median: number; q1: number; q3: number } => p.median !== null);
-    const areaGen = d3Area<(typeof observed)[number]>()
+    // .defined() breaks the line/area at a week with zero observed episodes instead of
+    // silently bridging the gap with an interpolated segment (a week with no observed data
+    // must never be drawn as if it smoothly continues its neighbors - WEB.md §35).
+    const areaGen = d3Area<BandPoint>()
+      .defined((d) => d.median !== null)
       .x((d) => xScale(d.relativeWeek))
-      .y0((d) => yScale(d.q1))
-      .y1((d) => yScale(d.q3));
-    const lineGen = d3Line<(typeof observed)[number]>()
+      .y0((d) => yScale(d.q1 as number))
+      .y1((d) => yScale(d.q3 as number));
+    const lineGen = d3Line<BandPoint>()
+      .defined((d) => d.median !== null)
       .x((d) => xScale(d.relativeWeek))
-      .y((d) => yScale(d.median));
+      .y((d) => yScale(d.median as number));
 
-    select(this.band).attr("d", areaGen(observed)).attr("fill", violenceColors.stateBased).attr("fill-opacity", 0.15).attr("stroke", "none");
-    select(this.medianLine).attr("d", lineGen(observed)).attr("stroke", violenceColors.stateBased).attr("stroke-width", 2);
+    select(this.band).attr("d", areaGen(points)).attr("fill", violenceColors.stateBased).attr("fill-opacity", 0.15).attr("stroke", "none");
+    select(this.medianLine).attr("d", lineGen(points)).attr("stroke", violenceColors.stateBased).attr("stroke-width", 2);
 
     const t0X = xScale(0);
     this.t0Line.setAttribute("x1", String(t0X));
