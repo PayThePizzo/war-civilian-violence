@@ -1,8 +1,9 @@
-#app { max-width: 72rem; margin: auto; padding: clamp(1rem, 4vw, 3rem); }
+#app { max-width: 88rem; margin: auto; padding: clamp(1rem, 4vw, 3rem); }
 #hero { margin-bottom: 2rem; }
 #scope-bar { margin-bottom: 2rem; }
-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+main { display: grid; grid-template-columns: 1fr; gap: 1.75rem; }
 main > section { padding: 1.5rem; border: 1px solid var(--border); background: var(--surface); }
+.viz-goal { color: var(--muted); max-width: 48rem; }
 #methodology { margin-top: 2rem; color: var(--muted); }
 .actor-controls, .actor-controls label { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .actor-controls label { min-width: 0; }
@@ -11,6 +12,3 @@ main > section { padding: 1.5rem; border: 1px solid var(--border); background: v
 .violence-legend { display: flex; gap: 1.25rem; flex-wrap: wrap; padding: 0; list-style: none; }
 .violence-legend li { display: flex; align-items: center; gap: 0.5rem; }
 .legend-swatch { width: 0.9rem; height: 0.9rem; border-radius: 50%; }
-@media (max-width: 42rem) {
-  main { grid-template-columns: 1fr; }
-}
