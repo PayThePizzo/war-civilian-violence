@@ -44,9 +44,9 @@ async function main(): Promise<void> {
   cleanups.push(() => timeline.destroy());
   const map = new ConflictMap(requireElement("where"), data);
   cleanups.push(() => map.destroy());
-  const actors = new ActorParallelCoordinates(requireElement("who"), data);
+  const actors = new ActorParallelCoordinates(requireElement("who"), data, store);
   cleanups.push(() => actors.destroy());
-  const windows = new EventWindowMatrix(requireElement("before-after"), data);
+  const windows = new EventWindowMatrix(requireElement("before-after"), data, store);
   cleanups.push(() => windows.destroy());
 
   // subscribe() immediately renders the default selection as well as changes.
