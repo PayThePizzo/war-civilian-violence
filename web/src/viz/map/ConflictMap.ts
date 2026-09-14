@@ -45,6 +45,8 @@ export class ConflictMap {
 
   private ready = false;
   private lastState: AppState = { selectedActorId: "__ALL__", focusWeek: null };
+  /** The focusWeek time last synced to MapControls; undefined until the first update(). */
+  private lastSyncedFocusTime: number | null | undefined = undefined;
   private mode: "overview" | "week" = "overview";
   private currentWeek: Date | null = null;
   private intensityMetric: IntensityMetric = "event_count";
@@ -138,11 +140,19 @@ export class ConflictMap {
 
     const actorRows = this.data.h3Metrics.filter((row) => row.actor_id === state.selectedActorId);
     this.controls.setAvailableWeeks(actorRows);
-    this.controls.syncFromStore(state.focusWeek);
-    // syncFromStore triggers onModeChange/onWeekChange synchronously when the store's
-    // focusWeek differs from the current stepper position, which already calls renderLayer();
-    // call it once more so an actor-only change (mode/week unchanged) still refreshes cells.
-    this.renderLayer();
+
+    // Only re-sync the map's mode/week from the store when focusWeek itself actually changed
+    // (a Web 1 click, or an episode selection). Mode and the ▶/Play stepper position are
+    // local-only state (WEB.md §8) - an unrelated store update (e.g. switching actor from the
+    // dropdown, or a Web3 click that only touches selectedActorId) must not clobber a user's
+    // manual stepping or their manual return to Overview mode.
+    const focusTime = state.focusWeek === null ? null : state.focusWeek.getTime();
+    if (focusTime !== this.lastSyncedFocusTime) {
+      this.lastSyncedFocusTime = focusTime;
+      this.controls.syncFromStore(state.focusWeek);
+    } else {
+      this.renderLayer();
+    }
   }
 
   private currentCells(): H3Cell[] {
