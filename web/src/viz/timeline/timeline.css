@@ -1,5 +1,11 @@
 .timeline { margin-top: 1rem; }
 
+.timeline-focus-label {
+  margin: -0.35rem 0 0.75rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
 .timeline-controls { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
 .timeline-controls button {
   border: 1px solid var(--border);
@@ -17,10 +23,25 @@
 .timeline .axis line { stroke: #e1e0d9; }
 .timeline .axis text { fill: var(--muted); font-size: 0.7rem; }
 
+/* Inline panel labels (req. §1-2): the main name reads clearly, the unit stays lighter -
+   secondary to the section heading in index.html, but legible without hovering. */
+.panel-title-main { font-size: 0.72rem; font-weight: 600; fill: #3d434b; letter-spacing: 0.02em; }
+.panel-title-unit { font-size: 0.7rem; fill: var(--muted); }
+
+/* Restrained separators between panels (req. §3) - subtle enough to stay one connected chart. */
+.panel-divider { stroke: #e1e0d9; stroke-width: 1; }
+
 .hover-line { stroke: #898781; stroke-width: 1; stroke-dasharray: 3, 3; pointer-events: none; }
-.focus-line { stroke: #20252b; stroke-width: 2; pointer-events: none; }
+/* The persisted focus marker (req. §5) is solid and heavier than the dashed hover crosshair,
+   so a mouseout-preserved selection never reads as a lingering hover. */
+.focus-line { stroke: #20252b; stroke-width: 2.5; pointer-events: none; }
+.focus-flag { fill: #20252b; pointer-events: none; }
 .overlay { fill: transparent; cursor: crosshair; }
 .overlay:focus-visible { outline: 2px solid #20252b; outline-offset: 2px; }
+
+/* Optional annotation markers (req. §7) - invisible until Timeline.setAnnotations() is used. */
+.annotation-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 1, 2; opacity: 0.6; }
+.annotation-dot { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; }
 
 .tooltip {
   position: absolute;

@@ -26,21 +26,23 @@ import { violenceColors } from "../../utils/colors";
 import { formatCount, formatPercent, formatWeekLabel } from "../../utils/format";
 import { renderTimelineTooltip } from "./TimelineTooltip";
 import { buildEventLayers, clampZoomDomain, nearestRow } from "./timelineMath";
-import type { DisplayMode } from "./timelineMath";
+import type { DisplayMode, TimelineAnnotation } from "./timelineMath";
 import "./timeline.css";
 
 type EventPoint = { date: Date; y0: number; y1: number };
 
 const MARGIN = { top: 12, right: 16, bottom: 28, left: 52 };
+/** Space reserved at the top of each panel for its inline "PANEL NAME · unit" label. */
+const LABEL_HEIGHT = 18;
 const EVENTS_HEIGHT = 180;
 const SHARE_HEIGHT = 48;
 const FATALITIES_HEIGHT = 88;
-const PANEL_GAP = 28;
+const PANEL_GAP = 24;
 const BRUSH_HEIGHT = 24;
-const SHARE_TOP = EVENTS_HEIGHT + PANEL_GAP;
-const FATALITIES_TOP = SHARE_TOP + SHARE_HEIGHT + PANEL_GAP;
+const SHARE_TOP = LABEL_HEIGHT + EVENTS_HEIGHT + PANEL_GAP;
+const FATALITIES_TOP = SHARE_TOP + LABEL_HEIGHT + SHARE_HEIGHT + PANEL_GAP;
 /** Height of the three time-aligned chart panels, excluding the zoom brush track below them. */
-const CHART_HEIGHT = FATALITIES_TOP + FATALITIES_HEIGHT;
+const CHART_HEIGHT = FATALITIES_TOP + LABEL_HEIGHT + FATALITIES_HEIGHT;
 const BRUSH_TOP = CHART_HEIGHT + PANEL_GAP;
 const PLOT_HEIGHT = BRUSH_TOP + BRUSH_HEIGHT;
 const SURFACE = "#ffffff";
@@ -76,10 +78,16 @@ export class Timeline {
   private readonly panelEvents: SVGGElement;
   private readonly panelShare: SVGGElement;
   private readonly panelFatalities: SVGGElement;
+  private readonly panelDividerShare: SVGLineElement;
+  private readonly panelDividerFatalities: SVGLineElement;
+  private readonly labelEventsUnit: SVGTSpanElement;
+  private readonly annotationsGroup: SVGGElement;
   private readonly panelBrush: SVGGElement;
   private readonly axisX: SVGGElement;
   private readonly hoverLine: SVGLineElement;
   private readonly focusLine: SVGLineElement;
+  private readonly focusFlag: SVGPolygonElement;
+  private readonly focusLabel: HTMLParagraphElement;
   private readonly overlay: SVGRectElement;
   private readonly tooltip: Tooltip;
   private readonly absoluteButton: HTMLButtonElement;
@@ -92,14 +100,17 @@ export class Timeline {
   private mode: DisplayMode = "absolute";
   private lastState: AppState = { selectedActorId: "__ALL__", focusWeek: null };
   private rows: WeeklyMetric[] = [];
+  /** Optional caller-supplied week markers (req. §7); empty until setAnnotations() is used. */
+  private annotations: TimelineAnnotation[];
   /** Drag-to-zoom window (WEB.md §13, local-only - never written to the shared store). */
   private zoomDomain: [Date, Date] | null = null;
   private xScale = scaleUtc().domain([new Date(), new Date()]).range([0, 1]);
   private xScaleContext = scaleUtc().domain([new Date(), new Date()]).range([0, 1]);
 
-  constructor(container: HTMLElement, data: AppData, store: AppStore) {
+  constructor(container: HTMLElement, data: AppData, store: AppStore, annotations: TimelineAnnotation[] = []) {
     this.data = data;
     this.store = store;
+    this.annotations = annotations;
 
     this.root = document.createElement("div");
     this.root.className = "timeline";
@@ -125,6 +136,10 @@ export class Timeline {
       this.render(this.lastState);
     });
     controls.append(this.absoluteButton, this.compositionButton, this.resetZoomButton);
+
+    this.focusLabel = document.createElement("p");
+    this.focusLabel.className = "timeline-focus-label";
+    this.focusLabel.hidden = true;
 
     this.chartHost = document.createElement("div");
     this.chartHost.className = "timeline-chart";
@@ -158,6 +173,33 @@ export class Timeline {
     this.panelFatalities.setAttribute("class", "panel panel-fatalities");
     this.panelFatalities.setAttribute("transform", `translate(0,${FATALITIES_TOP})`);
     this.panelFatalities.setAttribute("clip-path", `url(#${clipId})`);
+
+    // Inline "PANEL NAME · unit" labels (req. §1-2) - visually secondary to the section
+    // heading in index.html, but enough on their own to read each panel without hovering.
+    this.labelEventsUnit = this.appendPanelLabel(this.panelEvents, "WEEKLY EVENTS");
+    this.appendPanelLabel(this.panelShare, "ONE-SIDED EVENT SHARE", "% of that week's events");
+    this.appendPanelLabel(this.panelFatalities, "ONE-SIDED CIVILIAN FATALITIES", "people killed");
+
+    // Restrained divider rules (req. §3) separating the panels while keeping them one chart -
+    // the events panel is first and needs none above it.
+    this.panelDividerShare = document.createElementNS(svgNs, "line") as SVGLineElement;
+    this.panelDividerShare.setAttribute("class", "panel-divider");
+    this.panelDividerShare.setAttribute("x1", "0");
+    this.panelDividerShare.setAttribute("y1", "0");
+    this.panelDividerShare.setAttribute("y2", "0");
+    this.panelShare.append(this.panelDividerShare);
+    this.panelDividerFatalities = document.createElementNS(svgNs, "line") as SVGLineElement;
+    this.panelDividerFatalities.setAttribute("class", "panel-divider");
+    this.panelDividerFatalities.setAttribute("x1", "0");
+    this.panelDividerFatalities.setAttribute("y1", "0");
+    this.panelDividerFatalities.setAttribute("y2", "0");
+    this.panelFatalities.append(this.panelDividerFatalities);
+
+    // Optional annotation markers (req. §7); empty and invisible until setAnnotations() is used.
+    this.annotationsGroup = document.createElementNS(svgNs, "g");
+    this.annotationsGroup.setAttribute("class", "annotations");
+    this.panelEvents.append(this.annotationsGroup);
+
     this.panelBrush = document.createElementNS(svgNs, "g");
     this.panelBrush.setAttribute("class", "panel panel-brush");
     this.panelBrush.setAttribute("transform", `translate(0,${BRUSH_TOP})`);
@@ -183,6 +225,11 @@ export class Timeline {
     this.focusLine.setAttribute("y1", "0");
     this.focusLine.setAttribute("y2", String(CHART_HEIGHT));
     this.focusLine.style.display = "none";
+    // Small flag atop the persistent focus line (req. §5) - visually distinct from the
+    // temporary dashed hover crosshair, so a mouseout-preserved selection reads unambiguously.
+    this.focusFlag = document.createElementNS(svgNs, "polygon") as SVGPolygonElement;
+    this.focusFlag.setAttribute("class", "focus-flag");
+    this.focusFlag.style.display = "none";
     this.overlay = document.createElementNS(svgNs, "rect") as SVGRectElement;
     this.overlay.setAttribute("class", "overlay");
     this.overlay.setAttribute("y", "0");
@@ -202,6 +249,7 @@ export class Timeline {
       this.axisX,
       this.hoverLine,
       this.focusLine,
+      this.focusFlag,
       this.overlay,
     );
     this.svg.append(this.plot);
@@ -235,7 +283,7 @@ export class Timeline {
     table.append(thead, this.tableBody);
     details.append(summary, table);
 
-    this.root.append(controls, this.chartHost, this.emptyState, details);
+    this.root.append(controls, this.focusLabel, this.chartHost, this.emptyState, details);
     container.append(this.root);
 
     this.resizeObserver = new ResizeObserver(() => this.render(this.lastState));
@@ -246,6 +294,12 @@ export class Timeline {
     this.render(state);
   }
 
+  /** Replace the optional week markers (req. §7) and re-render; pass [] to clear them. */
+  setAnnotations(annotations: TimelineAnnotation[]): void {
+    this.annotations = annotations;
+    this.render(this.lastState);
+  }
+
   destroy(): void {
     this.resizeObserver.disconnect();
     this.overlay.removeEventListener("pointermove", this.onPointerMove);
@@ -254,6 +308,24 @@ export class Timeline {
     this.overlay.removeEventListener("keydown", this.onKeydown);
     this.tooltip.destroy();
     this.root.remove();
+  }
+
+  /** Build one "MAIN LABEL · unit" panel title; returns the unit tspan for later dynamic updates. */
+  private appendPanelLabel(group: SVGGElement, mainText: string, unitText = ""): SVGTSpanElement {
+    const svgNs = "http://www.w3.org/2000/svg";
+    const text = document.createElementNS(svgNs, "text");
+    text.setAttribute("class", "panel-title");
+    text.setAttribute("x", "0");
+    text.setAttribute("y", String(LABEL_HEIGHT - 6));
+    const main = document.createElementNS(svgNs, "tspan");
+    main.setAttribute("class", "panel-title-main");
+    main.textContent = mainText;
+    const unit = document.createElementNS(svgNs, "tspan") as SVGTSpanElement;
+    unit.setAttribute("class", "panel-title-unit");
+    unit.textContent = unitText ? ` · ${unitText}` : "";
+    text.append(main, unit);
+    group.append(text);
+    return unit;
   }
 
   private setMode(mode: DisplayMode): void {
@@ -290,9 +362,13 @@ export class Timeline {
     this.brush.extent([[0, 0], [plotWidth, BRUSH_HEIGHT]]);
     select(this.panelBrush).call(this.brush);
 
+    this.panelDividerShare.setAttribute("x2", String(plotWidth));
+    this.panelDividerFatalities.setAttribute("x2", String(plotWidth));
+
     this.renderEventsPanel();
     this.renderSharePanel();
     this.renderFatalitiesPanel();
+    this.renderAnnotations();
     select(this.axisX).call(axisBottom(this.xScale).ticks(Math.max(2, Math.floor(plotWidth / 90))) as never);
     this.renderFocusLine();
     this.hideHover();
@@ -304,10 +380,14 @@ export class Timeline {
   }
 
   private renderEventsPanel(): void {
+    this.labelEventsUnit.textContent = this.mode === "composition"
+      ? " · % of that week's events"
+      : " · count";
+
     const layers = buildEventLayers(this.rows, this.mode, EVENT_SERIES_KEYS);
     const yMax = this.mode === "composition" ? 1 : Math.max(1, max(this.rows, (row) =>
       row.state_based_event_count + row.non_state_event_count + row.one_sided_event_count) ?? 1);
-    const yScale = scaleLinear().domain([0, yMax]).range([EVENTS_HEIGHT, 0]);
+    const yScale = scaleLinear().domain([0, yMax]).range([LABEL_HEIGHT + EVENTS_HEIGHT, LABEL_HEIGHT]);
     const areaGen = d3Area<EventPoint>()
       .x((d) => this.xScale(d.date))
       .y0((d) => yScale(d.y0))
@@ -340,7 +420,7 @@ export class Timeline {
   }
 
   private renderSharePanel(): void {
-    const yScale = scaleLinear().domain([0, 1]).range([SHARE_HEIGHT, 0]);
+    const yScale = scaleLinear().domain([0, 1]).range([LABEL_HEIGHT + SHARE_HEIGHT, LABEL_HEIGHT]);
     const points = this.rows.map((row) => ({ date: row.week_start, value: row.one_sided_event_share }));
     const areaGen = d3Area<{ date: Date; value: number }>()
       .x((d) => this.xScale(d.date))
@@ -360,8 +440,9 @@ export class Timeline {
   }
 
   private renderFatalitiesPanel(): void {
+    const baselineY = LABEL_HEIGHT + FATALITIES_HEIGHT;
     const yMax = Math.max(1, max(this.rows, (row) => row.one_sided_civilian_fatalities) ?? 1);
-    const yScale = scaleLinear().domain([0, yMax]).range([FATALITIES_HEIGHT, 0]);
+    const yScale = scaleLinear().domain([0, yMax]).range([baselineY, LABEL_HEIGHT]);
     const points = this.rows.filter((row) => row.one_sided_civilian_fatalities > 0);
 
     const stems = select(this.panelFatalities)
@@ -373,11 +454,14 @@ export class Timeline {
       .append("line")
       .attr("class", "stem")
       .attr("stroke", violenceColors.oneSided)
-      .attr("stroke-width", 2)
+      // Slightly heavier than the panels above (req. §6) - a non-zero week must register
+      // without hovering, but the fatality panel is deliberately the thinnest of the three
+      // so it never outweighs the main event chart.
+      .attr("stroke-width", 2.5)
       .merge(stems as never)
       .attr("x1", (row) => this.xScale(row.week_start))
       .attr("x2", (row) => this.xScale(row.week_start))
-      .attr("y1", FATALITIES_HEIGHT)
+      .attr("y1", baselineY)
       .attr("y2", (row) => yScale(row.one_sided_civilian_fatalities));
 
     const dots = select(this.panelFatalities)
@@ -388,7 +472,7 @@ export class Timeline {
       .enter()
       .append("circle")
       .attr("class", "dot")
-      .attr("r", 4)
+      .attr("r", 5)
       .attr("fill", violenceColors.oneSided)
       .attr("stroke", SURFACE)
       .attr("stroke-width", 2)
@@ -400,17 +484,47 @@ export class Timeline {
     select(this.panelFatalities).selectAll("g.axis-y").data([null]).join("g").attr("class", "axis axis-y").call(axis as never);
   }
 
+  /** Optional caller-supplied week markers (req. §7); a no-op until setAnnotations() is used. */
+  private renderAnnotations(): void {
+    const markerY = LABEL_HEIGHT;
+    select(this.annotationsGroup)
+      .selectAll<SVGGElement, TimelineAnnotation>("g.annotation")
+      .data(this.annotations, (annotation) => annotation.week.toISOString())
+      .join((enter) => {
+        const g = enter.append("g").attr("class", "annotation");
+        g.append("line").attr("class", "annotation-line").attr("y1", markerY).attr("y2", EVENTS_HEIGHT + LABEL_HEIGHT);
+        g.append("circle").attr("class", "annotation-dot").attr("r", 3).attr("cy", markerY);
+        g.append("title");
+        return g;
+      })
+      .each((annotation, index, nodes) => {
+        const x = this.xScale(annotation.week);
+        const node = select(nodes[index]);
+        node.select("line.annotation-line").attr("x1", x).attr("x2", x);
+        node.select("circle.annotation-dot").attr("cx", x);
+        node.select("title").text(`${formatWeekLabel(annotation.week)} - ${annotation.label}`);
+      });
+  }
+
   private renderFocusLine(): void {
     const focusWeek = this.lastState.focusWeek;
     const row = focusWeek === null ? null : nearestRow(this.rows, focusWeek);
     if (!row) {
       this.focusLine.style.display = "none";
+      this.focusFlag.style.display = "none";
+      this.focusLabel.hidden = true;
       return;
     }
     const x = this.xScale(row.week_start);
     this.focusLine.setAttribute("x1", String(x));
     this.focusLine.setAttribute("x2", String(x));
     this.focusLine.style.display = "";
+    // A small flag above the line, plus a text line outside the SVG entirely - together making
+    // the persisted (post-mouseout) selection unambiguous without relying on the tooltip.
+    this.focusFlag.setAttribute("points", `${x - 4},-6 ${x + 4},-6 ${x},1`);
+    this.focusFlag.style.display = "";
+    this.focusLabel.hidden = false;
+    this.focusLabel.textContent = `Focused week: ${formatWeekLabel(row.week_start)}`;
   }
 
   private renderTable(): void {

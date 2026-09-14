@@ -5,6 +5,12 @@ import type { WeeklyMetric } from "../../data/types";
 export type DisplayMode = "absolute" | "composition";
 export type EventPoint = { date: Date; y0: number; y1: number };
 
+/** An optional, caller-supplied marker for a specific week - e.g. a later narrative annotation. */
+export interface TimelineAnnotation {
+  week: Date;
+  label: string;
+}
+
 const bisectWeek = bisector((row: WeeklyMetric) => row.week_start).left;
 
 /** Find the row whose week_start is closest to `target`; rows must be date-sorted. */
