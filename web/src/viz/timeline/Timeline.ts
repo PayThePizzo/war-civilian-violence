@@ -6,7 +6,7 @@ import {
   area as d3Area,
   axisBottom,
   axisLeft,
-  bisector,
+  brushX,
   extent,
   line as d3Line,
   max,
@@ -15,6 +15,7 @@ import {
   scaleUtc,
   select,
 } from "d3";
+import type { D3BrushEvent } from "d3";
 import type { AppState } from "../../app/state";
 import type { AppStore } from "../../app/store";
 import { getWeeklyForActor } from "../../data/selectors";
@@ -24,9 +25,10 @@ import type { Tooltip } from "../../ui/Tooltip";
 import { violenceColors } from "../../utils/colors";
 import { formatCount, formatPercent, formatWeekLabel } from "../../utils/format";
 import { renderTimelineTooltip } from "./TimelineTooltip";
+import { buildEventLayers, clampZoomDomain, nearestRow } from "./timelineMath";
+import type { DisplayMode } from "./timelineMath";
 import "./timeline.css";
 
-type DisplayMode = "absolute" | "composition";
 type EventPoint = { date: Date; y0: number; y1: number };
 
 const MARGIN = { top: 12, right: 16, bottom: 28, left: 52 };
@@ -34,9 +36,13 @@ const EVENTS_HEIGHT = 180;
 const SHARE_HEIGHT = 48;
 const FATALITIES_HEIGHT = 88;
 const PANEL_GAP = 28;
+const BRUSH_HEIGHT = 24;
 const SHARE_TOP = EVENTS_HEIGHT + PANEL_GAP;
 const FATALITIES_TOP = SHARE_TOP + SHARE_HEIGHT + PANEL_GAP;
-const PLOT_HEIGHT = FATALITIES_TOP + FATALITIES_HEIGHT;
+/** Height of the three time-aligned chart panels, excluding the zoom brush track below them. */
+const CHART_HEIGHT = FATALITIES_TOP + FATALITIES_HEIGHT;
+const BRUSH_TOP = CHART_HEIGHT + PANEL_GAP;
+const PLOT_HEIGHT = BRUSH_TOP + BRUSH_HEIGHT;
 const SURFACE = "#ffffff";
 
 const EVENT_SERIES: ReadonlyArray<{ key: keyof WeeklyMetric; label: string; color: string }> = [
@@ -54,37 +60,9 @@ const TABLE_COLUMNS: ReadonlyArray<{ label: string; value: (row: WeeklyMetric) =
   { label: "One-sided civilian fatalities", value: (row) => formatCount(row.one_sided_civilian_fatalities) },
 ];
 
-const bisectWeek = bisector((row: WeeklyMetric) => row.week_start).left;
+const EVENT_SERIES_KEYS = EVENT_SERIES.map((series) => series.key);
 
-/** Find the row whose week_start is closest to `target`; rows must be date-sorted. */
-function nearestRow(rows: WeeklyMetric[], target: Date): WeeklyMetric | null {
-  if (rows.length === 0) return null;
-  const index = bisectWeek(rows, target, 1);
-  const before = rows[index - 1];
-  const after = rows[index];
-  if (!after) return before;
-  if (!before) return after;
-  const targetMs = target.getTime();
-  return targetMs - before.week_start.getTime() <= after.week_start.getTime() - targetMs ? before : after;
-}
-
-/** Cumulative layer per series; composition mode expresses each week as a fraction of that week's total. */
-function buildEventLayers(rows: WeeklyMetric[], mode: DisplayMode): EventPoint[][] {
-  const layers: EventPoint[][] = EVENT_SERIES.map(() => []);
-  for (const row of rows) {
-    const values = EVENT_SERIES.map((series) => row[series.key] as number);
-    const total = values.reduce((sum, value) => sum + value, 0);
-    let cumulative = 0;
-    values.forEach((value, index) => {
-      const scaled = mode === "composition" ? (total === 0 ? 0 : value / total) : value;
-      const y0 = cumulative;
-      const y1 = cumulative + scaled;
-      layers[index].push({ date: row.week_start, y0, y1 });
-      cumulative = y1;
-    });
-  }
-  return layers;
-}
+let clipIdCounter = 0;
 
 export class Timeline {
   private readonly data: AppData;
@@ -94,9 +72,11 @@ export class Timeline {
   private readonly emptyState: HTMLParagraphElement;
   private readonly svg: SVGSVGElement;
   private readonly plot: SVGGElement;
+  private readonly clipRect: SVGRectElement;
   private readonly panelEvents: SVGGElement;
   private readonly panelShare: SVGGElement;
   private readonly panelFatalities: SVGGElement;
+  private readonly panelBrush: SVGGElement;
   private readonly axisX: SVGGElement;
   private readonly hoverLine: SVGLineElement;
   private readonly focusLine: SVGLineElement;
@@ -104,13 +84,18 @@ export class Timeline {
   private readonly tooltip: Tooltip;
   private readonly absoluteButton: HTMLButtonElement;
   private readonly compositionButton: HTMLButtonElement;
+  private readonly resetZoomButton: HTMLButtonElement;
   private readonly tableBody: HTMLTableSectionElement;
   private readonly resizeObserver: ResizeObserver;
+  private readonly brush = brushX<unknown>().on("end", (event: D3BrushEvent<unknown>) => this.onBrushEnd(event));
 
   private mode: DisplayMode = "absolute";
   private lastState: AppState = { selectedActorId: "__ALL__", focusWeek: null };
   private rows: WeeklyMetric[] = [];
+  /** Drag-to-zoom window (WEB.md §13, local-only - never written to the shared store). */
+  private zoomDomain: [Date, Date] | null = null;
   private xScale = scaleUtc().domain([new Date(), new Date()]).range([0, 1]);
+  private xScaleContext = scaleUtc().domain([new Date(), new Date()]).range([0, 1]);
 
   constructor(container: HTMLElement, data: AppData, store: AppStore) {
     this.data = data;
@@ -131,7 +116,15 @@ export class Timeline {
     this.compositionButton.textContent = "Composition %";
     this.absoluteButton.addEventListener("click", () => this.setMode("absolute"));
     this.compositionButton.addEventListener("click", () => this.setMode("composition"));
-    controls.append(this.absoluteButton, this.compositionButton);
+    this.resetZoomButton = document.createElement("button");
+    this.resetZoomButton.type = "button";
+    this.resetZoomButton.textContent = "Reset zoom";
+    this.resetZoomButton.hidden = true;
+    this.resetZoomButton.addEventListener("click", () => {
+      this.zoomDomain = null;
+      this.render(this.lastState);
+    });
+    controls.append(this.absoluteButton, this.compositionButton, this.resetZoomButton);
 
     this.chartHost = document.createElement("div");
     this.chartHost.className = "timeline-chart";
@@ -143,41 +136,69 @@ export class Timeline {
     this.svg.setAttribute("aria-label", "Weekly violence timeline");
     this.plot = document.createElementNS(svgNs, "g");
     this.plot.setAttribute("transform", `translate(${MARGIN.left},${MARGIN.top})`);
+
+    const clipId = `timeline-clip-${clipIdCounter++}`;
+    const defs = document.createElementNS(svgNs, "defs");
+    const clipPath = document.createElementNS(svgNs, "clipPath");
+    clipPath.setAttribute("id", clipId);
+    this.clipRect = document.createElementNS(svgNs, "rect") as SVGRectElement;
+    this.clipRect.setAttribute("x", "0");
+    this.clipRect.setAttribute("y", "0");
+    clipPath.append(this.clipRect);
+    defs.append(clipPath);
+
     this.panelEvents = document.createElementNS(svgNs, "g");
     this.panelEvents.setAttribute("class", "panel panel-events");
+    this.panelEvents.setAttribute("clip-path", `url(#${clipId})`);
     this.panelShare = document.createElementNS(svgNs, "g");
     this.panelShare.setAttribute("class", "panel panel-share");
     this.panelShare.setAttribute("transform", `translate(0,${SHARE_TOP})`);
+    this.panelShare.setAttribute("clip-path", `url(#${clipId})`);
     this.panelFatalities = document.createElementNS(svgNs, "g");
     this.panelFatalities.setAttribute("class", "panel panel-fatalities");
     this.panelFatalities.setAttribute("transform", `translate(0,${FATALITIES_TOP})`);
+    this.panelFatalities.setAttribute("clip-path", `url(#${clipId})`);
+    this.panelBrush = document.createElementNS(svgNs, "g");
+    this.panelBrush.setAttribute("class", "panel panel-brush");
+    this.panelBrush.setAttribute("transform", `translate(0,${BRUSH_TOP})`);
+    this.panelBrush.setAttribute("aria-hidden", "true");
+    const brushTrack = document.createElementNS(svgNs, "rect") as SVGRectElement;
+    brushTrack.setAttribute("class", "brush-track");
+    brushTrack.setAttribute("x", "0");
+    brushTrack.setAttribute("y", "0");
+    brushTrack.setAttribute("height", String(BRUSH_HEIGHT));
+    brushTrack.setAttribute("width", "100%");
+    brushTrack.setAttribute("pointer-events", "none");
+    this.panelBrush.append(brushTrack);
     this.axisX = document.createElementNS(svgNs, "g");
     this.axisX.setAttribute("class", "axis axis-x");
-    this.axisX.setAttribute("transform", `translate(0,${PLOT_HEIGHT})`);
+    this.axisX.setAttribute("transform", `translate(0,${CHART_HEIGHT})`);
     this.hoverLine = document.createElementNS(svgNs, "line") as SVGLineElement;
     this.hoverLine.setAttribute("class", "hover-line");
     this.hoverLine.setAttribute("y1", "0");
-    this.hoverLine.setAttribute("y2", String(PLOT_HEIGHT));
+    this.hoverLine.setAttribute("y2", String(CHART_HEIGHT));
     this.hoverLine.style.display = "none";
     this.focusLine = document.createElementNS(svgNs, "line") as SVGLineElement;
     this.focusLine.setAttribute("class", "focus-line");
     this.focusLine.setAttribute("y1", "0");
-    this.focusLine.setAttribute("y2", String(PLOT_HEIGHT));
+    this.focusLine.setAttribute("y2", String(CHART_HEIGHT));
     this.focusLine.style.display = "none";
     this.overlay = document.createElementNS(svgNs, "rect") as SVGRectElement;
     this.overlay.setAttribute("class", "overlay");
     this.overlay.setAttribute("y", "0");
-    this.overlay.setAttribute("height", String(PLOT_HEIGHT));
+    this.overlay.setAttribute("height", String(CHART_HEIGHT));
     this.overlay.setAttribute("tabindex", "0");
     this.overlay.setAttribute("role", "img");
     this.overlay.setAttribute(
       "aria-label",
-      "Weekly chart. Move with arrow keys, press Enter to focus the week across every view.",
+      "Weekly chart. Move with arrow keys, press Enter to focus the week across every view. Drag the strip below to zoom.",
     );
     this.plot.append(
+      defs,
       this.panelEvents,
       this.panelShare,
       this.panelFatalities,
+      this.panelBrush,
       this.axisX,
       this.hoverLine,
       this.focusLine,
@@ -256,11 +277,18 @@ export class Timeline {
     this.svg.setAttribute("height", String(totalHeight));
     this.svg.setAttribute("viewBox", `0 0 ${width} ${totalHeight}`);
     this.overlay.setAttribute("width", String(plotWidth));
+    this.clipRect.setAttribute("width", String(plotWidth));
+    this.clipRect.setAttribute("height", String(PLOT_HEIGHT));
 
     const [start, end] = extent(this.rows, (row) => row.week_start);
-    this.xScale = scaleUtc()
-      .domain(start && end ? [start, end] : [new Date(), new Date()])
-      .range([0, plotWidth]);
+    const fullDomain: [Date, Date] = start && end ? [start, end] : [new Date(), new Date()];
+    this.xScaleContext = scaleUtc().domain(fullDomain).range([0, plotWidth]);
+    this.zoomDomain = this.zoomDomain && start && end ? clampZoomDomain(this.zoomDomain, fullDomain) : null;
+    this.xScale = scaleUtc().domain(this.zoomDomain ?? fullDomain).range([0, plotWidth]);
+    this.resetZoomButton.hidden = this.zoomDomain === null;
+
+    this.brush.extent([[0, 0], [plotWidth, BRUSH_HEIGHT]]);
+    select(this.panelBrush).call(this.brush);
 
     this.renderEventsPanel();
     this.renderSharePanel();
@@ -276,7 +304,7 @@ export class Timeline {
   }
 
   private renderEventsPanel(): void {
-    const layers = buildEventLayers(this.rows, this.mode);
+    const layers = buildEventLayers(this.rows, this.mode, EVENT_SERIES_KEYS);
     const yMax = this.mode === "composition" ? 1 : Math.max(1, max(this.rows, (row) =>
       row.state_based_event_count + row.non_state_event_count + row.one_sided_event_count) ?? 1);
     const yScale = scaleLinear().domain([0, yMax]).range([EVENTS_HEIGHT, 0]);
@@ -451,4 +479,20 @@ export class Timeline {
     const x = this.xScale(row.week_start);
     this.focusRowAt(row, x + MARGIN.left, MARGIN.top);
   };
+
+  /** Drag a selection on the brush track to zoom the three chart panels to that date range. */
+  private onBrushEnd(event: D3BrushEvent<unknown>): void {
+    if (!event.sourceEvent) return; // ignore the programmatic clear below
+    const selection = event.selection as [number, number] | null;
+    if (!selection || selection[1] - selection[0] < 4) {
+      select(this.panelBrush).call(this.brush.move, null);
+      return;
+    }
+    const [start, end] = extent(this.rows, (row) => row.week_start);
+    if (!start || !end) return;
+    const candidate: [Date, Date] = [this.xScaleContext.invert(selection[0]), this.xScaleContext.invert(selection[1])];
+    this.zoomDomain = clampZoomDomain(candidate, [start, end]);
+    select(this.panelBrush).call(this.brush.move, null);
+    this.render(this.lastState);
+  }
 }
