@@ -39,6 +39,11 @@
 .tooltip-label { color: var(--muted); flex: 1 1 auto; }
 .tooltip-value { font-variant-numeric: tabular-nums; }
 
+.panel-brush .brush-track { fill: #efeee8; }
+.panel-brush .selection { fill: #20252b; fill-opacity: 0.15; stroke: #20252b; stroke-opacity: 0.4; }
+.panel-brush .overlay { cursor: crosshair; }
+.panel-brush .handle { fill: #20252b; fill-opacity: 0.5; }
+
 .timeline-empty { color: var(--muted); }
 
 .timeline-table { margin-top: 0.75rem; font-size: 0.85rem; }
