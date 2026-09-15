@@ -1,8 +1,17 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
-h1, h2 { line-height: 1.2; }
-h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
-h2 { font-size: 1.25rem; }
+
+/* Two voices: serif carries the narrative (title, chapter headings), sans carries the
+ * instrument panel (everything else - controls, axes, tooltips, body copy, numbers). */
+h1, h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ink);
+}
+h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; }
+
 button, select { font: inherit; max-width: 100%; padding: 0.4rem 0.7rem; }
 button { cursor: pointer; }
 button:disabled { cursor: default; }
