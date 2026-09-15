@@ -10,9 +10,9 @@
 .actor-pc-chart { position: relative; }
 .actor-pc-svg { display: block; width: 100%; height: auto; }
 
-.pc-actor-selected path.pc-line-visible { filter: drop-shadow(0 0 1.5px rgba(32, 37, 43, 0.5)); }
+.pc-actor-selected path.pc-line-visible { filter: drop-shadow(0 0 1.5px rgba(23, 26, 29, 0.5)); }
 
-.pc-axis-line { stroke: #c3c2b7; stroke-width: 1; }
+.pc-axis-line { stroke: var(--axis); stroke-width: 1; }
 .pc-axis-title { font-size: 0.8rem; font-weight: 600; fill: currentColor; }
 .pc-axis-max, .pc-axis-min { font-size: 0.72rem; fill: var(--muted); font-variant-numeric: tabular-nums; }
 

@@ -9,7 +9,7 @@
   padding: 0.3rem 0.8rem;
   font-size: 0.85rem;
 }
-.map-controls button[aria-pressed="true"] { background: #20252b; color: #fff; border-color: #20252b; }
+.map-controls button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .map-controls button:disabled { opacity: 0.4; }
 .map-stepper { align-items: center; }
 .map-week-label { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }

@@ -1,14 +1,51 @@
 #app { max-width: 88rem; margin: auto; padding: clamp(1rem, 4vw, 3rem); }
-#hero { margin-bottom: 2rem; }
-#scope-bar { margin-bottom: 2rem; }
-main { display: grid; grid-template-columns: 1fr; gap: 1.75rem; }
-main > section { padding: 1.5rem; border: 1px solid var(--border); background: var(--surface); }
-.viz-goal { color: var(--muted); max-width: 48rem; }
-#methodology { margin-top: 2rem; color: var(--muted); }
+
+#hero { margin-bottom: 2rem; max-width: 40rem; }
+#hero p { color: var(--body-text); font-size: 1.05rem; }
+#scope-bar { margin: 1.25rem 0 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+
+main { display: grid; grid-template-columns: 1fr; gap: 0; }
+main > section {
+  position: relative;
+  padding: 2rem 1.5rem 2rem 4.75rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+main > section:last-child { border-bottom: 1px solid var(--border); }
+
+/* Folio rail: each section is a numbered chapter in one running analysis, not a repeated card -
+ * the numeral sits in the section's own left gutter rather than a card icon/badge. */
+h2 .chapter-no {
+  position: absolute;
+  left: 1.5rem;
+  top: 2.1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.dek { margin: 0.35rem 0 0.9rem; color: var(--body-text); font-size: 1.05rem; max-width: 40rem; }
+.viz-goal { color: var(--muted); max-width: 40rem; font-size: 0.92rem; }
+
+#methodology {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+#methodology p { margin: 0 0 0.35rem; }
+#methodology p:last-child { margin-bottom: 0; }
+
 .actor-controls, .actor-controls label { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .actor-controls label { min-width: 0; }
 .data-preview { padding-top: 0.75rem; border-top: 1px solid var(--border); }
 .scope-summary { color: var(--muted); }
-.violence-legend { display: flex; gap: 1.25rem; flex-wrap: wrap; padding: 0; list-style: none; }
+
+.violence-legend { display: flex; gap: 1.25rem; flex-wrap: wrap; padding: 0; margin: 1rem 0 0; list-style: none; font-size: 0.85rem; }
 .violence-legend li { display: flex; align-items: center; gap: 0.5rem; }
-.legend-swatch { width: 0.9rem; height: 0.9rem; border-radius: 50%; }
+.legend-swatch { width: 0.75rem; height: 0.75rem; border-radius: 50%; }
+
+@media (max-width: 40rem) {
+  main > section { padding: 1.75rem 1.25rem; }
+  h2 .chapter-no { position: static; display: inline; margin-right: 0.4rem; }
+}

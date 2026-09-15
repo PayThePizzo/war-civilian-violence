@@ -12,11 +12,11 @@ import { renderActorTooltip } from "./ActorTooltip";
 import { AXES, axisPositions, buildAxisScales, pointsForProfile } from "./actorMath";
 import "./actors.css";
 
-const MARGIN = { top: 74, right: 88, bottom: 12, left: 16 };
+const MARGIN = { top: 46, right: 16, bottom: 12, left: 16 };
 const HEIGHT = 260;
-const SELECTED_COLOR = "#20252b";
+const SELECTED_COLOR = "var(--ink)";
 const HOVER_COLOR = "#5a3ea8";
-const NORMAL_COLOR = "#9a988f";
+const NORMAL_COLOR = "#a39d8c";
 const SELECTED_WIDTH = 3;
 const HOVER_WIDTH = 2.5;
 const NORMAL_WIDTH = 1.25;
@@ -206,14 +206,21 @@ export class ActorParallelCoordinates {
       const node = select(nodes[index]);
       node.attr("transform", `translate(${x},0)`);
       node.select("line.pc-axis-line").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", HEIGHT);
+      // Horizontal, edge-aware anchoring (first axis hangs right, last hangs left, interior
+      // axes center) keeps every title inside the plot with no rotation - a rotated label from
+      // one axis's <g> could otherwise be painted over by a later axis's own line/group (later
+      // siblings stack on top), which is what produced apparent clipping at the previous tilt.
+      const anchor = index === 0 ? "start" : index === AXES.length - 1 ? "end" : "middle";
       node.select("text.pc-axis-title")
-        .attr("text-anchor", "start")
-        .attr("transform", "translate(6,-34) rotate(-20)")
+        .attr("text-anchor", anchor)
+        .attr("transform", null)
+        .attr("x", 0)
+        .attr("y", -30)
         .text(axis.label);
       const format = axis.key === "one_sided_event_share"
         ? (value: number) => formatPercent(value, 0)
         : (value: number) => formatCount(Math.round(value));
-      node.select("text.pc-axis-max").attr("y", -2).attr("text-anchor", "middle").text(format(maxValue));
+      node.select("text.pc-axis-max").attr("y", -10).attr("text-anchor", "middle").text(format(maxValue));
       node.select("text.pc-axis-min").attr("y", HEIGHT + 14).attr("text-anchor", "middle").text(format(minValue));
     });
   }

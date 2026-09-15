@@ -93,13 +93,13 @@ export class EventWindowMatrix {
     const patternBg = document.createElementNS(svgNs, "rect");
     patternBg.setAttribute("width", "6");
     patternBg.setAttribute("height", "6");
-    patternBg.setAttribute("fill", "#f4f3ee");
+    patternBg.setAttribute("fill", "var(--surface)");
     const patternLine = document.createElementNS(svgNs, "line");
     patternLine.setAttribute("x1", "0");
     patternLine.setAttribute("y1", "0");
     patternLine.setAttribute("x2", "0");
     patternLine.setAttribute("y2", "6");
-    patternLine.setAttribute("stroke", "#c9c7bb");
+    patternLine.setAttribute("stroke", "var(--axis)");
     patternLine.setAttribute("stroke-width", "2");
     pattern.append(patternBg, patternLine);
     defs.append(pattern);
@@ -293,7 +293,7 @@ export class EventWindowMatrix {
           .attr("x", x + 1).attr("y", 1)
           .attr("width", COL_WIDTH - 2).attr("height", ROW_HEIGHT - 2)
           .attr("fill", color ?? `url(#${HATCH_ID})`)
-          .attr("stroke", "#e1e0d9");
+          .attr("stroke", "var(--border)");
         cellNode.select("circle.ew-cell-circle")
           .attr("cx", x + COL_WIDTH / 2).attr("cy", ROW_HEIGHT / 2)
           .attr("r", radius)
