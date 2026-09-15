@@ -2,6 +2,13 @@
 import type { H3Cell } from "./H3Layer";
 import { formatCount, formatPercent } from "../../utils/format";
 
+function sectionHeading(text: string): HTMLElement {
+  const heading = document.createElement("p");
+  heading.className = "tooltip-section-heading";
+  heading.textContent = text;
+  return heading;
+}
+
 function row(label: string, value: string): HTMLElement {
   const line = document.createElement("div");
   line.className = "tooltip-row";
@@ -24,10 +31,13 @@ export function renderMapTooltip(cell: H3Cell, heading: string): HTMLElement {
   title.textContent = heading;
   content.append(
     title,
+    sectionHeading("Activity"),
     row("Events", formatCount(cell.event_count)),
     row("Combat events", formatCount(cell.combat_event_count)),
     row("One-sided events", formatCount(cell.one_sided_event_count)),
+    sectionHeading("Composition"),
     row("One-sided event share", formatPercent(cell.one_sided_event_share, 1)),
+    sectionHeading("Fatalities"),
     row("Best-estimate fatalities", formatCount(cell.best_fatalities)),
     row("One-sided civilian fatalities", formatCount(cell.one_sided_civilian_fatalities)),
   );

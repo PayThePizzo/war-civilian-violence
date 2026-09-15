@@ -2,7 +2,7 @@
 import { area as d3Area, axisBottom, axisLeft, line as d3Line, max, scaleLinear, select } from "d3";
 import { violenceColors } from "../../utils/colors";
 import { formatCount } from "../../utils/format";
-import { medianBand } from "./eventWindowMath";
+import { BACKGROUND_METRIC_LABELS, medianBand } from "./eventWindowMath";
 import type { BackgroundMetric, BandPoint, Episode } from "./eventWindowMath";
 
 const MARGIN = { top: 12, right: 16, bottom: 24, left: 44 };
@@ -17,11 +17,15 @@ export class EventWindowSummary {
   private readonly t0Line: SVGLineElement;
   private readonly axisX: SVGGElement;
   private readonly axisY: SVGGElement;
+  private readonly caption: HTMLParagraphElement;
   private readonly emptyState: HTMLParagraphElement;
 
   constructor(container: HTMLElement) {
     this.root = document.createElement("div");
     this.root.className = "ew-summary";
+
+    this.caption = document.createElement("p");
+    this.caption.className = "ew-summary-caption";
 
     const svgNs = "http://www.w3.org/2000/svg";
     this.svg = document.createElementNS(svgNs, "svg");
@@ -51,11 +55,14 @@ export class EventWindowSummary {
     this.emptyState.className = "ew-empty";
     this.emptyState.hidden = true;
 
-    this.root.append(this.svg, this.emptyState);
+    this.root.append(this.caption, this.svg, this.emptyState);
     container.append(this.root);
   }
 
   render(episodes: readonly Episode[], metric: BackgroundMetric, weeks: readonly number[]): void {
+    this.caption.textContent =
+      `Median and interquartile range of ${BACKGROUND_METRIC_LABELS[metric].toLowerCase()} across the episodes currently displayed.`;
+
     const width = Math.max(240, this.root.clientWidth);
     const plotWidth = Math.max(1, width - MARGIN.left - MARGIN.right);
     const totalHeight = MARGIN.top + HEIGHT + MARGIN.bottom;

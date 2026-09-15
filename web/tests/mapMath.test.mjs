@@ -38,9 +38,9 @@ test("elevationForIntensity/opacityForIntensity: zero at zero value or zero max,
   assert.equal(elevationForIntensity(200, 100), MAX_ELEVATION); // over-max input clamps, never exceeds
   assert.ok(elevationForIntensity(25, 100) < elevationForIntensity(100, 100));
 
-  assert.equal(opacityForIntensity(0, 100), 0.15);
-  assert.equal(opacityForIntensity(100, 100), 1);
-  assert.ok(opacityForIntensity(25, 100) > 0.15 && opacityForIntensity(25, 100) < 1);
+  assert.equal(opacityForIntensity(0, 100), 0.22);
+  assert.equal(opacityForIntensity(100, 100), 0.88);
+  assert.ok(opacityForIntensity(25, 100) > 0.22 && opacityForIntensity(25, 100) < 0.88);
 });
 
 test("observedWeeks: dedupes and sorts ascending", () => {

@@ -3,6 +3,13 @@ import type { EventWindow } from "../../data/types";
 import { formatCount, formatWeekLabel } from "../../utils/format";
 import type { Episode } from "./eventWindowMath";
 
+function sectionHeading(text: string): HTMLElement {
+  const heading = document.createElement("p");
+  heading.className = "tooltip-section-heading";
+  heading.textContent = text;
+  return heading;
+}
+
 function row(label: string, value: string): HTMLElement {
   const line = document.createElement("div");
   line.className = "tooltip-row";
@@ -16,7 +23,8 @@ function row(label: string, value: string): HTMLElement {
   return line;
 }
 
-const metricValue = (value: number | null) => (value === null ? "not observed" : formatCount(value));
+/** "not observed" for a null metric - never rendered as a false zero. Shared with the details panel. */
+export const metricValue = (value: number | null): string => (value === null ? "not observed" : formatCount(value));
 
 export function renderEventWindowTooltip(episode: Episode, cell: EventWindow): HTMLElement {
   const content = document.createElement("div");
@@ -24,19 +32,22 @@ export function renderEventWindowTooltip(episode: Episode, cell: EventWindow): H
   const heading = document.createElement("p");
   heading.className = "tooltip-heading";
   heading.textContent = episode.actorName;
-  const subheading = document.createElement("p");
-  subheading.className = "tooltip-subheading";
-  subheading.textContent = `Episode rank ${episode.peakRank}`;
   content.append(
     heading,
-    subheading,
+    sectionHeading("Actor / Episode"),
+    row("Episode rank", String(episode.peakRank)),
     row("T0", formatWeekLabel(episode.t0Date)),
-    row("Current", cell.relative_week === 0 ? "T0" : `T${cell.relative_week > 0 ? "+" : ""}${cell.relative_week}`),
+    sectionHeading("Current position"),
+    row("Relative week", cell.relative_week === 0 ? "T0" : `T${cell.relative_week > 0 ? "+" : ""}${cell.relative_week}`),
     row("Calendar week", formatWeekLabel(cell.calendar_week)),
+    row("Status", cell.is_observed_week ? "Observed" : "Not observed"),
+    sectionHeading("Combat context"),
     row("Combat events", metricValue(cell.combat_event_count)),
     row("Combatant fatalities", metricValue(cell.combatant_fatalities)),
     row("Actor deaths suffered", metricValue(cell.actor_deaths_suffered)),
+    sectionHeading("Civilian violence"),
     row("One-sided events", metricValue(cell.one_sided_event_count)),
+    row("One-sided civilian fatalities", metricValue(cell.one_sided_civilian_fatalities)),
     row("Civilian fatalities", metricValue(cell.civilian_fatalities)),
   );
   return content;

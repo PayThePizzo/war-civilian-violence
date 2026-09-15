@@ -3,16 +3,19 @@ import { Map as MaplibreMap } from "maplibre-gl";
 import type { StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { MapLibreOverlay } from "@deck.gl/maplibre";
+import type { FeatureCollection } from "geojson";
 import type { AppState } from "../../app/state";
 import { aggregateH3Overview, getH3ForActorAndWeek } from "../../data/selectors";
 import type { AppData } from "../../data/types";
 import { createTooltip } from "../../ui/Tooltip";
 import type { Tooltip } from "../../ui/Tooltip";
+import sudanBoundaryUrl from "../../assets/geo/sudan-boundary.geojson?url";
+import { buildBoundaryLayer } from "./BoundaryLayer";
 import { buildH3Layer } from "./H3Layer";
 import type { H3Cell } from "./H3Layer";
 import { MapControls } from "./MapControls";
 import { renderMapTooltip } from "./MapTooltip";
-import { computeBounds } from "./mapMath";
+import { COLOR_METRIC_LABELS, computeBounds, INTENSITY_METRIC_LABELS } from "./mapMath";
 import type { ColorMetric, IntensityMetric } from "./mapMath";
 import { formatWeekLabel } from "../../utils/format";
 import "./map.css";
@@ -37,6 +40,9 @@ export class ConflictMap {
   private readonly mapCanvas: HTMLDivElement;
   private readonly summary: HTMLParagraphElement;
   private readonly emptyState: HTMLParagraphElement;
+  private readonly contextLabel: HTMLDivElement;
+  private readonly legendColorCaption: HTMLParagraphElement;
+  private readonly legendIntensityCaption: HTMLParagraphElement;
   private readonly controls: MapControls;
   private readonly tooltip: Tooltip;
   private readonly map: MaplibreMap;
@@ -52,6 +58,9 @@ export class ConflictMap {
   private intensityMetric: IntensityMetric = "event_count";
   private colorMetric: ColorMetric = "one_sided_event_share";
   private extruded = false;
+  /** Loaded lazily; null until the fetch resolves, and stays null forever if the checked-in
+   * boundary is the empty placeholder or the fetch fails - never fabricated. */
+  private boundaryGeojson: FeatureCollection | null = null;
 
   constructor(container: HTMLElement, data: AppData) {
     this.data = data;
@@ -89,22 +98,31 @@ export class ConflictMap {
     this.mapCanvas.setAttribute("role", "img");
     this.mapCanvas.setAttribute("aria-label", "Map of one-sided and combat violence intensity across Sudan");
 
+    this.contextLabel = document.createElement("div");
+    this.contextLabel.className = "map-context-label";
+
     const legend = document.createElement("div");
     legend.className = "map-legend";
-    legend.setAttribute("aria-hidden", "true");
+    const legendGradientRow = document.createElement("div");
+    legendGradientRow.className = "map-legend-row";
     const legendLeft = document.createElement("span");
     legendLeft.textContent = "Combat";
     const legendBar = document.createElement("span");
     legendBar.className = "map-legend-bar";
     const legendRight = document.createElement("span");
     legendRight.textContent = "One-sided";
-    legend.append(legendLeft, legendBar, legendRight);
+    legendGradientRow.append(legendLeft, legendBar, legendRight);
+    this.legendColorCaption = document.createElement("p");
+    this.legendColorCaption.className = "map-legend-caption";
+    this.legendIntensityCaption = document.createElement("p");
+    this.legendIntensityCaption.className = "map-legend-caption";
+    legend.append(legendGradientRow, this.legendColorCaption, this.legendIntensityCaption);
 
     this.emptyState = document.createElement("p");
     this.emptyState.className = "map-empty";
     this.emptyState.hidden = true;
 
-    this.mapShell.append(this.mapCanvas, legend, this.emptyState);
+    this.mapShell.append(this.contextLabel, this.mapCanvas, legend, this.emptyState);
     this.tooltip = createTooltip(this.mapShell);
 
     this.summary = document.createElement("p");
@@ -132,6 +150,27 @@ export class ConflictMap {
 
     this.resizeObserver = new ResizeObserver(() => this.map.resize());
     this.resizeObserver.observe(this.mapShell);
+
+    void this.loadBoundary();
+  }
+
+  /**
+   * Fetch the checked-in Sudan boundary once. The file currently ships as an empty
+   * FeatureCollection placeholder, so this resolves to no layer until a real boundary is added -
+   * ConflictMap's architecture needs no further change when that happens (see BoundaryLayer.ts).
+   */
+  private async loadBoundary(): Promise<void> {
+    try {
+      const response = await fetch(sudanBoundaryUrl);
+      if (!response.ok) return;
+      const geojson = (await response.json()) as FeatureCollection;
+      if (geojson.features && geojson.features.length > 0) {
+        this.boundaryGeojson = geojson;
+        this.renderLayer();
+      }
+    } catch {
+      // No valid boundary available yet; the map keeps working without it.
+    }
   }
 
   update(state: Readonly<AppState>): void {
@@ -161,10 +200,24 @@ export class ConflictMap {
       : getH3ForActorAndWeek(this.data, this.lastState.selectedActorId, this.currentWeek);
   }
 
+  /** "Full analysis period" in Overview, or the active week in Week mode - the one phrase this
+   * view repeats in the context label, tooltip heading and status line so scope is never ambiguous. */
+  private periodLabel(short: boolean): string {
+    if (this.mode === "overview") return short ? "Full period" : "Full analysis period";
+    return `Week of ${formatWeekLabel(this.currentWeek as Date)}`;
+  }
+
+  private currentActorName(): string {
+    return this.lastState.selectedActorId === "__ALL__"
+      ? "All actors"
+      : this.data.actorProfiles.find((actor) => actor.actor_id === this.lastState.selectedActorId)?.actor_name
+        ?? this.lastState.selectedActorId;
+  }
+
   private renderLayer(): void {
     if (!this.ready) return;
     const cells = this.currentCells();
-    const layer = buildH3Layer(cells, {
+    const hexLayer = buildH3Layer(cells, {
       intensityMetric: this.intensityMetric,
       colorMetric: this.colorMetric,
       extruded: this.extruded,
@@ -173,20 +226,25 @@ export class ConflictMap {
           this.tooltip.hide();
           return;
         }
-        const heading = this.mode === "overview"
-          ? "Full period"
-          : `Week of ${formatWeekLabel(this.currentWeek as Date)}`;
-        this.tooltip.show(renderMapTooltip(cell, heading), x, y);
+        this.tooltip.show(renderMapTooltip(cell, this.periodLabel(true)), x, y);
       },
     });
-    this.overlay.setProps({ layers: [layer] });
+    // Boundary drawn after (so above) the hex layer: an unfilled outline reads as geographic
+    // context without ever obscuring the analytical fill or intensity encoding beneath it.
+    const boundaryLayer = this.boundaryGeojson ? buildBoundaryLayer(this.boundaryGeojson) : null;
+    this.overlay.setProps({ layers: boundaryLayer ? [hexLayer, boundaryLayer] : [hexLayer] });
 
-    const actorName = this.lastState.selectedActorId === "__ALL__"
-      ? "All actors"
-      : this.data.actorProfiles.find((actor) => actor.actor_id === this.lastState.selectedActorId)?.actor_name
-        ?? this.lastState.selectedActorId;
-    const period = this.mode === "overview" ? "Overview" : `Week of ${formatWeekLabel(this.currentWeek as Date)}`;
-    this.summary.textContent = `${actorName} · ${period} · ${cells.length.toLocaleString("en")} H3 cells.`;
+    const actorName = this.currentActorName();
+    const period = this.periodLabel(false);
+    this.contextLabel.textContent = `${actorName} · ${period}`;
+
+    this.legendColorCaption.textContent = `Colour = ${COLOR_METRIC_LABELS[this.colorMetric].toLowerCase()}`;
+    this.legendIntensityCaption.textContent = this.extruded
+      ? `Height = ${INTENSITY_METRIC_LABELS[this.intensityMetric].toLowerCase()} (3D)`
+      : `Opacity = ${INTENSITY_METRIC_LABELS[this.intensityMetric].toLowerCase()}`;
+
+    this.summary.textContent =
+      `${actorName} · ${this.periodLabel(true)} · ${cells.length.toLocaleString("en")} active H3 cells`;
     this.emptyState.hidden = cells.length > 0;
     this.emptyState.textContent = this.mode === "overview"
       ? "No H3 data for this actor."

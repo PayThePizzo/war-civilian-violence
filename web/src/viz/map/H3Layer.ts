@@ -32,7 +32,7 @@ export function buildH3Layer(cells: readonly H3Cell[], options: H3LayerOptions):
     elevationScale: 1,
     wireframe: false,
     stroked: true,
-    getLineColor: [255, 255, 255, 40],
+    getLineColor: [255, 255, 255, 90],
     lineWidthMinPixels: 1,
     pickable: true,
     autoHighlight: true,

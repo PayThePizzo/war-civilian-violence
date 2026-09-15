@@ -24,6 +24,20 @@
 }
 .map-canvas { position: absolute; inset: 0; }
 
+.map-context-label {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  max-width: calc(100% - 1.5rem);
+}
+
 .map-legend {
   position: absolute;
   left: 0.75rem;
@@ -35,15 +49,18 @@
   padding: 0.5rem 0.65rem;
   font-size: 0.75rem;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 15rem;
 }
+.map-legend-row { display: flex; align-items: center; gap: 0.5rem; }
 .map-legend-bar {
   width: 6rem;
   height: 0.5rem;
   border-radius: 999px;
   background: linear-gradient(to right, #2a78d6, #1baf7a);
 }
+.map-legend-caption { margin: 0; color: var(--muted); }
 
 .map-tooltip { position: absolute; pointer-events: none; z-index: 2; }
 .tooltip {
@@ -58,6 +75,15 @@
   max-width: 240px;
 }
 .tooltip-heading { margin: 0 0 0.35rem; font-weight: 600; }
+.tooltip-section-heading {
+  margin: 0.5rem 0 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.tooltip-section-heading:first-of-type { margin-top: 0; }
 .tooltip-row { display: flex; align-items: center; gap: 0.4rem; justify-content: space-between; }
 .tooltip-label { color: var(--muted); flex: 1 1 auto; }
 .tooltip-value { font-variant-numeric: tabular-nums; }
