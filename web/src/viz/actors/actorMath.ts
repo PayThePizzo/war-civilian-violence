@@ -27,6 +27,18 @@ export const AXES: readonly AxisDef[] = [
   { key: "active_h3_cell_count", label: "Geographic spread", scale: "linear" },
 ];
 
+/** Human-friendly names for detail-card rows; never surface raw CSV field names in the UI. */
+export const METRIC_LABELS = {
+  total_event_count: "Total events",
+  combat_event_count: "Combat events",
+  active_week_count: "Active weeks",
+  one_sided_event_count: "One-sided events",
+  one_sided_event_share: "One-sided share",
+  one_sided_civilian_fatalities: "One-sided civilian fatalities",
+  actor_deaths_suffered: "Actor deaths suffered",
+  active_h3_cell_count: "Geographic spread",
+} as const;
+
 /**
  * One scale per axis, range [height, 0] (SVG y grows downward, so larger values sit higher).
  * Skewed count/fatality axes use scaleSymlog (WEB.md §28); one_sided_event_share is always

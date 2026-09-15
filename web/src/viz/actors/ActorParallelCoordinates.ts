@@ -12,11 +12,16 @@ import { renderActorTooltip } from "./ActorTooltip";
 import { AXES, axisPositions, buildAxisScales, pointsForProfile } from "./actorMath";
 import "./actors.css";
 
-const MARGIN = { top: 56, right: 88, bottom: 12, left: 16 };
+const MARGIN = { top: 74, right: 88, bottom: 12, left: 16 };
 const HEIGHT = 260;
 const SELECTED_COLOR = "#20252b";
 const HOVER_COLOR = "#5a3ea8";
 const NORMAL_COLOR = "#9a988f";
+const SELECTED_WIDTH = 3;
+const HOVER_WIDTH = 2.5;
+const NORMAL_WIDTH = 1.25;
+const FADED_OPACITY = 0.25;
+const NORMAL_OPACITY = 0.6;
 
 export class ActorParallelCoordinates {
   private readonly data: AppData;
@@ -57,6 +62,13 @@ export class ActorParallelCoordinates {
     });
     controls.append(this.minorActorsCheckbox, document.createTextNode("Show minor actors"));
 
+    const intro = document.createElement("p");
+    intro.className = "actor-pc-intro";
+    intro.textContent = "Each line represents one armed actor. Higher positions indicate larger values on each dimension.";
+    const scaleNote = document.createElement("p");
+    scaleNote.className = "actor-pc-note";
+    scaleNote.textContent = "Count and fatality axes use a symlog scale to accommodate highly skewed values.";
+
     this.chartHost = document.createElement("div");
     this.chartHost.className = "actor-pc-chart";
 
@@ -80,7 +92,7 @@ export class ActorParallelCoordinates {
     this.emptyState.className = "actor-pc-empty";
     this.emptyState.hidden = true;
 
-    main.append(controls, this.chartHost, this.emptyState);
+    main.append(controls, intro, scaleNote, this.chartHost, this.emptyState);
 
     const side = document.createElement("div");
     side.className = "actor-pc-side";
@@ -137,8 +149,13 @@ export class ActorParallelCoordinates {
       const path = lineGen(points) ?? "";
       const isSelected = profile.actor_id === selectedId;
       const isHovered = profile.actor_id === this.hoveredActorId;
+      // A selection or a hover both narrow focus, but neither erases the other: the selected
+      // actor keeps its distinct color/width even while a different actor is hovered, and only
+      // actors that are neither stay faded.
       const faded = !isSelected && !isHovered && (this.hoveredActorId !== null || selectedId !== "__ALL__");
       const color = isSelected ? SELECTED_COLOR : isHovered ? HOVER_COLOR : NORMAL_COLOR;
+      const width = isSelected ? SELECTED_WIDTH : isHovered ? HOVER_WIDTH : NORMAL_WIDTH;
+      const opacity = faded ? FADED_OPACITY : isSelected || isHovered ? 1 : NORMAL_OPACITY;
 
       node.select("path.pc-line-hit")
         .attr("d", path)
@@ -151,11 +168,15 @@ export class ActorParallelCoordinates {
       node.select("path.pc-line-visible")
         .attr("d", path)
         .attr("stroke", color)
-        .attr("stroke-width", isSelected || isHovered ? 2.5 : 1.25)
-        .attr("stroke-opacity", faded ? 0.15 : isSelected || isHovered ? 1 : 0.55)
+        .attr("stroke-width", width)
+        .attr("stroke-opacity", opacity)
         .attr("pointer-events", "none");
 
-      if (isSelected || isHovered) node.raise();
+      node.classed("pc-actor-selected", isSelected);
+      // Selected stays on top of the ordinary stack so it remains prominent after mouseout;
+      // a hover on another actor may still raise above it while the pointer lingers there.
+      if (isSelected) node.raise();
+      if (isHovered) node.raise();
     });
 
     this.renderDetails();
@@ -187,7 +208,7 @@ export class ActorParallelCoordinates {
       node.select("line.pc-axis-line").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", HEIGHT);
       node.select("text.pc-axis-title")
         .attr("text-anchor", "start")
-        .attr("transform", "translate(4,-16) rotate(-35)")
+        .attr("transform", "translate(6,-34) rotate(-20)")
         .text(axis.label);
       const format = axis.key === "one_sided_event_share"
         ? (value: number) => formatPercent(value, 0)

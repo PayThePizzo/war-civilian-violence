@@ -1,6 +1,6 @@
 /** Local-only Web 2 controls: mode/metric/2D-3D toggles and the Week-mode stepper (WEB.md §18-20). */
 import { formatWeekLabel } from "../../utils/format";
-import { observedWeeks, stepWeek } from "./mapMath";
+import { COLOR_METRIC_LABELS, INTENSITY_METRIC_LABELS, observedWeeks, stepWeek } from "./mapMath";
 import type { ColorMetric, IntensityMetric } from "./mapMath";
 
 const PLAY_INTERVAL_MS = 900;
@@ -13,16 +13,8 @@ export interface MapControlsOptions {
   onWeekChange: (week: Date) => void;
 }
 
-const INTENSITY_OPTIONS: ReadonlyArray<[IntensityMetric, string]> = [
-  ["event_count", "Events"],
-  ["best_fatalities", "Best fatalities"],
-  ["one_sided_civilian_fatalities", "One-sided civilian fatalities"],
-];
-
-const COLOR_OPTIONS: ReadonlyArray<[ColorMetric, string]> = [
-  ["one_sided_event_share", "One-sided event share"],
-  ["one_sided_civilian_fatality_share", "One-sided civilian fatality share"],
-];
+const INTENSITY_OPTIONS = Object.entries(INTENSITY_METRIC_LABELS) as Array<[IntensityMetric, string]>;
+const COLOR_OPTIONS = Object.entries(COLOR_METRIC_LABELS) as Array<[ColorMetric, string]>;
 
 export class MapControls {
   readonly root: HTMLDivElement;

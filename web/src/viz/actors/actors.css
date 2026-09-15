@@ -4,12 +4,17 @@
 
 .actor-pc-controls { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.75rem; }
 
+.actor-pc-intro { margin: 0 0 0.75rem; font-size: 0.85rem; }
+.actor-pc-note { margin: 0 0 0.75rem; font-size: 0.78rem; color: var(--muted); }
+
 .actor-pc-chart { position: relative; }
 .actor-pc-svg { display: block; width: 100%; height: auto; }
 
+.pc-actor-selected path.pc-line-visible { filter: drop-shadow(0 0 1.5px rgba(32, 37, 43, 0.5)); }
+
 .pc-axis-line { stroke: #c3c2b7; stroke-width: 1; }
-.pc-axis-title { font-size: 0.65rem; fill: var(--muted); }
-.pc-axis-max, .pc-axis-min { font-size: 0.65rem; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.pc-axis-title { font-size: 0.8rem; font-weight: 600; fill: currentColor; }
+.pc-axis-max, .pc-axis-min { font-size: 0.72rem; fill: var(--muted); font-variant-numeric: tabular-nums; }
 
 .actor-pc-empty { color: var(--muted); }
 
@@ -19,7 +24,19 @@
   padding: 0.75rem 0.9rem;
   background: var(--surface);
 }
-.actor-details-heading { margin: 0 0 0.5rem; font-weight: 600; }
+.actor-details-heading { margin: 0 0 0.6rem; font-weight: 600; }
+.actor-details-group { margin-bottom: 0.65rem; }
+.actor-details-group:last-child { margin-bottom: 0; }
+.actor-details-group-heading {
+  margin: 0 0 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.15rem;
+}
 .actor-details-row { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.8rem; padding: 0.15rem 0; }
 .actor-details-label { color: var(--muted); }
 .actor-details-value { font-variant-numeric: tabular-nums; text-align: right; }

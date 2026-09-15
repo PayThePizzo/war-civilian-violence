@@ -8,9 +8,10 @@ import { createTooltip } from "../../ui/Tooltip";
 import type { Tooltip } from "../../ui/Tooltip";
 import { violenceColors } from "../../utils/colors";
 import { formatWeekLabel } from "../../utils/format";
+import { renderEventWindowDetails } from "./EventWindowDetails";
 import { EventWindowSummary } from "./EventWindowSummary";
 import { renderEventWindowTooltip } from "./EventWindowTooltip";
-import { circleRadius, groupEpisodes, relativeWeekRange, sequentialColor } from "./eventWindowMath";
+import { BACKGROUND_METRIC_LABELS, circleRadius, groupEpisodes, relativeWeekRange, sequentialColor } from "./eventWindowMath";
 import type { BackgroundMetric, Episode } from "./eventWindowMath";
 import "./event-windows.css";
 
@@ -19,14 +20,11 @@ const COL_WIDTH = 28;
 const HEADER_HEIGHT = 28;
 const ROW_LABEL_WIDTH = 220;
 const CIRCLE_MAX_RADIUS = 9;
+const CIRCLE_MIN_RADIUS = 2;
 const HATCH_ID = "ew-hatch";
 const ROW_LABEL_CLIP_ID = "ew-row-label-clip";
 
-const METRIC_OPTIONS: ReadonlyArray<[BackgroundMetric, string]> = [
-  ["combat_event_count", "Combat events"],
-  ["combatant_fatalities", "Combatant fatalities"],
-  ["actor_deaths_suffered", "Actor deaths suffered"],
-];
+const METRIC_OPTIONS = Object.entries(BACKGROUND_METRIC_LABELS) as Array<[BackgroundMetric, string]>;
 
 export class EventWindowMatrix {
   private readonly data: AppData;
@@ -35,14 +33,20 @@ export class EventWindowMatrix {
   private readonly summary: EventWindowSummary;
   private readonly matrixWrapper: HTMLDivElement;
   private readonly svg: SVGSVGElement;
+  private readonly t0Band: SVGRectElement;
   private readonly rowsGroup: SVGGElement;
   private readonly tooltip: Tooltip;
   private readonly emptyState: HTMLParagraphElement;
+  private readonly detailsHost: HTMLDivElement;
   private readonly weeks: readonly number[];
   private readonly resizeObserver: ResizeObserver;
 
   private metric: BackgroundMetric = "combat_event_count";
   private lastState: AppState = { selectedActorId: "__ALL__", focusWeek: null };
+  /** Currently hovered episode's data, kept alongside the render pass that last built it so the
+   * details panel can show it without recomputing groupEpisodes() outside render(). */
+  private hoveredEpisodeId: string | null = null;
+  private currentEpisodes: Episode[] = [];
 
   constructor(container: HTMLElement, data: AppData, store: AppStore) {
     this.data = data;
@@ -110,9 +114,14 @@ export class EventWindowMatrix {
     labelClip.append(labelClipRect);
     defs.append(labelClip);
 
+    // A T0 band behind every row, in addition to the dashed header line, so the reference
+    // column reads as a strong column (not just a thin line) even when scrolled or scanned quickly.
+    this.t0Band = document.createElementNS(svgNs, "rect");
+    this.t0Band.setAttribute("class", "ew-t0-band");
+
     this.rowsGroup = document.createElementNS(svgNs, "g");
     this.rowsGroup.setAttribute("class", "ew-rows");
-    this.svg.append(defs, this.rowsGroup);
+    this.svg.append(defs, this.t0Band, this.rowsGroup);
     this.matrixWrapper.append(this.svg);
     this.tooltip = createTooltip(this.matrixWrapper);
 
@@ -120,15 +129,28 @@ export class EventWindowMatrix {
     legend.className = "ew-legend";
     legend.innerHTML = `
       <span class="ew-legend-item"><span class="ew-legend-swatch ew-legend-zero"></span>0 (observed)</span>
-      <span class="ew-legend-item"><span class="ew-legend-swatch ew-legend-hatch"></span>not observed</span>
-      <span class="ew-legend-item"><span class="ew-legend-circle"></span>one-sided civilian fatalities</span>
+      <span class="ew-legend-item"><span class="ew-legend-swatch ew-legend-hatch"></span>Not observed</span>
+      <span class="ew-legend-item"><span class="ew-legend-circle"></span>One-sided civilian fatalities</span>
     `;
 
     this.emptyState = document.createElement("p");
     this.emptyState.className = "ew-empty";
     this.emptyState.hidden = true;
 
-    this.root.append(controls, summaryHost, this.matrixWrapper, legend, this.emptyState);
+    const left = document.createElement("div");
+    left.className = "ew-left";
+    left.append(controls, summaryHost, this.matrixWrapper, legend, this.emptyState);
+
+    const right = document.createElement("div");
+    right.className = "ew-right";
+    this.detailsHost = document.createElement("div");
+    right.append(this.detailsHost);
+
+    const layout = document.createElement("div");
+    layout.className = "ew-layout";
+    layout.append(left, right);
+
+    this.root.append(layout);
     container.append(this.root);
 
     this.resizeObserver = new ResizeObserver(() => this.render());
@@ -149,6 +171,7 @@ export class EventWindowMatrix {
   private render(): void {
     const rows = getEpisodesForActor(this.data, this.lastState.selectedActorId);
     const episodes = groupEpisodes(rows);
+    this.currentEpisodes = episodes;
 
     this.summary.render(episodes, this.metric, this.weeks);
 
@@ -157,6 +180,7 @@ export class EventWindowMatrix {
     this.matrixWrapper.hidden = episodes.length === 0;
     if (episodes.length === 0) {
       select(this.rowsGroup).selectAll("*").remove();
+      this.renderDetails();
       return;
     }
 
@@ -165,6 +189,12 @@ export class EventWindowMatrix {
     this.svg.setAttribute("width", String(width));
     this.svg.setAttribute("height", String(height));
     this.svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+    const t0X = ROW_LABEL_WIDTH + (0 - this.weeks[0]) * COL_WIDTH;
+    this.t0Band.setAttribute("x", String(t0X));
+    this.t0Band.setAttribute("y", String(HEADER_HEIGHT));
+    this.t0Band.setAttribute("width", String(COL_WIDTH));
+    this.t0Band.setAttribute("height", String(episodes.length * ROW_HEIGHT));
 
     let maxMetric = 0;
     let maxFatalities = 0;
@@ -177,6 +207,7 @@ export class EventWindowMatrix {
 
     this.renderHeader();
     this.renderRows(episodes, maxMetric, maxFatalities);
+    this.renderDetails();
   }
 
   private renderHeader(): void {
@@ -209,6 +240,7 @@ export class EventWindowMatrix {
       .data(episodes, (episode) => episode.episodeId)
       .join((enter) => {
         const g = enter.append("g").attr("class", "ew-episode");
+        g.append("rect").attr("class", "ew-row-stripe");
         g.append("rect").attr("class", "ew-row-hit");
         g.append("text").attr("class", "ew-row-label");
         g.append("g").attr("class", "ew-cells");
@@ -223,11 +255,17 @@ export class EventWindowMatrix {
       node.attr("transform", `translate(0,${y})`);
 
       const rowWidth = ROW_LABEL_WIDTH + this.weeks.length * COL_WIDTH;
+      node.select("rect.ew-row-stripe")
+        .attr("x", 0).attr("y", 0)
+        .attr("width", rowWidth).attr("height", ROW_HEIGHT)
+        .classed("ew-row-stripe-alt", index % 2 === 1);
       node.select("rect.ew-row-hit")
         .attr("x", 0).attr("y", 0)
         .attr("width", rowWidth).attr("height", ROW_HEIGHT)
         .attr("fill", "transparent")
         .style("cursor", "pointer")
+        .on("pointerenter", () => this.onHoverEpisode(episode))
+        .on("pointerleave", () => this.onHoverEnd())
         .on("click", () => this.selectEpisode(episode));
 
       node.select("text.ew-row-label")
@@ -249,7 +287,7 @@ export class EventWindowMatrix {
         const cellNode = select(cellNodes[cellIndex]);
         const x = ROW_LABEL_WIDTH + (cell.relative_week - this.weeks[0]) * COL_WIDTH;
         const color = sequentialColor(cell[this.metric], maxMetric, violenceColors.stateBased);
-        const radius = circleRadius(cell.one_sided_civilian_fatalities, maxFatalities, CIRCLE_MAX_RADIUS);
+        const radius = circleRadius(cell.one_sided_civilian_fatalities, maxFatalities, CIRCLE_MAX_RADIUS, CIRCLE_MIN_RADIUS);
 
         cellNode.select("rect.ew-cell-bg")
           .attr("x", x + 1).attr("y", 1)
@@ -267,13 +305,50 @@ export class EventWindowMatrix {
         cellNode
           .style("cursor", "pointer")
           .on("pointerenter", (event: PointerEvent) => {
+            this.onHoverEpisode(episode);
             const [px, py] = pointer(event, this.matrixWrapper);
             this.tooltip.show(renderEventWindowTooltip(episode, cell), px, py);
           })
-          .on("pointerleave", () => this.tooltip.hide())
+          .on("pointerleave", () => this.onHoverEnd())
           .on("click", () => this.selectEpisode(episode));
       });
     });
+  }
+
+  private onHoverEpisode(episode: Episode): void {
+    if (this.hoveredEpisodeId === episode.episodeId) return;
+    this.hoveredEpisodeId = episode.episodeId;
+    this.renderDetails();
+  }
+
+  private onHoverEnd(): void {
+    this.hoveredEpisodeId = null;
+    this.tooltip.hide();
+    this.renderDetails();
+  }
+
+  /** Details panel shows the hovered episode; failing that, the one matching the global
+   * selection (row/cell click already set selectedActorId + focusWeek to its t0Date); failing
+   * that, a placeholder that names the globally selected actor if one is set. */
+  private renderDetails(): void {
+    const hovered = this.hoveredEpisodeId !== null
+      ? this.currentEpisodes.find((episode) => episode.episodeId === this.hoveredEpisodeId) ?? null
+      : null;
+    const selectedActorId = this.lastState.selectedActorId;
+    const focusTime = this.lastState.focusWeek?.getTime() ?? null;
+    const selected = hovered === null
+      ? this.currentEpisodes.find(
+        (episode) => episode.actorId === selectedActorId && episode.t0Date.getTime() === focusTime,
+      ) ?? null
+      : null;
+
+    const selectedActorName = selectedActorId === "__ALL__"
+      ? null
+      : this.data.actorProfiles.find((actor) => actor.actor_id === selectedActorId)?.actor_name ?? selectedActorId;
+
+    this.detailsHost.replaceChildren(
+      renderEventWindowDetails(hovered ?? selected, { metric: this.metric, selectedActorName }),
+    );
   }
 
   private selectEpisode(episode: Episode): void {

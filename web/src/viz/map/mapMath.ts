@@ -4,7 +4,21 @@ import type { H3Metric, H3OverviewMetric } from "../../data/types";
 export type IntensityMetric = "event_count" | "best_fatalities" | "one_sided_civilian_fatalities";
 export type ColorMetric = "one_sided_event_share" | "one_sided_civilian_fatality_share";
 
-const MIN_OPACITY = 0.15;
+/** Single source of truth for metric display names, shared by MapControls (option text), the
+ * legend, and the map's context label so wording never drifts between them. */
+export const INTENSITY_METRIC_LABELS: Record<IntensityMetric, string> = {
+  event_count: "Events",
+  best_fatalities: "Best fatalities",
+  one_sided_civilian_fatalities: "One-sided civilian fatalities",
+};
+
+export const COLOR_METRIC_LABELS: Record<ColorMetric, string> = {
+  one_sided_event_share: "One-sided event share",
+  one_sided_civilian_fatality_share: "One-sided civilian fatality share",
+};
+
+const MIN_OPACITY = 0.22;
+const MAX_OPACITY = 0.88;
 export const MAX_ELEVATION = 20000;
 
 type Cell = Pick<H3Metric | H3OverviewMetric, "h3_center_lat" | "h3_center_lon">;
@@ -47,10 +61,14 @@ export function elevationForIntensity(value: number, maxValue: number): number {
   return Math.sqrt(Math.min(1, value / maxValue)) * MAX_ELEVATION;
 }
 
-/** Square-root scale mapped to [MIN_OPACITY, 1] so zero-count cells stay faintly visible rather than invisible. */
+/**
+ * Square-root scale mapped to [MIN_OPACITY, MAX_OPACITY]: zero-count cells stay faintly visible
+ * rather than invisible, and the busiest cells stop short of full opacity so their white
+ * borders (H3Layer's getLineColor) still separate them from equally busy neighbours.
+ */
 export function opacityForIntensity(value: number, maxValue: number): number {
   if (!(maxValue > 0) || !(value > 0)) return MIN_OPACITY;
-  return MIN_OPACITY + (1 - MIN_OPACITY) * Math.sqrt(Math.min(1, value / maxValue));
+  return MIN_OPACITY + (MAX_OPACITY - MIN_OPACITY) * Math.sqrt(Math.min(1, value / maxValue));
 }
 
 /** Distinct observed week_start values for an actor, ascending - the Week-mode stepper's timeline. */

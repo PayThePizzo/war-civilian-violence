@@ -3,6 +3,13 @@ import type { EventWindow } from "../../data/types";
 
 export type BackgroundMetric = "combat_event_count" | "combatant_fatalities" | "actor_deaths_suffered";
 
+/** Human-friendly names shared by the metric selector, summary caption, and details panel. */
+export const BACKGROUND_METRIC_LABELS: Record<BackgroundMetric, string> = {
+  combat_event_count: "Combat events",
+  combatant_fatalities: "Combatant fatalities",
+  actor_deaths_suffered: "Actor deaths suffered",
+};
+
 export interface Episode {
   episodeId: string;
   actorId: string;
@@ -98,8 +105,13 @@ export function sequentialColor(value: number | null, maxValue: number, hex: str
   return `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
 }
 
-/** Sqrt-scaled circle radius for the one_sided_civilian_fatalities overlay; 0 for null or non-positive input. */
-export function circleRadius(value: number | null, maxValue: number, maxRadius: number): number {
+/**
+ * Sqrt-scaled circle radius for the one_sided_civilian_fatalities overlay; 0 for null or
+ * non-positive input (never drawn), and never above `maxRadius` (never fully covers a cell).
+ * `minRadius` floors any genuinely positive value so small counts stay visible rather than
+ * rounding away to an invisible sliver.
+ */
+export function circleRadius(value: number | null, maxValue: number, maxRadius: number, minRadius = 0): number {
   if (!(maxValue > 0) || value === null || !(value > 0)) return 0;
-  return Math.sqrt(Math.min(1, value / maxValue)) * maxRadius;
+  return Math.max(minRadius, Math.sqrt(Math.min(1, value / maxValue)) * maxRadius);
 }
