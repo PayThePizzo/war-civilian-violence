@@ -12,7 +12,7 @@
 }
 
 .x-left-col {
-  width: 480px;
+  width: 420px;
   flex: none;
   display: flex;
   flex-direction: column;
@@ -96,6 +96,14 @@
   color: var(--ink);
 }
 
+.t0-note {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin: 0 0 10px;
+}
+
 .chart-panel-label {
   font-family: var(--font-sans);
   font-weight: 600;
@@ -122,8 +130,7 @@ svg text {
   fill: var(--muted);
 }
 
-.t0-tick-label {
-  font-size: 13px;
-  font-weight: 600;
-  fill: var(--ink);
+.chart-legend-label {
+  font-size: 12px;
+  fill: var(--muted);
 }

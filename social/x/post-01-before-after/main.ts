@@ -12,16 +12,18 @@
 import { area as d3Area, line as d3Line, max, scaleLinear } from "d3";
 import { loadEventWindows, loadMetadata } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
-import { formatCount } from "../../shared/format";
+import { formatCount, formatMonthYear } from "../../shared/format";
 import type { EventWindow } from "../../shared/types";
 
 const ROOT_ID = "social-root";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const CHART_WIDTH = 944;
+// Matches x-right-col's actual content box: 1600 canvas - 2*64 padding - 420 left
+// col - 48 gap = 1004, so charts fill .x-right-col edge to edge (see style.css).
+const CHART_WIDTH = 1004;
 const MAIN_CHART_HEIGHT = 380;
 const DOT_STRIP_HEIGHT = 60;
-const TOP_MARGIN = 24; // room for the T0 badge above the plot area, see appendT0Marker
+const TOP_MARGIN = 24; // room for the axis label / chart legend above the plot area
 const NEAR_WEEKS = [-4, -3, -2, -1] as const;
 const FAR_WEEKS = [-8, -7, -6, -5] as const;
 
@@ -136,8 +138,9 @@ async function render(): Promise<void> {
   rightCol.className = "x-right-col";
   rightCol.append(
     buildRangeLabels(metadata.event_window_before_weeks, metadata.event_window_after_weeks),
+    buildT0Note(),
     buildMainChart(combatBand, weeks),
-    buildPanelLabel("ONE-SIDED CIVILIAN FATALITIES", "median at each relative week, dot area ∝ value"),
+    buildPanelLabel("ONE-SIDED CIVILIAN FATALITIES", "dot area ∝ median one-sided civilian fatalities"),
     buildDotStrip(civilianBand, weeks),
   );
 
@@ -177,7 +180,7 @@ function buildStatCallout(higher: number, total: number): HTMLDivElement {
   label.textContent = "Descriptive statistic";
   const text = document.createElement("p");
   text.className = "stat-callout-text";
-  text.textContent = `${higher} of ${total} episodes with a complete 8-week window had higher combat activity in the four weeks before T0 than in the four weeks before that.`;
+  text.textContent = `${higher} of ${total} episodes with a complete 8-week window had higher combat activity in the four weeks before T0 than in the previous four.`;
   box.append(label, text);
   return box;
 }
@@ -198,8 +201,8 @@ function buildFinding(combatBand: readonly BandPoint[]): HTMLDivElement {
   const spread = medians.length > 0 ? Math.max(...medians) - Math.min(...medians) : 0;
   text.textContent =
     spread <= Math.max(...medians, 1) * 0.5
-      ? "Combat intensity varied only modestly in the weeks around major civilian-violence peaks, with no consistent rise or fall before T0."
-      : "Combat intensity varied substantially around major civilian-violence peaks.";
+      ? "Combat-event activity changed only modestly around major civilian-violence peaks, with no consistent increase before T0."
+      : "Combat-event activity changed substantially around major civilian-violence peaks.";
   finding.append(label, text);
   return finding;
 }
@@ -207,9 +210,9 @@ function buildFinding(combatBand: readonly BandPoint[]): HTMLDivElement {
 function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLParagraphElement {
   const footer = document.createElement("p");
   footer.className = "social-footer";
-  const start = new Date(`${analysisStart}T00:00:00.000Z`).getUTCFullYear();
-  const end = new Date(`${analysisEnd}T00:00:00.000Z`).getUTCFullYear();
-  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${start}–${end}`;
+  const start = new Date(`${analysisStart}T00:00:00.000Z`);
+  const end = new Date(`${analysisEnd}T00:00:00.000Z`);
+  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}–${formatMonthYear(end)}`;
   return footer;
 }
 
@@ -225,6 +228,14 @@ function buildRangeLabels(beforeWeeks: number, afterWeeks: number): HTMLDivEleme
   after.textContent = `${afterWeeks} weeks after`;
   row.append(before, t0, after);
   return row;
+}
+
+/** Small, visually secondary methodological note - never styled like a finding. */
+function buildT0Note(): HTMLParagraphElement {
+  const note = document.createElement("p");
+  note.className = "t0-note";
+  note.textContent = "T0 = selected peak week in one-sided civilian fatalities.";
+  return note;
 }
 
 function buildPanelLabel(title: string, unit: string): HTMLParagraphElement {
@@ -287,8 +298,53 @@ function buildMainChart(band: readonly BandPoint[], weeks: readonly number[]): S
   axisLabel.textContent = `Median combat events / week (up to ${formatCount(Math.round(yMax))})`;
   plot.append(axisLabel);
 
-  appendT0Marker(svg, plot, x, plotHeight);
+  appendChartLegend(plot);
+  appendT0Marker(plot, x, plotHeight);
   return svg;
+}
+
+/** Compact "line = median, band = IQR" key, right-aligned above the plot next to the axis label. */
+function appendChartLegend(plot: SVGGElement): void {
+  const legend = svgEl("g");
+  legend.setAttribute("class", "chart-legend");
+  legend.setAttribute("transform", `translate(${CHART_WIDTH},-6)`);
+  plot.append(legend);
+
+  const lineItemX = -340;
+  const lineSwatch = svgEl("line");
+  lineSwatch.setAttribute("x1", String(lineItemX));
+  lineSwatch.setAttribute("x2", String(lineItemX + 16));
+  lineSwatch.setAttribute("y1", "-4");
+  lineSwatch.setAttribute("y2", "-4");
+  lineSwatch.setAttribute("stroke", violenceColors.stateBased);
+  lineSwatch.setAttribute("stroke-width", "3");
+  legend.append(lineSwatch);
+
+  const lineText = svgEl("text");
+  lineText.setAttribute("x", String(lineItemX + 22));
+  lineText.setAttribute("y", "0");
+  lineText.setAttribute("class", "chart-legend-label");
+  lineText.textContent = "Median combat events";
+  legend.append(lineText);
+
+  const bandItemX = -170;
+  const bandSwatch = svgEl("rect");
+  bandSwatch.setAttribute("x", String(bandItemX));
+  bandSwatch.setAttribute("y", "-11");
+  bandSwatch.setAttribute("width", "16");
+  bandSwatch.setAttribute("height", "12");
+  bandSwatch.setAttribute("fill", violenceColors.stateBased);
+  bandSwatch.setAttribute("fill-opacity", "0.14");
+  bandSwatch.setAttribute("stroke", violenceColors.stateBased);
+  bandSwatch.setAttribute("stroke-opacity", "0.3");
+  legend.append(bandSwatch);
+
+  const bandText = svgEl("text");
+  bandText.setAttribute("x", String(bandItemX + 22));
+  bandText.setAttribute("y", "0");
+  bandText.setAttribute("class", "chart-legend-label");
+  bandText.textContent = "Interquartile range";
+  legend.append(bandText);
 }
 
 /** One dot per relative week, radius ∝ median one_sided_civilian_fatalities that week. */
@@ -308,7 +364,11 @@ function buildDotStrip(band: readonly BandPoint[], weeks: readonly number[]): SV
 
   const x = scaleLinear().domain([weeks[0], weeks[weeks.length - 1]]).range([0, CHART_WIDTH]);
   const maxValue = max(band, (point) => point.median ?? 0) ?? 1;
-  const maxRadius = plotHeight / 2 - 4;
+  // Capped below the strip's true half-height so even the single largest dot (typically
+  // relative week 0, the civilian-fatality peak by construction) leaves visible margin
+  // and never reads as filling or dominating the whole strip.
+  const maxRadius = (plotHeight / 2 - 4) * 0.85;
+  const minRadius = 2.5;
   const centerY = plotHeight / 2;
 
   const baseline = svgEl("line");
@@ -321,23 +381,32 @@ function buildDotStrip(band: readonly BandPoint[], weeks: readonly number[]): SV
   plot.append(baseline);
 
   for (const point of band) {
-    if (point.median === null || point.median <= 0 || !(maxValue > 0)) continue;
-    const radius = Math.max(3, Math.sqrt(point.median / maxValue) * maxRadius);
+    if (point.median === null) continue;
+    // Zero (and near-zero) weeks still get a small, muted mark rather than disappearing -
+    // "no recorded civilian fatalities that week" is itself part of the pattern, not the
+    // same thing as a week outside the observed window (which is excluded above).
+    const hasValue = point.median > 0 && maxValue > 0;
+    const radius = hasValue ? Math.max(minRadius, Math.sqrt(point.median / maxValue) * maxRadius) : minRadius;
     const dot = svgEl("circle");
     dot.setAttribute("cx", String(x(point.relativeWeek)));
     dot.setAttribute("cy", String(centerY));
     dot.setAttribute("r", String(radius));
     dot.setAttribute("fill", violenceColors.oneSided);
-    dot.setAttribute("fill-opacity", point.relativeWeek === 0 ? "0.95" : "0.55");
+    dot.setAttribute("fill-opacity", hasValue ? (point.relativeWeek === 0 ? "0.8" : "0.5") : "0.25");
     plot.append(dot);
   }
 
-  appendT0Marker(svg, plot, x, plotHeight);
+  appendT0Marker(plot, x, plotHeight);
   return svg;
 }
 
-/** Dashed T0 reference line plus a small "T0" badge above the plot, shared by both panels. */
-function appendT0Marker(svg: SVGSVGElement, plot: SVGGElement, x: (week: number) => number, plotHeight: number): void {
+/**
+ * Dashed T0 reference line, shared by both panels so they align to the same week-0
+ * position. The "T0" text label itself appears once, in buildRangeLabels above both
+ * charts - repeating it as a badge on every panel read as three separate T0s stacked
+ * close together, so only the line (the actual alignment cue) is drawn here.
+ */
+function appendT0Marker(plot: SVGGElement, x: (week: number) => number, plotHeight: number): void {
   const xPos = x(0);
   const line = svgEl("line");
   line.setAttribute("x1", String(xPos));
@@ -349,14 +418,6 @@ function appendT0Marker(svg: SVGSVGElement, plot: SVGGElement, x: (week: number)
   line.setAttribute("stroke-dasharray", "3,3");
   line.setAttribute("opacity", "0.6");
   plot.append(line);
-
-  const badgeText = svgEl("text");
-  badgeText.setAttribute("x", String(xPos));
-  badgeText.setAttribute("y", String(TOP_MARGIN / 2 + 4));
-  badgeText.setAttribute("text-anchor", "middle");
-  badgeText.setAttribute("class", "t0-tick-label");
-  badgeText.textContent = "T0";
-  svg.append(badgeText);
 }
 
 render().catch((error: unknown) => {
