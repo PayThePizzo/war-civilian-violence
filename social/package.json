@@ -7,8 +7,9 @@
     "sync-data": "node scripts/sync-data.mjs",
     "dev": "npm run sync-data && vite",
     "build": "npm run sync-data && tsc && vite build",
-    "export": "npm run build && node scripts/export-instagram.mjs",
-    "export:instagram": "npm run export",
+    "export": "npm run build && node scripts/export-social.mjs",
+    "export:instagram": "npm run build && node scripts/export-social.mjs instagram",
+    "export:x": "npm run build && node scripts/export-social.mjs x",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "vite": "^8.3.0"
   },
   "dependencies": {
-    "d3": "^7.9.0"
+    "d3": "^7.9.0",
+    "h3-js": "^4.5.0"
   }
 }

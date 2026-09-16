@@ -1,0 +1,129 @@
+/* X post 1 ("BEFORE / AFTER") — 1600x900 horizontal canvas: shared social.css's
+ * :root tokens/fonts stay, but the canvas itself is overridden to a two-column
+ * landscape composition instead of the Instagram posts' portrait single column. */
+
+.social-canvas {
+  width: 1600px;
+  height: 900px;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 48px;
+  padding: 64px;
+}
+
+.x-left-col {
+  width: 480px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.x-right-col {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-headline {
+  font-size: 38px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.social-subtitle {
+  font-size: 19px;
+  margin-bottom: 24px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.stat-callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.stat-callout-label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.stat-callout-text {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--body-text);
+  margin: 0;
+}
+
+.social-finding {
+  padding: 16px 22px;
+  margin-bottom: 20px;
+}
+
+.social-finding-text {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.social-footer {
+  font-size: 15px;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.range-labels .t0-label {
+  color: var(--ink);
+}
+
+.chart-panel-label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 20px 0 6px;
+}
+
+.chart-panel-label .unit {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted);
+}
+
+svg text {
+  font-family: var(--font-sans);
+}
+
+.axis-y-label {
+  font-size: 13px;
+  fill: var(--muted);
+}
+
+.t0-tick-label {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+}

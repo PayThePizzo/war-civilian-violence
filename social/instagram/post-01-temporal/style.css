@@ -1,1 +1,123 @@
-/* Post-specific overrides go here as the temporal visualization is built out. */
+/* Post 1 ("WHEN") — layout and typography specific to this post, on top of
+ * social.css's shared canvas/eyebrow/headline/subtitle/finding/footer rules. */
+
+.social-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 14px;
+}
+
+.chart-block {
+  margin-bottom: 14px;
+}
+
+.panel-label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.panel-label-unit {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted);
+}
+
+.chart-swatches {
+  display: flex;
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.swatch-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--body-text);
+}
+
+.swatch-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+svg text {
+  font-family: var(--font-sans);
+}
+
+.axis-year-label {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.axis-share-label {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.marker-badge-text {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--paper);
+}
+
+.annotation-list {
+  margin: 4px 0 0;
+}
+
+.annotation-item {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--body-text);
+  margin: 0 0 4px;
+}
+
+.annotation-item-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+.social-headline {
+  font-size: 44px;
+  margin-bottom: 14px;
+}
+
+.social-subtitle {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.social-finding {
+  padding: 18px 28px;
+  margin-bottom: 16px;
+}
+
+.social-finding-text {
+  font-size: 26px;
+}
+
+.social-footer-note {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}

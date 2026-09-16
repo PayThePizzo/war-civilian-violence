@@ -5,7 +5,7 @@
  * reads two CSVs plus metadata.json.
  */
 import { csvParseRows } from "d3";
-import type { ActorProfile, ProjectMetadata, SocialData, WeeklyMetric } from "./types";
+import type { ActorProfile, EventWindow, H3Metric, ProjectMetadata, SocialData, WeeklyMetric } from "./types";
 
 type CsvRow = Record<string, string | undefined>;
 type CsvRowParser<T> = ((row: CsvRow) => T) & { readonly columns: readonly string[] };
@@ -109,6 +109,47 @@ const parseActorProfile = createRowParser<ActorProfile>({
   eligible_for_web3: parseBoolean,
 });
 
+const parseH3Metric = createRowParser<H3Metric>({
+  week_start: parseDate,
+  actor_id: parseString,
+  actor_name: parseString,
+  h3_id: parseString,
+  h3_resolution: parseNumber,
+  h3_center_lat: parseNumber,
+  h3_center_lon: parseNumber,
+  event_count: parseNumber,
+  state_based_event_count: parseNumber,
+  non_state_event_count: parseNumber,
+  one_sided_event_count: parseNumber,
+  combat_event_count: parseNumber,
+  combatant_fatalities: parseNumber,
+  civilian_fatalities: parseNumber,
+  one_sided_civilian_fatalities: parseNumber,
+  best_fatalities: parseNumber,
+  one_sided_event_share: parseNumber,
+  civilian_fatality_share: parseNumber,
+  one_sided_civilian_fatality_share: parseNumber,
+});
+
+const parseEventWindow = createRowParser<EventWindow>({
+  episode_id: parseString,
+  actor_id: parseString,
+  actor_name: parseString,
+  peak_rank: parseNumber,
+  t0_date: parseDate,
+  peak_metric_value: parseNumber,
+  relative_week: parseNumber,
+  calendar_week: parseDate,
+  is_observed_week: parseBoolean,
+  combat_event_count: parseNullableNumber,
+  combatant_fatalities: parseNullableNumber,
+  actor_deaths_suffered: parseNullableNumber,
+  one_sided_event_count: parseNullableNumber,
+  one_sided_civilian_fatalities: parseNullableNumber,
+  civilian_fatalities: parseNullableNumber,
+  active_location_count: parseNullableNumber,
+});
+
 function parseProjectMetadata(value: unknown): ProjectMetadata {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new Error("metadata: expected a JSON object");
@@ -184,7 +225,7 @@ function loadCsv<T extends object>(filename: string, parseRow: CsvRowParser<T>):
   });
 }
 
-/** Load both datasets a post might need, concurrently; reject if any request or parser fails. */
+/** Load both datasets the two Instagram posts need, concurrently; reject if any request or parser fails. */
 export async function loadSocialData(): Promise<SocialData> {
   const [weeklyMetrics, actorProfiles, metadata] = await Promise.all([
     loadCsv("weekly_metrics.csv", parseWeeklyMetric),
@@ -192,4 +233,19 @@ export async function loadSocialData(): Promise<SocialData> {
     loadFile("metadata.json", (text) => parseProjectMetadata(JSON.parse(text))),
   ]);
   return { weeklyMetrics, actorProfiles, metadata };
+}
+
+/** Load frontend metadata.json alone, for posts that don't need the full SocialData bundle. */
+export function loadMetadata(): Promise<ProjectMetadata> {
+  return loadFile("metadata.json", (text) => parseProjectMetadata(JSON.parse(text)));
+}
+
+/** Load pipeline-selected episodes, preserving null metrics in unobserved weeks (never zero-filled). */
+export function loadEventWindows(): Promise<EventWindow[]> {
+  return loadCsv("event_windows.csv", parseEventWindow);
+}
+
+/** Load the precomputed actor/week/H3-cell metrics; __ALL__ rows come straight from the pipeline. */
+export function loadH3Metrics(): Promise<H3Metric[]> {
+  return loadCsv("h3_weekly_metrics.csv", parseH3Metric);
 }

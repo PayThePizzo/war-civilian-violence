@@ -15,6 +15,12 @@ export default defineConfig({
         "post-02-actors": fileURLToPath(
           new URL("instagram/post-02-actors/index.html", import.meta.url),
         ),
+        "x-post-01-before-after": fileURLToPath(
+          new URL("x/post-01-before-after/index.html", import.meta.url),
+        ),
+        "x-post-02-geography": fileURLToPath(
+          new URL("x/post-02-geography/index.html", import.meta.url),
+        ),
       },
     },
   },

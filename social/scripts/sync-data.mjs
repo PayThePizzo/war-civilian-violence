@@ -14,10 +14,17 @@ import { fileURLToPath } from 'node:url';
 const sourceDir = fileURLToPath(new URL('../../data/derived/', import.meta.url));
 const destinationDir = fileURLToPath(new URL('../.generated/data/', import.meta.url));
 
-// Post 1 (temporal) reads weekly_metrics.csv; post 2 (actors) reads actor_profiles.csv.
-// Neither reads h3_weekly_metrics.csv or event_windows.csv, so those stay out of sync-data
-// unlike web/scripts/sync-data.mjs, which supplies all four visualizations.
-const filenames = ['weekly_metrics.csv', 'actor_profiles.csv', 'metadata.json'];
+// Instagram post 1 (temporal) reads weekly_metrics.csv; post 2 (actors) reads
+// actor_profiles.csv; X post 1 (before/after) reads event_windows.csv; X post 2
+// (geography) reads h3_weekly_metrics.csv. All five social pages together need
+// every file web/scripts/sync-data.mjs supplies except actor_lookup.csv.
+const filenames = [
+  'weekly_metrics.csv',
+  'h3_weekly_metrics.csv',
+  'actor_profiles.csv',
+  'event_windows.csv',
+  'metadata.json',
+];
 
 async function main() {
   // Check every input before replacing any previously copied dataset.
