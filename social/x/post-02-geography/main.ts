@@ -11,10 +11,10 @@
  * is exact, only the display size is normalized for legibility. No zoom, no
  * OSM tiles, no 3D extrusion.
  */
-import { geoMercator, geoPath, max as d3max, polygonHull } from "d3";
+import { geoMercator, geoPath, max as d3max } from "d3";
 import { loadH3Metrics, loadMetadata } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
-import { formatCount, formatPercent } from "../../shared/format";
+import { formatCount, formatMonthYear, formatPercent } from "../../shared/format";
 import type { H3Metric } from "../../shared/types";
 
 const ROOT_ID = "social-root";
@@ -67,6 +67,7 @@ function aggregateFullPeriod(rows: readonly H3Metric[]): CellAggregate[] {
 interface Callout {
   rank: number;
   cell: CellAggregate;
+  label: string;
   text: string;
 }
 
@@ -93,9 +94,11 @@ function selectCallouts(cells: readonly CellAggregate[]): Callout[] {
   const picked: CellAggregate[] = [highestShare];
   if (highestFatalities && highestFatalities.h3Id !== highestShare.h3Id) picked.push(highestFatalities);
 
+  const labels = ["High one-sided share", "High activity"];
   return picked.map((cell, index) => ({
     rank: index + 1,
     cell,
+    label: labels[index],
     text: `${formatCount(Math.round(cell.eventCount))} events · ${formatPercent(cell.oneSidedEventShare)} one-sided`,
   }));
 }
@@ -160,29 +163,50 @@ function buildSubtitle(): HTMLParagraphElement {
   return subtitle;
 }
 
+function legendRow(title: string, gradient: string, leftLabel: string, rightLabel: string): HTMLDivElement {
+  const row = document.createElement("div");
+  row.className = "legend-row";
+
+  const titleEl = document.createElement("p");
+  titleEl.className = "legend-title";
+  titleEl.textContent = title;
+
+  const bar = document.createElement("div");
+  bar.className = "legend-gradient";
+  bar.style.background = gradient;
+
+  const labels = document.createElement("div");
+  labels.className = "legend-labels";
+  const left = document.createElement("span");
+  left.textContent = leftLabel;
+  const right = document.createElement("span");
+  right.textContent = rightLabel;
+  labels.append(left, right);
+
+  row.append(titleEl, bar, labels);
+  return row;
+}
+
 function buildLegend(): HTMLDivElement {
   const block = document.createElement("div");
   block.className = "legend-block";
 
-  const colorTitle = document.createElement("p");
-  colorTitle.className = "legend-title";
-  colorTitle.textContent = "Colour · one-sided event share";
-  const gradient = document.createElement("div");
-  gradient.className = "legend-gradient";
-  gradient.style.background = `linear-gradient(to right, ${violenceColors.stateBased}, ${violenceColors.oneSided})`;
-  const labels = document.createElement("div");
-  labels.className = "legend-labels";
-  const left = document.createElement("span");
-  left.textContent = "Combat-dominated";
-  const right = document.createElement("span");
-  right.textContent = "One-sided-dominated";
-  labels.append(left, right);
+  const colorRow = legendRow(
+    "Colour · one-sided event share",
+    `linear-gradient(to right, ${violenceColors.stateBased}, ${violenceColors.oneSided})`,
+    "Combat-dominated",
+    "One-sided-dominated",
+  );
 
-  const opacityNote = document.createElement("p");
-  opacityNote.className = "legend-opacity-note";
-  opacityNote.textContent = "Opacity = recorded event intensity";
+  const opacityRow = legendRow(
+    "Opacity · recorded event count",
+    `linear-gradient(to right, ${violenceColors.oneSided}22, ${violenceColors.oneSided})`,
+    "Lower activity",
+    "Higher activity",
+  );
+  opacityRow.classList.add("legend-row-last");
 
-  block.append(colorTitle, gradient, labels, opacityNote);
+  block.append(colorRow, opacityRow);
   return block;
 }
 
@@ -190,14 +214,21 @@ function buildCalloutList(callouts: readonly Callout[]): HTMLDivElement {
   const list = document.createElement("div");
   list.className = "callout-list";
   for (const callout of callouts) {
-    const item = document.createElement("p");
+    const item = document.createElement("div");
     item.className = "callout-item";
     const badge = document.createElement("span");
     badge.className = "callout-item-badge";
     badge.textContent = String(callout.rank);
-    const text = document.createElement("span");
-    text.textContent = callout.text;
-    item.append(badge, text);
+    const body = document.createElement("div");
+    body.className = "callout-item-body";
+    const label = document.createElement("p");
+    label.className = "callout-item-label";
+    label.textContent = callout.label.toUpperCase();
+    const value = document.createElement("p");
+    value.className = "callout-item-value";
+    value.textContent = callout.text;
+    body.append(label, value);
+    item.append(badge, body);
     list.append(item);
   }
   return list;
@@ -215,18 +246,23 @@ function buildFinding(): HTMLDivElement {
   // one-sided civilian toll) shows a one-sided share far below the cell singled out
   // in callout 1 - so intensity and one-sided concentration are not the same thing.
   // Descriptive spatial comparison only; no tactical intent or causal claim.
-  text.textContent = "Areas with the greatest conflict intensity were not always the areas with the highest share of one-sided violence.";
+  text.textContent = "High conflict activity did not always coincide with a high share of one-sided violence.";
   finding.append(label, text);
   return finding;
 }
 
-function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLParagraphElement {
+function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLDivElement {
+  const wrap = document.createElement("div");
+  const start = new Date(`${analysisStart}T00:00:00.000Z`);
+  const end = new Date(`${analysisEnd}T00:00:00.000Z`);
   const footer = document.createElement("p");
   footer.className = "social-footer";
-  const start = new Date(`${analysisStart}T00:00:00.000Z`).getUTCFullYear();
-  const end = new Date(`${analysisEnd}T00:00:00.000Z`).getUTCFullYear();
-  footer.textContent = `UCDP GED · ${country} · ${start}–${end} · H3 spatial aggregation`;
-  return footer;
+  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}–${formatMonthYear(end)}`;
+  const note = document.createElement("p");
+  note.className = "social-footer-note";
+  note.textContent = "H3 spatial aggregation";
+  wrap.append(footer, note);
+  return wrap;
 }
 
 function svgEl<K extends keyof SVGElementTagNameMap>(tag: K): SVGElementTagNameMap[K] {
@@ -255,8 +291,11 @@ function opacityForIntensity(value: number, maxValue: number): number {
   return MIN_OPACITY + (MAX_OPACITY - MIN_OPACITY) * Math.sqrt(Math.min(1, value / maxValue));
 }
 
-const MAP_WIDTH = 1000;
-const MAP_HEIGHT = 760;
+// Matches the right column's actual content box (1600 canvas - 2*64 padding - 460 left
+// col - 48 gap = 964 wide; 900 - 2*64 = 772 tall), so the SVG fills .map-frame edge to
+// edge instead of being letterboxed by a mismatched viewBox aspect ratio.
+const MAP_WIDTH = 964;
+const MAP_HEIGHT = 772;
 
 /** Flat-top regular hexagon path centered at (cx, cy) with circumradius r. */
 function hexagonPath(cx: number, cy: number, r: number): string {
@@ -281,10 +320,6 @@ function nearestNeighborDistances(points: readonly [number, number][]): number[]
   });
 }
 
-function svgPolygonPath(points: readonly [number, number][]): string {
-  return `M${points.map((p) => p.join(",")).join("L")}Z`;
-}
-
 function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[]): SVGSVGElement {
   const svg = svgEl("svg");
   svg.setAttribute("width", String(MAP_WIDTH));
@@ -303,7 +338,9 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   }));
   const featureCollection = { type: "FeatureCollection" as const, features: pointFeatures };
 
-  const padding = 60;
+  // hexRadius below is clamped to a max of 22px, so 34px covers the widest possible
+  // hexagon (its circumradius) plus a small buffer - cells never clip at the edge.
+  const padding = 34;
   const projection = geoMercator().fitExtent(
     [
       [padding, padding],
@@ -314,8 +351,6 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
 
   const projected = cells.map((cell) => ({ cell, xy: projection([cell.lon, cell.lat]) as [number, number] }));
 
-  // Unfilled frame only - the hull below (not this rect) carries the "land" fill, so the
-  // two never compete for the same visual role.
   const frame = svgEl("rect");
   frame.setAttribute("x", "0");
   frame.setAttribute("y", "0");
@@ -323,24 +358,6 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   frame.setAttribute("height", String(MAP_HEIGHT));
   frame.setAttribute("class", "map-frame-border");
   svg.append(frame);
-
-  // Data-derived coverage silhouette, not a fabricated political boundary: the convex hull
-  // of the cells' own projected centers (all locally computed from the synced h3_id set),
-  // padded outward a little so it reads as a landmass around the dots rather than hugging
-  // them exactly. Computed directly in screen space, so no GeoJSON winding-order pitfall.
-  const hull = polygonHull(projected.map((p) => p.xy));
-  if (hull && hull.length >= 3) {
-    const centroidX = hull.reduce((sum, [x]) => sum + x, 0) / hull.length;
-    const centroidY = hull.reduce((sum, [, y]) => sum + y, 0) / hull.length;
-    const HULL_PAD = 1.18;
-    const padded = hull.map(
-      ([x, y]) => [centroidX + (x - centroidX) * HULL_PAD, centroidY + (y - centroidY) * HULL_PAD] as [number, number],
-    );
-    const hullPath = svgEl("path");
-    hullPath.setAttribute("d", svgPolygonPath(padded));
-    hullPath.setAttribute("class", "map-coverage-hull");
-    svg.append(hullPath);
-  }
 
   const panelLabel = svgEl("text");
   panelLabel.setAttribute("x", "20");
@@ -354,7 +371,7 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   coverageCaption.setAttribute("y", String(MAP_HEIGHT - 18));
   coverageCaption.setAttribute("class", "map-coverage-caption");
   coverageCaption.textContent =
-    "Shaded outline: extent of recorded activity, not an administrative boundary. Hexagons shown at a uniform display size; position is each cell's true center.";
+    "No administrative boundary shown. Hexagons shown at a uniform display size; position is each cell's true center.";
   svg.append(coverageCaption);
 
   const maxEventCount = d3max(cells, (c) => c.eventCount) ?? 1;
