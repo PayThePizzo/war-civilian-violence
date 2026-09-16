@@ -12,10 +12,26 @@
  * OSM tiles, no 3D extrusion.
  */
 import { geoMercator, geoPath, max as d3max } from "d3";
+import { feature as topojsonFeature } from "topojson-client";
+// Real Natural Earth-derived country boundaries (public domain, via world-atlas), not a
+// fabricated shape: 50m resolution is the sharpest bundled tier, fine for a static export.
+import countriesTopology from "world-atlas/countries-50m.json" with { type: "json" };
+import type { Topology } from "topojson-specification";
 import { loadH3Metrics, loadMetadata } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
 import { formatCount, formatMonthYear, formatPercent } from "../../shared/format";
 import type { H3Metric } from "../../shared/types";
+
+// ISO 3166-1 numeric code for Sudan, as used by world-atlas's TopoJSON feature ids.
+const SUDAN_NUMERIC_ID = "729";
+
+function loadSudanBoundary(): GeoJSON.Feature {
+  const topology = countriesTopology as unknown as Topology;
+  const countries = topojsonFeature(topology, topology.objects.countries) as unknown as GeoJSON.FeatureCollection;
+  const sudan = countries.features.find((f) => String(f.id) === SUDAN_NUMERIC_ID);
+  if (!sudan) throw new Error(`Sudan (id ${SUDAN_NUMERIC_ID}) not found in world-atlas countries topology`);
+  return sudan;
+}
 
 const ROOT_ID = "social-root";
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -328,15 +344,21 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", "H3 map of Sudan: hexagon colour shows one-sided event share, opacity shows event intensity");
 
-  // No valid Sudan boundary is checked in locally (web/src/assets/geo/sudan-boundary.geojson
-  // is an empty placeholder - confirmed before writing this file), so bounds are fit to the
-  // cells' own true centers - a plain Point FeatureCollection, no fabricated coastline.
+  const sudanBoundary = loadSudanBoundary();
+
   const pointFeatures = cells.map((cell) => ({
     type: "Feature" as const,
     properties: { cell },
     geometry: { type: "Point" as const, coordinates: [cell.lon, cell.lat] },
   }));
-  const featureCollection = { type: "FeatureCollection" as const, features: pointFeatures };
+  // Fit to the real boundary AND the cells' own centers together, not the boundary alone:
+  // a handful of recorded events sit right at the coastline in a low-res (50m) polygon, so
+  // this guarantees every hexagon stays inside the frame even where the two disagree by a
+  // pixel or two, without ever needing to fabricate or adjust the boundary geometry itself.
+  const fitCollection = {
+    type: "FeatureCollection" as const,
+    features: [sudanBoundary, ...pointFeatures],
+  };
 
   // hexRadius below is clamped to a max of 22px, so 34px covers the widest possible
   // hexagon (its circumradius) plus a small buffer - cells never clip at the edge.
@@ -346,7 +368,7 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
       [padding, padding],
       [MAP_WIDTH - padding, MAP_HEIGHT - padding],
     ],
-    featureCollection as never,
+    fitCollection as never,
   );
 
   const projected = cells.map((cell) => ({ cell, xy: projection([cell.lon, cell.lat]) as [number, number] }));
@@ -358,6 +380,12 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   frame.setAttribute("height", String(MAP_HEIGHT));
   frame.setAttribute("class", "map-frame-border");
   svg.append(frame);
+
+  const boundaryPath = svgEl("path");
+  const pathGenerator = geoPath(projection);
+  boundaryPath.setAttribute("d", pathGenerator(sudanBoundary) ?? "");
+  boundaryPath.setAttribute("class", "map-country-boundary");
+  svg.append(boundaryPath);
 
   const panelLabel = svgEl("text");
   panelLabel.setAttribute("x", "20");
@@ -371,7 +399,7 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   coverageCaption.setAttribute("y", String(MAP_HEIGHT - 18));
   coverageCaption.setAttribute("class", "map-coverage-caption");
   coverageCaption.textContent =
-    "No administrative boundary shown. Hexagons shown at a uniform display size; position is each cell's true center.";
+    "Hexagons shown at a uniform display size; position is each cell's true center.";
   svg.append(coverageCaption);
 
   const maxEventCount = d3max(cells, (c) => c.eventCount) ?? 1;
