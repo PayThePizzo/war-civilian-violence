@@ -116,7 +116,7 @@ function buildEyebrow(): HTMLParagraphElement {
 function buildHeadline(): HTMLHeadingElement {
   const headline = document.createElement("h1");
   headline.className = "social-headline";
-  headline.textContent = "When does violence turn toward civilians?";
+  headline.textContent = "When does one-sided violence become more prominent?";
   return headline;
 }
 
@@ -316,6 +316,27 @@ function buildShareChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): 
     plot.append(label);
   }
 
+  // Subtle midpoint reference (dashed, no gridline weight) so "is this week above or
+  // below half" reads at a glance without competing with the 0%/100% bounds.
+  const midline = svgEl("line");
+  midline.setAttribute("x1", "0");
+  midline.setAttribute("x2", String(CHART_WIDTH));
+  midline.setAttribute("y1", String(y(0.5)));
+  midline.setAttribute("y2", String(y(0.5)));
+  midline.setAttribute("stroke", "var(--border)");
+  midline.setAttribute("stroke-width", "1");
+  midline.setAttribute("stroke-dasharray", "2,3");
+  midline.setAttribute("opacity", "0.7");
+  plot.append(midline);
+
+  const midLabel = svgEl("text");
+  midLabel.setAttribute("x", "6");
+  midLabel.setAttribute("y", String(y(0.5) - 4));
+  midLabel.setAttribute("text-anchor", "start");
+  midLabel.setAttribute("class", "axis-share-label axis-share-label-mid");
+  midLabel.textContent = formatPercent(0.5);
+  plot.append(midLabel);
+
   appendAnnotationMarkers(svg, plot, annotations, x, plotHeight);
   return svg;
 }
@@ -336,9 +357,9 @@ function appendAnnotationMarkers(
     marker.setAttribute("y1", "0");
     marker.setAttribute("y2", String(plotHeight));
     marker.setAttribute("stroke", "var(--ink)");
-    marker.setAttribute("stroke-width", "1");
+    marker.setAttribute("stroke-width", "1.25");
     marker.setAttribute("stroke-dasharray", "2,3");
-    marker.setAttribute("opacity", "0.55");
+    marker.setAttribute("opacity", "0.65");
     plot.append(marker);
 
     const badge = svgEl("circle");
@@ -363,16 +384,23 @@ function buildAnnotationList(annotations: AnnotatedWeek[]): HTMLDivElement {
   const list = document.createElement("div");
   list.className = "annotation-list";
   for (const annotation of annotations) {
-    const item = document.createElement("p");
+    const item = document.createElement("div");
     item.className = "annotation-item";
     const badge = document.createElement("span");
     badge.className = "annotation-item-badge";
     badge.textContent = String(annotation.rank);
-    const text = document.createElement("span");
-    text.textContent = ` ${formatWeekLabel(annotation.week.week_start)} — ${formatCount(
+    const body = document.createElement("span");
+    body.className = "annotation-item-body";
+    const date = document.createElement("span");
+    date.className = "annotation-item-date";
+    date.textContent = formatWeekLabel(annotation.week.week_start);
+    const detail = document.createElement("span");
+    detail.className = "annotation-item-detail";
+    detail.textContent = `${formatCount(
       annotation.week.one_sided_civilian_fatalities,
-    )} one-sided civilian fatalities recorded this week (${formatPercent(annotation.week.one_sided_event_share)} of events)`;
-    item.append(badge, text);
+    )} one-sided civilian fatalities in events dated to this week (${formatPercent(annotation.week.one_sided_event_share)} of events)`;
+    body.append(date, detail);
+    item.append(badge, body);
     list.append(item);
   }
   return list;
@@ -404,7 +432,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}–${formatMonthYear(end)}`;
   const note = document.createElement("p");
   note.className = "social-footer-note";
-  note.textContent = "Weekly aggregation · Monday-starting weeks";
+  note.textContent = "Events aggregated weekly by UCDP date_start";
   wrap.append(footer, note);
   return wrap;
 }
