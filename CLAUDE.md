@@ -17,7 +17,7 @@ Resolved mismatches (decided 2026-09-12):
 - Frontend stays on the **Vite + TypeScript** plan from PROJECT_SPEC.md §1/§52/§57. `web/` (plain JS, no `package.json`) hasn't caught up yet — scaffolding Vite+TS and migrating `web/js/*.js` into it is outstanding work, not a scope change.
 - Episode IDs are **actor_id-based**: `<actor_id>__<YYYY-MM-DD>` (e.g. `ucdp-1234__2024-06-03`), per SCRIPTS.md/DATA_FILES.md — not the actor_name-based `RSF_2024_06_03` example in PROJECT_SPEC.md §43.
 
-No pipeline script has an implementation yet (`scripts/01_clean_events.py` through `07_validate_outputs.py` are ~100-140 lines each, entirely module docstring). `PROJECT_SPEC.md` is the only one of the three with worked pseudocode per transformation step — useful once implementation starts.
+All pipeline scripts are implemented (`scripts/01_clean_events.py` through `07_validate_outputs.py` plus `build_all.py`, 338-866 lines each, each with a runnable `if __name__ == "__main__":` entry point) — not yet run end-to-end against the raw GED file. `PROJECT_SPEC.md` has worked pseudocode per transformation step, useful for cross-checking implementation choices. Per-script reference docs (purpose, inputs, config keys, outputs, invariants) live in `docs/reference/*.md`, built via `mkdocs`.
 
 ## Commands
 
