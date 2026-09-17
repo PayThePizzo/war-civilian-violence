@@ -242,6 +242,15 @@ Suggested material:
 ![Figure 8 — Territorial gains map](images/web-2-guardian-map.png)
 -->
 
+![Monthly territorial change - April 2024](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article%202%20Before.png?raw=TRUE)
+
+$$\Downarrow$$
+
+![Monthly territorial change - April 2024](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article%202%20After.png?raw=TRUE)
+
+Or just visualize the gif
+
+![Monthly territorial change](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/gifs/Article2.gif?raw=TRUE)
 
 #### Knowledge gained beyond a table
 
