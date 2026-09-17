@@ -58,3 +58,43 @@ sum(__ALL__ event_count across H3 cells) == spatially eligible unique events for
 Structured as `load_events_clean`, `load_actor_events`, `validate_inputs`, `filter_spatially_eligible`, `compute_week_start`, `assign_h3_cells`, `build_h3_centers`, `build_canonical_actor_names`, `add_shares`, `aggregate_global`, `aggregate_actors`, `validate_h3_metrics`, `finalize`, `print_summary`, `main`. Uses the `h3` package v4 API (`h3.latlng_to_cell`, `h3.is_valid_cell`, `h3.get_resolution`, `h3.cell_to_latlng`). Cell centers are computed once per distinct `h3_id`, not per row. Actor display names are re-derived in-script, same rationale as [`03_build_weekly_metrics.py`](03_build_weekly_metrics.md).
 
 **Status:** implemented (546 lines), not yet run against the raw GED file.
+
+---
+
+## Loading and validation
+
+::: scripts.04_build_h3_metrics.load_events_clean
+
+::: scripts.04_build_h3_metrics.load_actor_events
+
+::: scripts.04_build_h3_metrics.validate_inputs
+
+::: scripts.04_build_h3_metrics.filter_spatially_eligible
+
+## H3 grid
+
+::: scripts.04_build_h3_metrics.compute_week_start
+
+::: scripts.04_build_h3_metrics.assign_h3_cells
+
+::: scripts.04_build_h3_metrics.build_h3_centers
+
+## Aggregation
+
+::: scripts.04_build_h3_metrics.build_canonical_actor_names
+
+::: scripts.04_build_h3_metrics.add_shares
+
+::: scripts.04_build_h3_metrics.aggregate_global
+
+::: scripts.04_build_h3_metrics.aggregate_actors
+
+## Finalization and orchestration
+
+::: scripts.04_build_h3_metrics.validate_h3_metrics
+
+::: scripts.04_build_h3_metrics.finalize
+
+::: scripts.04_build_h3_metrics.print_summary
+
+::: scripts.04_build_h3_metrics.main

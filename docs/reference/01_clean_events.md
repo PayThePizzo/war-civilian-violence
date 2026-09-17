@@ -74,3 +74,55 @@ Missing required columns; null/duplicate `event_id`; unparseable dates; `date_st
 Structured as a pure-function pipeline (`load_raw`, `validate_schema`, `validate_event_key`, `parse_dates`, `filter_country`, `filter_period`, `validate_violence_type`, `add_violence_labels`, `clean_fatalities`, `derive_fatality_fields`, `check_one_sided_actor`, `validate_coordinates`, `normalize_text_fields`, `finalize`, `print_summary`, `main`), each stage taking/returning a DataFrame. Violence-type codes are read from `config.analysis.violence_types` rather than hardcoded `{1,2,3}`. Output columns are written in an explicit fixed order, not insertion order.
 
 **Status:** implemented (592 lines; docstring + functions), not yet run against the raw GED file.
+
+---
+
+## Exceptions
+
+::: scripts.01_clean_events.SchemaError
+
+## Loading
+
+::: scripts.01_clean_events.load_raw
+
+## Validation
+
+::: scripts.01_clean_events.validate_schema
+
+::: scripts.01_clean_events.validate_event_key
+
+::: scripts.01_clean_events.parse_dates
+
+::: scripts.01_clean_events.validate_violence_type
+
+::: scripts.01_clean_events.clean_fatalities
+
+## Filtering
+
+::: scripts.01_clean_events.filter_country
+
+::: scripts.01_clean_events.filter_period
+
+## Labeling and derived fields
+
+::: scripts.01_clean_events.add_violence_labels
+
+::: scripts.01_clean_events.derive_fatality_fields
+
+## Spatial and text normalization
+
+::: scripts.01_clean_events.validate_coordinates
+
+::: scripts.01_clean_events.normalize_text_fields
+
+## Diagnostics
+
+::: scripts.01_clean_events.check_one_sided_actor
+
+## Finalization and orchestration
+
+::: scripts.01_clean_events.finalize
+
+::: scripts.01_clean_events.print_summary
+
+::: scripts.01_clean_events.main

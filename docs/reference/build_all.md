@@ -64,3 +64,29 @@ A build is successful only when [`07_validate_outputs.py`](07_validate_outputs.m
 Structured as `validate_config`, `preflight`, `run_stage`, `file_sha256`, `count_rows`, `build_metadata`, `write_json`, `main`.
 
 **Status:** implemented (338 lines), not yet run end-to-end against the raw GED file.
+
+---
+
+## Preflight
+
+::: scripts.build_all.validate_config
+
+::: scripts.build_all.preflight
+
+## Stage execution
+
+::: scripts.build_all.run_stage
+
+## Provenance helpers
+
+::: scripts.build_all.file_sha256
+
+::: scripts.build_all.count_rows
+
+::: scripts.build_all.build_metadata
+
+::: scripts.build_all.write_json
+
+## Orchestration
+
+::: scripts.build_all.main

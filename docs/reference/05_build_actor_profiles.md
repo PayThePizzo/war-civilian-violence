@@ -56,3 +56,35 @@ combat_event_count + one_sided_event_count == total_event_count
 Structured as `load_actor_events`, `load_actor_lookup`, `validate_inputs`, `compute_week_start`, `assign_h3_cells`, `build_activity_metrics`, `build_geographic_metrics`, `finalize`, `validate_actor_profiles`, `print_summary`, `main`. Actors with zero spatially eligible events get `active_location_count = active_h3_cell_count = 0` via `fillna(0)` rather than dropping from the profile table. `civilian_fatalities_per_active_week` is computed from `civilian_fatalities_in_involved_events` (all civilian fatalities in events the actor participated in), not `one_sided_civilian_fatalities` — flagged as a judgment call worth revisiting since `one_sided_events_per_active_week` already covers the one-sided-specific angle separately. `eligible_for_web3` reads `config.actors.min_events` (matches `config/config.yaml`).
 
 **Status:** implemented (456 lines), not yet run against the raw GED file.
+
+---
+
+## Loading and validation
+
+::: scripts.05_build_actor_profiles.load_actor_events
+
+::: scripts.05_build_actor_profiles.load_actor_lookup
+
+::: scripts.05_build_actor_profiles.validate_inputs
+
+## Spatial/temporal helpers
+
+::: scripts.05_build_actor_profiles.compute_week_start
+
+::: scripts.05_build_actor_profiles.assign_h3_cells
+
+## Profile metrics
+
+::: scripts.05_build_actor_profiles.build_activity_metrics
+
+::: scripts.05_build_actor_profiles.build_geographic_metrics
+
+## Finalization and orchestration
+
+::: scripts.05_build_actor_profiles.finalize
+
+::: scripts.05_build_actor_profiles.validate_actor_profiles
+
+::: scripts.05_build_actor_profiles.print_summary
+
+::: scripts.05_build_actor_profiles.main

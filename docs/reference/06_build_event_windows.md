@@ -68,3 +68,41 @@ Structured as `load_weekly_metrics`, `load_actor_profiles`, `validate_inputs`, `
 `ONLY_ELIGIBLE_ACTORS` is a module-level constant (default `False`, i.e. detect episodes for every actor, not just `eligible_for_web3` ones) — flagged in the docstring as an unresolved config surface: `config/config.yaml` has no corresponding key yet, so this was made a code constant rather than an invented config key. `collapse_plateaus` only merges candidate weeks that are both calendar-adjacent and equal-valued.
 
 **Status:** implemented (582 lines), not yet run against the raw GED file.
+
+---
+
+## Loading and validation
+
+::: scripts.06_build_event_windows.load_weekly_metrics
+
+::: scripts.06_build_event_windows.load_actor_profiles
+
+::: scripts.06_build_event_windows.validate_inputs
+
+## Peak detection
+
+::: scripts.06_build_event_windows.select_actor_weekly
+
+::: scripts.06_build_event_windows.detect_peak_candidates
+
+::: scripts.06_build_event_windows.collapse_plateaus
+
+::: scripts.06_build_event_windows.select_episodes
+
+## Episode/window construction
+
+::: scripts.06_build_event_windows.sanitize_actor_id_for_episode
+
+::: scripts.06_build_event_windows.detect_episodes_for_actor
+
+::: scripts.06_build_event_windows.build_window_rows
+
+::: scripts.06_build_event_windows.build_all_episode_windows
+
+## Finalization and orchestration
+
+::: scripts.06_build_event_windows.validate_event_windows
+
+::: scripts.06_build_event_windows.print_summary
+
+::: scripts.06_build_event_windows.main

@@ -45,3 +45,39 @@ Duplicate `(event_id, actor_id)` pairs. Missing `side_*_new_id` and actor-name a
 Structured as `load_events_clean`, `validate_input`, `normalize_actor_name`, `build_actor_id_series`, `expand_side`, `expand_actor_events`, `report_actor_id_fallback_usage`, `validate_actor_event_pairs`, `build_actor_lookup`, `finalize_actor_events`, `print_summary`, `main`. `expand_side(df, side)` builds one side's rows at a time; combat events call it for both sides, one-sided events call it for `side_a` only, then results are concatenated. `build_actor_id_series` fires the name-based fallback per-row only when `side_*_new_id` is null.
 
 **Status:** implemented (488 lines), not yet run against the raw GED file.
+
+---
+
+## Loading and validation
+
+::: scripts.02_build_actor_events.load_events_clean
+
+::: scripts.02_build_actor_events.validate_input
+
+## Actor identity
+
+::: scripts.02_build_actor_events.normalize_actor_name
+
+::: scripts.02_build_actor_events.build_actor_id_series
+
+::: scripts.02_build_actor_events.report_actor_id_fallback_usage
+
+## Expansion into actor-events
+
+::: scripts.02_build_actor_events.expand_side
+
+::: scripts.02_build_actor_events.expand_actor_events
+
+::: scripts.02_build_actor_events.validate_actor_event_pairs
+
+## Actor lookup
+
+::: scripts.02_build_actor_events.build_actor_lookup
+
+## Finalization and orchestration
+
+::: scripts.02_build_actor_events.finalize_actor_events
+
+::: scripts.02_build_actor_events.print_summary
+
+::: scripts.02_build_actor_events.main

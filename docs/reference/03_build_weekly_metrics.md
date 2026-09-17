@@ -55,3 +55,37 @@ Structured as `load_events_clean`, `load_actor_events`, `validate_inputs`, `comp
 Actor display names are **not** read from `actor_lookup.csv` (not a declared input of this stage) — `build_canonical_actor_names` re-derives a stable `actor_id → actor_name` mapping in-script using the same most-frequent-name technique as [`02_build_actor_events.py`](02_build_actor_events.md). `validate_weekly_metrics` independently re-derives the `__ALL__` series from `events_clean` as a defense-in-depth check (not a replacement for [`07_validate_outputs.py`](07_validate_outputs.md)).
 
 **Status:** implemented (506 lines), not yet run against the raw GED file.
+
+---
+
+## Loading and validation
+
+::: scripts.03_build_weekly_metrics.load_events_clean
+
+::: scripts.03_build_weekly_metrics.load_actor_events
+
+::: scripts.03_build_weekly_metrics.validate_inputs
+
+## Week grid
+
+::: scripts.03_build_weekly_metrics.compute_week_start
+
+::: scripts.03_build_weekly_metrics.build_full_week_grid
+
+## Aggregation
+
+::: scripts.03_build_weekly_metrics.aggregate_global
+
+::: scripts.03_build_weekly_metrics.build_canonical_actor_names
+
+::: scripts.03_build_weekly_metrics.aggregate_actors
+
+## Finalization and orchestration
+
+::: scripts.03_build_weekly_metrics.validate_weekly_metrics
+
+::: scripts.03_build_weekly_metrics.finalize
+
+::: scripts.03_build_weekly_metrics.print_summary
+
+::: scripts.03_build_weekly_metrics.main

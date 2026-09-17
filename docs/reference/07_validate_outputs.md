@@ -53,3 +53,53 @@ data/derived/event_windows.csv
 Structured around a `ValidationRecorder` class plus `load_all`, `check_schema`, `check_events`, `check_actor_events`, `check_actor_lookup`, `check_weekly_global`, `check_weekly_decomposition`, `check_h3_conservation`, `check_actor_profile_consistency`, `check_event_windows`, `check_shares`, `check_na_policy`, `write_validation_report`, `write_validation_failures`, `print_summary`, `main`. Several of these checks duplicate lighter-weight defense-in-depth versions already embedded in scripts 03-06 ([`03_build_weekly_metrics.py`](03_build_weekly_metrics.md), [`04_build_h3_metrics.py`](04_build_h3_metrics.md), [`05_build_actor_profiles.py`](05_build_actor_profiles.md)) — this script is the authoritative, pipeline-wide gate.
 
 **Status:** implemented (866 lines), not yet run against the raw GED file.
+
+---
+
+## Recorder
+
+::: scripts.07_validate_outputs.ValidationRecorder
+
+## Loading
+
+::: scripts.07_validate_outputs.load_all
+
+## Schema and per-file checks
+
+::: scripts.07_validate_outputs.check_schema
+
+::: scripts.07_validate_outputs.check_events
+
+::: scripts.07_validate_outputs.check_actor_events
+
+::: scripts.07_validate_outputs.check_actor_lookup
+
+## Weekly metrics checks
+
+::: scripts.07_validate_outputs._week_start
+
+::: scripts.07_validate_outputs.check_weekly_global
+
+::: scripts.07_validate_outputs.check_weekly_decomposition
+
+## Cross-file conservation checks
+
+::: scripts.07_validate_outputs.check_h3_conservation
+
+::: scripts.07_validate_outputs.check_actor_profile_consistency
+
+::: scripts.07_validate_outputs.check_event_windows
+
+::: scripts.07_validate_outputs.check_shares
+
+::: scripts.07_validate_outputs.check_na_policy
+
+## Reporting and orchestration
+
+::: scripts.07_validate_outputs.write_validation_report
+
+::: scripts.07_validate_outputs.write_validation_failures
+
+::: scripts.07_validate_outputs.print_summary
+
+::: scripts.07_validate_outputs.main

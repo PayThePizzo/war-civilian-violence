@@ -262,7 +262,7 @@ def validate_input(df: pd.DataFrame) -> None:
         raise ValueError(f"events_clean.parquet contains duplicate event_id values: {list(dup)[:10]}")
 
 
-def normalize_actor_name(name) -> str:
+def normalize_actor_name(name: object) -> str:
     """Normalize a raw actor name into a fallback-identifier fragment.
 
     Args:
