@@ -38,7 +38,6 @@ nav:
   - 06_build_event_windows.py: reference/06_build_event_windows.md
   - 07_validate_outputs.py: reference/07_validate_outputs.md
   - build_all.py: reference/build_all.md
-# - Python Tests Reference:                                 # Documentation for Python Tests
 
 theme:
   name: dracula
