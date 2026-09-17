@@ -3,8 +3,9 @@
  * Static, non-interactive counterpart of Web 3's parallel-coordinates plot
  * (web/src/viz/actors/ActorParallelCoordinates.ts, VIZ.md §3): same
  * eligible_for_web3 actor universe and one-sided semantic color, but
- * re-composed as a ranked horizontal comparison on one metric - no
- * parallel-coordinates geometry, axes, or six-metric layout carried over.
+ * re-composed as a ranked horizontal lollipop comparison (x = one-sided
+ * event share, dot size = total_event_count) - no parallel-coordinates
+ * geometry, axes, or six-metric layout carried over.
  */
 import { loadSocialData } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
@@ -46,16 +47,22 @@ async function render(): Promise<void> {
   const displayed = selectDisplayActors(data.actorProfiles);
   if (displayed.length === 0) throw new Error("No eligible_for_web3 actors found");
 
+  // Same selection/order as before (never re-derives eligibility or ranking) - only the
+  // rendering splits here: a 0% actor gets a line in the summary note below the chart
+  // instead of a full-size bar indistinguishable in length from the others at this scale.
+  const barActors = displayed.filter((a) => a.one_sided_event_share > 0);
+  const zeroShareActors = displayed.filter((a) => a.one_sided_event_share === 0);
+
   root.innerHTML = "";
   root.append(
     buildEyebrow(),
     buildHeadline(),
     buildSubtitle(),
     buildDivider(),
-    buildChartBlock(displayed),
+    buildChartBlock(barActors),
+    buildChartAnnotation(),
+    buildZeroShareNote(zeroShareActors),
     buildMethodNote(),
-    buildDivider(),
-    buildCallouts(displayed),
     buildDivider(),
     buildFinding(),
     buildFooter(data.metadata.country, data.metadata.analysis_start, data.metadata.analysis_end),
@@ -98,25 +105,41 @@ function buildChartBlock(actors: readonly ActorProfile[]): HTMLDivElement {
 
   const label = document.createElement("p");
   label.className = "panel-label";
-  label.innerHTML = 'ONE-SIDED EVENT SHARE <span class="panel-label-unit">· % of that actor\'s own events</span>';
+  label.innerHTML =
+    'ONE-SIDED EVENT SHARE <span class="panel-label-unit">· share of each actor\'s own recorded events classified as one-sided violence</span>';
   block.append(label);
 
-  // Bar length is relative to the largest displayed share, not a fixed 0-100% axis -
-  // every row still carries its own exact percentage as a direct label, so the bar
+  // Dot x-position is relative to the largest displayed share, not a fixed 0-100% axis -
+  // every row still carries its own exact percentage as a direct label, so the position
   // only aids relative scanning and never substitutes for the printed number.
   const maxShare = Math.max(...actors.map((a) => a.one_sided_event_share), 0.01);
   const domainMax = maxShare * 1.15;
 
+  // Dot size encodes total_event_count on a restrained sqrt scale (share stays the
+  // primary read via x-position) - a flat size when all displayed actors tie.
+  const counts = actors.map((a) => a.total_event_count);
+  const minCount = Math.min(...counts);
+  const maxCount = Math.max(...counts);
+
   const list = document.createElement("div");
   list.className = "actor-list";
   for (const actor of actors) {
-    list.append(buildActorRow(actor, domainMax));
+    list.append(buildLollipopRow(actor, domainMax, minCount, maxCount));
   }
   block.append(list);
   return block;
 }
 
-function buildActorRow(actor: ActorProfile, domainMax: number): HTMLDivElement {
+const MIN_DOT_DIAMETER_PX = 14;
+const MAX_DOT_DIAMETER_PX = 26;
+
+function dotDiameterPx(count: number, minCount: number, maxCount: number): number {
+  if (maxCount === minCount) return (MIN_DOT_DIAMETER_PX + MAX_DOT_DIAMETER_PX) / 2;
+  const t = (Math.sqrt(count) - Math.sqrt(minCount)) / (Math.sqrt(maxCount) - Math.sqrt(minCount));
+  return MIN_DOT_DIAMETER_PX + t * (MAX_DOT_DIAMETER_PX - MIN_DOT_DIAMETER_PX);
+}
+
+function buildLollipopRow(actor: ActorProfile, domainMax: number, minCount: number, maxCount: number): HTMLDivElement {
   const row = document.createElement("div");
   row.className = "actor-row";
 
@@ -131,19 +154,26 @@ function buildActorRow(actor: ActorProfile, domainMax: number): HTMLDivElement {
   head.append(name, share);
 
   const track = document.createElement("div");
-  track.className = "actor-bar-track";
-  const fill = document.createElement("div");
-  fill.className = "actor-bar-fill";
+  track.className = "lollipop-track";
   const widthPercent = Math.max(0, Math.min(100, (actor.one_sided_event_share / domainMax) * 100));
-  fill.style.width = `${widthPercent}%`;
-  fill.style.background = violenceColors.oneSided;
-  track.append(fill);
+  const stem = document.createElement("div");
+  stem.className = "lollipop-stem";
+  stem.style.width = `${widthPercent}%`;
+  stem.style.background = violenceColors.oneSided;
+  const dot = document.createElement("div");
+  dot.className = "lollipop-dot";
+  const diameter = dotDiameterPx(actor.total_event_count, minCount, maxCount);
+  dot.style.left = `${widthPercent}%`;
+  dot.style.width = `${diameter}px`;
+  dot.style.height = `${diameter}px`;
+  dot.style.background = violenceColors.oneSided;
+  track.append(stem, dot);
 
   const context = document.createElement("p");
   context.className = "actor-context";
-  // Context stays off the bar's quantitative axis - plain text, not a second bar -
-  // and one-sided fatalities are only mentioned when non-zero, so a minor actor's
-  // row doesn't read as "0 one-sided civilian fatalities" clutter.
+  // Context stays off the lollipop's quantitative x-axis - plain text, not a second
+  // mark - and one-sided fatalities are only mentioned when non-zero, so a minor
+  // actor's row doesn't read as "0 one-sided civilian fatalities" clutter.
   context.textContent =
     actor.one_sided_civilian_fatalities > 0
       ? `${formatCount(actor.total_event_count)} events · ${formatCount(actor.one_sided_civilian_fatalities)} one-sided civilian fatalities`
@@ -153,50 +183,34 @@ function buildActorRow(actor: ActorProfile, domainMax: number): HTMLDivElement {
   return row;
 }
 
-function buildMethodNote(): HTMLParagraphElement {
+/** Short, factual annotation next to the chart - no motive or causal wording. */
+function buildChartAnnotation(): HTMLParagraphElement {
   const note = document.createElement("p");
-  note.className = "method-note";
-  note.textContent = "Shown: top actors by one-sided share among those eligible for detailed comparison.";
+  note.className = "chart-annotation";
+  note.innerHTML =
+    "RSF and SFA: about one quarter of recorded events were one-sided.<br>Government of Sudan: 4%.";
   return note;
 }
 
 /**
- * Two contrasting actors, both already in the displayed list - never a
- * "winner/loser" framing, just "higher" vs "lower" share among actors with
- * real activity. Higher = the top-ranked displayed actor. Lower = the
- * displayed actor (other than the "higher" pick) with the largest
- * total_event_count, so the contrast is between the two most active actors
- * in the dataset rather than against a near-empty minor one.
+ * Compact, visually secondary line for eligible actors that never registered a
+ * one-sided event (share === 0) - listed by name only, no chart row, so the
+ * lollipop panel stays limited to actors with a non-zero share to plot.
  */
-function buildCallouts(actors: readonly ActorProfile[]): HTMLDivElement {
-  const higher = actors[0];
-  const lower = actors
-    .filter((a) => a.actor_id !== higher.actor_id)
-    .reduce((max, a) => (a.total_event_count > max.total_event_count ? a : max));
-
-  const wrap = document.createElement("div");
-  wrap.className = "callouts";
-  wrap.append(buildCallout("HIGHER ONE-SIDED SHARE", higher), buildCallout("LOWER ONE-SIDED SHARE", lower));
-  return wrap;
+function buildZeroShareNote(actors: readonly ActorProfile[]): HTMLParagraphElement | DocumentFragment {
+  if (actors.length === 0) return document.createDocumentFragment();
+  const note = document.createElement("p");
+  note.className = "zero-share-note";
+  const names = actors.map((a) => a.actor_name).join(" · ");
+  note.textContent = `Other eligible actors with 0% one-sided events: ${names}`;
+  return note;
 }
 
-function buildCallout(label: string, actor: ActorProfile): HTMLDivElement {
-  const card = document.createElement("div");
-  card.className = "callout";
-  const labelEl = document.createElement("p");
-  labelEl.className = "callout-label";
-  labelEl.textContent = label;
-  const nameEl = document.createElement("p");
-  nameEl.className = "callout-name";
-  nameEl.textContent = actor.actor_name;
-  const statEl = document.createElement("p");
-  statEl.className = "callout-stat";
-  statEl.textContent = `${formatPercent(actor.one_sided_event_share)} one-sided`;
-  const contextEl = document.createElement("p");
-  contextEl.className = "callout-context";
-  contextEl.textContent = `${formatCount(actor.total_event_count)} total events`;
-  card.append(labelEl, nameEl, statEl, contextEl);
-  return card;
+function buildMethodNote(): HTMLParagraphElement {
+  const note = document.createElement("p");
+  note.className = "method-note";
+  note.textContent = "Position = one-sided event share · Size = total recorded events";
+  return note;
 }
 
 function buildFinding(): HTMLDivElement {
@@ -211,8 +225,7 @@ function buildFinding(): HTMLDivElement {
   // one-sided shares around a quarter of their own recorded events, while the Government
   // of Sudan - with more total events than either - shows a share near zero. Descriptive
   // comparison only; no motive or causal explanation implied.
-  text.textContent =
-    "Actors with substantial conflict activity show markedly different proportions of one-sided violence.";
+  text.textContent = "Actors with substantial conflict activity showed very different shares of one-sided violence.";
   finding.append(label, text);
   return finding;
 }
