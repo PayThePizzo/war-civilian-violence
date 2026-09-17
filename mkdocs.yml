@@ -5,7 +5,7 @@ site_url: "https://github.com/PayThePizzo/war-civilian-violence"
 repo_name: "PayThePizzo/war-civilian-violence"
 repo_url: "https://github.com/PayThePizzo/war-civilian-violence"
 
-watch: [mkdocs.yml, README.md, scripts, notebooks]
+watch: [mkdocs.yml, README.md, scripts, config, docs]
 
 validation:
   omitted_files: warn
@@ -28,7 +28,16 @@ nav:
   - Web Visualizations: phase_3/web_visualizations.md
   - Social Media Visualizations: phase_3/social_posts.md
 - Phase 4 - Tangible Design: phase_4/tangible_design.md     # Report/Deliverables for Phase 4
-# - Python Scripts Reference:                               # Documentation for Python Scripts
+- Python Scripts Reference:                                 # Documentation for Python Scripts
+  - Overview: reference/index.md
+  - 01_clean_events.py: reference/01_clean_events.md
+  - 02_build_actor_events.py: reference/02_build_actor_events.md
+  - 03_build_weekly_metrics.py: reference/03_build_weekly_metrics.md
+  - 04_build_h3_metrics.py: reference/04_build_h3_metrics.md
+  - 05_build_actor_profiles.py: reference/05_build_actor_profiles.md
+  - 06_build_event_windows.py: reference/06_build_event_windows.md
+  - 07_validate_outputs.py: reference/07_validate_outputs.md
+  - build_all.py: reference/build_all.md
 # - Python Tests Reference:                                 # Documentation for Python Tests
 
 theme:
@@ -92,7 +101,7 @@ plugins:
         setup_commands:
           - import sys
           - sys.path.append("scripts")
-          - sys.path.append("notebooks")
+          - sys.path.append("config")
         import:
         - https://docs.python-requests.org/en/master/objects.inv
         - https://docs.python.org/3/objects.inv
@@ -100,7 +109,7 @@ plugins:
         - https://mkdocstrings.github.io/autorefs/objects.inv
         - https://mkdocstrings.github.io/griffe/objects.inv
         - https://python-markdown.github.io/objects.inv
-        paths: [scripts, notebooks, .]
+        paths: [scripts, config, .]
         options:
           docstring_options:
             ignore_init_summary: true
