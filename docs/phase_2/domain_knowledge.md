@@ -1,34 +1,26 @@
-# Phase 2 — Domain Knowledge: Representing War Across Media
+# Phase 2 - Domain Knowledge: Representing War Across Media
 
 ## Project Requirements
 
-This phase examines how war-related information is transformed into representations for different media and audiences. The aim is not only to collect examples, but to understand how each format selects, aggregates, encodes, and explains raw information.
+This phase looks at how information about war changes when it moves between media and reaches different audiences. For each example, we ask what information was selected, how it was grouped and shown, and how the finished piece helps people understand it.
 
-The review includes:
+We look at:
 
-- two papers published in peer-reviewed international journals or conferences, aimed primarily at researchers;
-- two articles delivered through responsive websites for desktop and mobile devices, aimed at professionals, researchers, and citizens;
-- two Instagram posts, aimed primarily at citizens;
-- two posts on X, aimed primarily at citizens and news-oriented audiences;
-- two representations based on alternative paradigms, such as virtual reality or a physical public installation.
+- two papers published in peer-reviewed international journals or conferences, mainly for researchers;
+- two website articles that work on desktop and mobile, for professionals, researchers, and citizens;
+- two Instagram posts, mainly for citizens;
+- two posts on X, mainly for citizens and people following the news;
+- two examples that use other approaches, such as virtual reality or a physical public installation.
 
-For every case study, the analysis reports:
+For each example, we cover:
 
 - the title, author or publisher, and link;
-- the context in which the representation was produced;
-- the representation technique and visual encoding;
-- the knowledge gained from the representation that would not be immediately visible in a table;
-- the transformation from raw information to the final representation;
-- the relationship between format, audience, and communicative purpose;
-- the information sources and production tools, when publicly documented.
-
-The central analytical model used throughout the report is:
-
-> **raw information → selection and transformation → visual encoding → audience task → knowledge gained**
-
-The analytical priority in every case study is the relationship between **representation** and **knowledge**. The report therefore first identifies the marks, spatial arrangements, visual variables, interaction techniques, narrative sequence, or sensory channels used. It then asks what pattern, relationship, hierarchy, uncertainty, or lived quality becomes perceptible through those choices. Context, data preparation, audience, and tools are retained as supporting information rather than treated as the main result.
-
-A dataset does not determine a single visualization. The same records can support a complex research interface, a guided web story, a compact social-media graphic, or an embodied installation. What changes is the audience, the time available for interpretation, the degree of interactivity, and the purpose of the representation.
+- the context in which it was made;
+- how it presents information and uses visual features such as colour, size, and position;
+- what we can learn from it that would be harder to spot in a table;
+- how the raw information became the finished piece;
+- how the format fits its audience and purpose;
+- the sources and tools used, where these are publicly documented.
 
 ---
 
@@ -36,27 +28,27 @@ A dataset does not determine a single visualization. The same records can suppor
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *VEHICLE: Validation and Exploration of the Hierarchical Integration of Conflict Event Data* | Benedikt Mayer, Kai Lawonn, Karsten Donnay, Bernhard Preim, and Monique Meuschke | A visual-analytics system for validating the integration of conflict-event datasets from different institutions. Published in *Computer Graphics Forum*, 40(3), 2021. | [Paper and DOI](https://doi.org/10.1111/cgf.14284) |
+| *VEHICLE: Validation and Exploration of the Hierarchical Integration of Conflict Event Data* | Benedikt Mayer, Kai Lawonn, Karsten Donnay, Bernhard Preim, and Monique Meuschke | A visual-analytics system for checking how conflict-event datasets from different institutions have been combined. Published in *Computer Graphics Forum*, 40(3), 2021. | [Paper and DOI](https://doi.org/10.1111/cgf.14284) |
 
-See the local copy of the paper [here](papers/vehicle-conflict-event-data.pdf).
+You can read the local copy of the paper [here](papers/vehicle-conflict-event-data.pdf).
 
 ### Context
 
-Conflict researchers often combine event records collected by different organizations. A single real-world incident may appear in more than one database, but with different dates, locations, actor names, event categories, or geographic precision. Conversely, one source may record incidents that another source omits.
+Researchers often need to combine conflict records from different organizations. That isn't straightforward: the same incident can appear in several databases with different dates, locations, actor names, event categories, or levels of geographic detail. An incident may also appear in one source and be missing from another.
 
-The paper studies the output of MELTT, a semi-automatic matching procedure that integrates multiple conflict datasets through spatial and temporal thresholds and hierarchical taxonomies. The resulting matches are sensitive to the selected parameters. A conventional table can list matched records, but it does not make the global structure, source overlap, or parameter sensitivity easy to assess.
+The paper looks at the results of MELTT, a semi-automatic procedure for matching and combining conflict datasets. MELTT uses limits on distance and time, along with hierarchical classifications, to decide which records may describe the same event. Changing these settings can change the matches. A table can list those matches, but it's harder to see the overall pattern, the overlap between sources, or how much the results depend on the settings.
 
-VEHICLE was designed for conflict researchers who need to validate the integration process before using the merged data in subsequent statistical analysis.
+VEHICLE helps researchers check this process before they use the combined data in statistical analysis.
 
-### Representation used
+### How it works
 
-**Description:** The interface uses a **multiple-coordinated-view** representation. No single chart is expected to answer whether two conflict databases describe the same events; instead, each view exposes a different dimension of the matching problem and all views update together.
+The interface uses **multiple coordinated views**. Each shows a different part of the matching problem, and they update together. This lets researchers examine whether two databases are describing the same events from several angles.
 
-- **ParaMultiples** represents the parameter space as a matrix of small histograms. Position identifies a particular combination of spatial and temporal thresholds, while the distribution inside each cell shows how many matches and match qualities that setting produces. Repetition makes neighbouring settings visually comparable.
-- **TempMap** combines geographic position with a radial temporal histogram. Map marks answer *where* candidate events occur, while the circular time display answers *when* they occur. Selection connects the two dimensions rather than forcing the analyst to compare separate tables.
-- **EventCharts** use hierarchical stacked bars. Bar length supports magnitude comparison, segments show composition, and nesting lets the analyst move from broad event or actor classes to more specific categories.
-- **MatchTree** converts the hierarchical matching taxonomy into a radial branching structure. Branch position indicates category membership, while the distribution of marks across branches exposes where matches accumulate or disappear.
-- Brushing, filtering, highlighting, and drill-down link the views. Selecting an unusual bar, map region, parameter cell, or tree branch immediately reveals the same subset elsewhere, turning the dashboard into a visual diagnostic process rather than a collection of independent charts.
+- **ParaMultiples** shows a grid of small histograms. Each cell represents a combination of distance and time thresholds, and its histogram shows how many matches that setting produces and their quality. Researchers can compare nearby cells to see what changes when they adjust the settings.
+- **TempMap** combines a map with a radial time histogram. The map shows *where* candidate events happened, and the circular display shows *when*. Selecting events connects the two views, so researchers can look at place and time together.
+- **EventCharts** use hierarchical stacked bars. Longer bars show larger amounts, segments show what makes up each total, and the hierarchy lets researchers move from broad event or actor classes to more specific ones.
+- **MatchTree** shows the matching classifications as a radial branching structure. Each branch belongs to a category, and the marks along it show where matches gather or disappear.
+- Brushing, filtering, highlighting, and drill-down link the views. Select a bar, map region, parameter cell, or tree branch, and the same records are highlighted across the interface. This makes it easier to follow a problem through the different views.
 
 <!-- Add one or more representations here.
 
@@ -69,32 +61,32 @@ Suggested material:
 ![Figure 2 — VEHICLE detail](images/paper-1-vehicle-detail.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-The coordinated views reveal whether agreement and disagreement between sources are **systematic rather than accidental**. A table may identify individual matched and unmatched rows, but the interface shows whether failures concentrate in one country, time period, source, actor category, or branch of the event taxonomy. Clustering in the TempMap suggests geographic or temporal coverage bias; imbalance in the stacked bars suggests that one source contributes disproportionately to particular event classes.
+The linked views help show whether agreement and disagreement between sources follow **systematic patterns**. A table can tell us which records matched. The interface also shows whether matching failures gather in a particular country, period, source, actor category, or part of the event classification. Clusters in TempMap may point to uneven geographic or time coverage. Uneven stacked bars may suggest that one source supplies a disproportionate share of certain event types.
 
-ParaMultiples reveals the **stability of the integration**. If adjacent parameter cells look similar, the merged dataset is relatively robust to small threshold changes. If the match distribution changes abruptly between neighbouring cells, the result sits on a parameter “cliff”: a minor analytical choice produces a substantially different dataset. That fragility is almost impossible to recognize by inspecting one exported match table.
+ParaMultiples helps researchers judge **how stable the integration is**. If nearby cells look similar, small changes to the thresholds probably make little difference to the combined dataset. A sudden change between cells points to a parameter “cliff”: a small choice produces a very different result. That kind of sensitivity is almost impossible to spot in a single exported match table.
 
-The linked representations also distinguish global quality from local exceptions. A parameter setting may appear acceptable in aggregate while the map or taxonomy reveals a serious regional or categorical failure. The knowledge gained is therefore not simply the number of matches; it is an explanation of *where the sources agree, where they disagree, which analytical choices create that disagreement, and whether the merged dataset can be trusted for a particular research question*.
+The views also make it easier to notice local problems in results that look good overall. A setting may produce an acceptable total while the map or classification reveals a serious failure in one region or category. We can therefore learn *where the sources agree, where they disagree, which choices affect that disagreement, and whether the combined dataset is reliable enough for a particular research question*.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Conflict records are collected independently by ACLED, UCDP GED, the Global Terrorism Database, and the Social Conflict Analysis Database.
-2. Records are standardized and classified through common taxonomies for actors, event types, and geographic precision.
-3. MELTT identifies candidate matches according to spatial and temporal thresholds and calculates similarity through the taxonomies.
-4. VEHICLE derives counts, distributions, match scores, and differences among parameter combinations.
-5. These results are encoded in linked maps, histograms, hierarchical bars, and radial trees.
+1. ACLED, UCDP GED, the Global Terrorism Database, and the Social Conflict Analysis Database collect conflict records independently.
+2. The records are standardized and sorted using shared classifications for actors, event types, and geographic precision.
+3. MELTT uses distance and time thresholds to find possible matches, then calculates similarity using the classifications.
+4. VEHICLE calculates counts, distributions, match scores, and differences between settings.
+5. The results appear in linked maps, histograms, hierarchical bars, and radial trees.
 
 #### Audience and format
 
-The representation preserves complexity because the target users are researchers expected to compare alternatives, question the integration, inspect anomalies, and export subsets. The interface does not force a single conclusion; it supports an analytical workflow. This is appropriate for an expert audience, but the density and specialized encodings would be excessive for a brief public-facing post.
+Researchers need enough detail to compare settings, question the matching process, investigate unusual results, and export selected records. VEHICLE gives them room to do that without steering them toward one conclusion. The detailed interface suits that audience, though it would be too dense for a short post aimed at the public.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data:** ACLED, UCDP GED, Global Terrorism Database, and Social Conflict Analysis Database; the reported study covers 197,502 African conflict events between 1997 and 2016.
-- **Transformation method:** MELTT hierarchical event-matching procedure using spatial and temporal parameters.
-- **Design method:** Munzner's Nested Model, domain-task abstraction, iterative prototyping, case studies, and evaluation with conflict researchers.
-- **Representation tools:** a browser-based visual-analytics application with custom interactive statistical, geographic, and hierarchical views. The paper documents the visual system and interaction design rather than foregrounding a particular commercial charting tool.
+- **Data:** ACLED, UCDP GED, Global Terrorism Database, and Social Conflict Analysis Database. The study covers 197,502 conflict events in Africa from 1997 to 2016.
+- **Transformation method:** MELTT's hierarchical event-matching procedure, using distance and time settings.
+- **Design method:** Munzner's Nested Model, domain-task abstraction, iterative prototypes, case studies, and evaluation with conflict researchers.
+- **Representation tools:** a browser-based visual-analytics application with custom interactive statistical, geographic, and hierarchical views. The paper focuses on how the system looks and works, rather than on a particular commercial charting tool.
 - **Primary source:** [Computer Graphics Forum article](https://onlinelibrary.wiley.com/doi/full/10.1111/cgf.14284).
 
 ---
@@ -103,26 +95,26 @@ The representation preserves complexity because the target users are researchers
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *A Visual Analytics Framework for Identifying Topic Drivers in Media Events* | Yafeng Lu, Hong Wang, Steven T. Landis, and Ross Maciejewski | A visual-analytics framework that connects media attention to possible external event drivers, demonstrated with media datasets and an armed-conflict event dataset. Published in *IEEE Transactions on Visualization and Computer Graphics*, 24(9), 2501–2515, 2018. | [DOI](https://doi.org/10.1109/TVCG.2017.2752166) · [Institutional repository](https://oasis.library.unlv.edu/political_science_articles/159/) |
+| *A Visual Analytics Framework for Identifying Topic Drivers in Media Events* | Yafeng Lu, Hong Wang, Steven T. Landis, and Ross Maciejewski | A visual-analytics framework for exploring possible links between media attention and outside event drivers, using media collections and an armed-conflict event dataset. Published in *IEEE Transactions on Visualization and Computer Graphics*, 24(9), 2501–2515, 2018. | [DOI](https://doi.org/10.1109/TVCG.2017.2752166) · [Institutional repository](https://oasis.library.unlv.edu/political_science_articles/159/) |
 
 ### Context
 
-The paper introduces a visual-analytics framework for connecting topics in media collections with possible external event drivers. It combines semantic event retrieval, causality testing, and annotation so researchers can move from a media topic to related events, inspect the words responsible for the match, and refine the relationship with domain knowledge.
+This paper presents a visual-analytics framework for exploring whether topics in media collections relate to possible outside event drivers. Researchers can retrieve events through related words, test possible causal links, and add annotations. They can also inspect the words behind a match and use their knowledge of the subject to refine it.
 
-The representation examined here is **Figure 10 from Section 7.2**, “Climate-Induced Unrest During Drought.” The case study asks whether the 2014 drought in the Greater Horn of Africa coincided with reports of social unrest and political violence. The analyst selects an agriculture topic from a social-unrest media collection, “violence against civilians” events from ACLED, and the initial terms **water**, **food**, **farmer**, and **climate**.
+Here, we look at **Figure 10 in Section 7.2**, “Climate-Induced Unrest During Drought.” The case study asks whether the 2014 drought in the Greater Horn of Africa coincided with reports of social unrest and political violence. The analyst selects an agriculture topic from a social-unrest media collection, ACLED events labelled “violence against civilians,” and the starting terms **water**, **food**, **farmer**, and **climate**.
 
-### Representation used
+### How it works
 
-**Description:** Figure 10 shows the framework's **Cluster View**, a force-directed bubble representation for inspecting and filtering semantic word matches.
+Figure 10 shows the framework's **Cluster View**. It uses a force-directed bubble layout to help the analyst inspect and filter words that the system considers related in meaning.
 
-- Each circle is a word. The selected media keywords use filled backgrounds, while outlined circles represent words extracted from ACLED event descriptions that the semantic model considers related.
-- Colour identifies the originating search concept: **farmer** in blue, **climate** in red, **water** in tan, and **food** in orange.
-- Circle size is proportional to how frequently the word occurs in the event records. Large nodes such as *fire*, *air*, *water*, and *food* therefore have greater influence on what the analyst notices than very small peripheral terms.
-- Distance and enclosure express semantic grouping. Related words attract one another, while automatically drawn outlines separate the conceptual clusters produced by the similarity threshold and the analyst's regrouping actions.
-- The dashed container on the right is the **word-selection area**. Words or conceptual subclusters moved there become the active semantic filter used to retrieve events.
-- The pale red *climate* group records an analytical rejection. Even after the similarity threshold was adjusted to 0.75, *climate* retrieved words such as *way*, *order*, *demand*, *tension*, and *control* rather than a coherent agricultural meaning. The analyst therefore removed *climate*, and the event list updated.
+- Each circle is a word. Filled circles are the selected media keywords. Outlined circles are related words found in ACLED event descriptions by the semantic model.
+- Colour shows the starting search concept: **farmer** is blue, **climate** red, **water** tan, and **food** orange.
+- Circle size is proportional to how often a word appears in the event records. Large nodes such as *fire*, *air*, *water*, and *food* draw more attention than small terms around the edges.
+- Distance and outlines show groups of related words. Similar words attract one another, and automatically drawn boundaries separate the groups formed by the similarity threshold and the analyst's changes.
+- The dashed box on the right is the **word-selection area**. Words or smaller groups moved into it become the filters used to retrieve events.
+- The faded red *climate* group shows a match that the analyst rejected. Even with the similarity threshold set to 0.75, *climate* brought up *way*, *order*, *demand*, *tension*, and *control*, rather than a clear agricultural meaning. The analyst removed it, and the event list updated.
 
-The image represents an interactive reasoning step: it shows not only the output of semantic matching, but also where a domain expert intervenes to decide which machine-generated associations should count as meaningful.
+The image shows the analyst working through the results. We can see both the associations produced by the system and the point where someone with domain knowledge decides which ones make sense.
 
 <!-- Add one or more representations here.
 
@@ -134,39 +126,39 @@ Suggested material:
 ![Figure 4 — Accepted and rejected semantic groups](images/paper-2-semantic-filter-detail.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A table could list every selected keyword and its similarity score, but it would not make the **structure of semantic ambiguity** easy to see. The bubble clusters reveal that a single word can pull the analysis toward several meanings:
+A table could list the keywords and their similarity scores. The bubble groups make **ambiguity in word meaning** easier to see, showing how one search term can lead in several directions:
 
-- *climate* does not necessarily retrieve environmental or agricultural language in the conflict-event corpus; it also attracts vocabulary concerning social conditions, order, demand, tension, and control;
-- *food* forms a recognizable nourishment-related group but also sits near terms such as *treat*, *centre*, and *stick* that may be irrelevant to the analyst's intended concept;
-- *farmer* and *water* create smaller, more coherent groups, while the relative node sizes reveal which related words are common or rare in the event descriptions;
-- moving selected words into the filter container turns the analyst's visual interpretation into a revised computational query.
+- searching for *climate* does not guarantee environmental or agricultural language; in conflict-event descriptions, it also brings up words about social conditions, order, demand, tension, and control;
+- *food* forms a recognizable group about nourishment, but it also sits near *treat*, *centre*, and *stick*, which may have little to do with the intended meaning;
+- *farmer* and *water* form smaller, more coherent groups, while circle sizes show which related words appear often and which are rare;
+- moving chosen words into the selection box changes the query, so the analyst's reading of the graphic directly affects which events are retrieved.
 
-The knowledge gained is therefore methodological as well as substantive. The image shows that semantic matching is not neutral: two datasets may use the same or similar vocabulary in different senses. A domain expert can see why an automatically retrieved set of conflict events is misleading, remove the problematic concept, and preserve only the associations that fit the research question.
+This tells us something about both the topic and the method. The same word can mean different things in different datasets. Seeing the associations helps an expert understand why the retrieved events might be misleading, remove a problematic concept, and keep the links that fit the research question.
 
-After this refinement, the Section 7.2 case study produced an insignificant causal model (lag = 2, R² = 0.090). Inspection of the retrieved events also showed that some shared vocabulary connected the drought terms to violence whose reported motive was unstated. The analyst consequently judged the proposed relationship between resource shortages and civilian abuse to be less plausible. The visualization supports that cautious conclusion by exposing the weak semantic foundation of the initial link.
+After these changes, the Section 7.2 case study produced an insignificant causal model (lag = 2, R² = 0.090). Looking through the retrieved events also showed that some shared words linked drought terms to violence with no stated motive. The analyst therefore found the proposed link between resource shortages and civilian abuse less plausible. The visualization helps explain that cautious conclusion by showing how weak the initial word associations were.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. The analyst selects the agriculture topic from the social-unrest media collection and ACLED events categorized as violence against civilians.
-2. The period is restricted to the months surrounding the 2014 Greater Horn of Africa drought.
-3. The initial media keywords *water*, *food*, *farmer*, and *climate* seed a semantic dictionary.
-4. Text is normalized and semantically related words are extracted from the ACLED event descriptions.
-5. Complete-link agglomerative clustering and a force-directed layout group the words by similarity; colour records the seed keyword and node size records event-text frequency.
-6. The analyst adjusts the similarity threshold, drags words between conceptual groups, moves accepted terms into the selection container, and removes misleading associations such as the *climate* group.
-7. The filtered events are aggregated into a time series and passed to the causality model for hypothesis testing.
+1. The analyst selects the agriculture topic from the social-unrest media collection and ACLED events labelled violence against civilians.
+2. The analysis focuses on the months around the 2014 Greater Horn of Africa drought.
+3. The words *water*, *food*, *farmer*, and *climate* provide the starting points for a semantic dictionary.
+4. The text is normalized, and words with related meanings are extracted from ACLED event descriptions.
+5. Complete-link agglomerative clustering and a force-directed layout group similar words. Colour shows the starting keyword, and circle size shows frequency in event text.
+6. The analyst adjusts the similarity threshold, moves words between groups, puts accepted terms in the selection box, and removes misleading associations such as the *climate* group.
+7. The filtered events are grouped into a time series and passed to the causality model to test the hypothesis.
 
 #### Audience and format
 
-The target audience is researchers who understand that words change meaning across corpora and that observational conflict data cannot establish causality on its own. The representation deliberately exposes intermediate terms rather than hiding them behind a single similarity score. Its direct-manipulation design lets experts inject contextual knowledge into the retrieval process, making it suitable for hypothesis formation and methodological scrutiny but too specialized for a quick public-facing graphic.
+This is designed for researchers who know that words can change meaning between text collections and that observational conflict data alone cannot establish causality. They can inspect the intermediate words, rather than judge the result only by a similarity score. Moving and filtering terms lets them bring their knowledge into the search process. That makes the view useful for developing and questioning hypotheses, but too specialized for a quick public graphic.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data:** a social-unrest media collection assembled from 128 English-language RSS feeds and ACLED conflict-event descriptions.
-- **Case-study selections:** the agriculture topic, March-June 2014 drought-related terms, and ACLED violence-against-civilians events in the Greater Horn of Africa context.
-- **Transformations:** text normalization, semantic lexical matching, similarity-threshold filtering, complete-link agglomerative clustering, analyst-guided regrouping, event aggregation, and causality modelling.
-- **Representation tools:** a custom interactive force-directed Cluster View with categorical colour, frequency-scaled nodes, conceptual boundaries, drag-and-drop filtering, and a word-selection container.
+- **Data:** a social-unrest media collection built from 128 English-language RSS feeds, alongside ACLED conflict-event descriptions.
+- **Case-study selections:** the agriculture topic, drought-related terms from March-June 2014, and ACLED violence-against-civilians events in the Greater Horn of Africa context.
+- **Transformations:** text normalization, matching words by meaning, similarity-threshold filtering, complete-link agglomerative clustering, regrouping by the analyst, event aggregation, and causality modelling.
+- **Representation tools:** a custom interactive force-directed Cluster View with colour-coded categories, frequency-scaled circles, group boundaries, drag-and-drop filtering, and a word-selection box.
 - **Primary sources:** [IEEE DOI record](https://doi.org/10.1109/TVCG.2017.2752166) and the [University of Nevada, Las Vegas repository record](https://oasis.library.unlv.edu/political_science_articles/159/).
 
 ---
@@ -175,21 +167,21 @@ The target audience is researchers who understand that words change meaning acro
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *How Drone Combat in Ukraine Is Changing Warfare* | Reuters Graphics; Mariano Zafra, Max Hunder, Anurag Rao, Sudev Kiyada, and collaborators | A responsive visual investigation explaining the roles, operation, range, cost, and tactical integration of drones in the war in Ukraine. | [Reuters article](https://www.reuters.com/graphics/UKRAINE-CRISIS/DRONES/dwpkeyjwkpm/) |
+| *How Drone Combat in Ukraine Is Changing Warfare* | Reuters Graphics; Mariano Zafra, Max Hunder, Anurag Rao, Sudev Kiyada, and collaborators | A visual investigation that works on desktop and mobile, explaining drone roles, operation, range, cost, and how they work together on the battlefield in Ukraine. | [Reuters article](https://www.reuters.com/graphics/UKRAINE-CRISIS/DRONES/dwpkeyjwkpm/) |
 
 ### Context
 
-The article was published in March 2024, when drones had become central to reconnaissance, artillery guidance, direct attack, and long-range strikes in Ukraine. The raw material was heterogeneous: more than 50 attack videos, technical UAV research, interviews with manufacturers, soldiers and officials, and information about different drone types and battlefield roles.
+When the article was published in March 2024, drones had become central to reconnaissance, artillery guidance, direct attacks, and long-range strikes in Ukraine. Reuters drew on more than 50 attack videos, technical UAV research, interviews with manufacturers, soldiers, and officials, and information about drone types and battlefield roles.
 
-The challenge was therefore not simply to plot a dataset. Reuters needed to explain a technological and tactical system to a mixed audience that included citizens, journalists, professionals, and policy-oriented readers.
+Reuters needed to explain how this technology works on the battlefield to a broad audience, including citizens, journalists, professionals, and people interested in policy.
 
-### Representation used
+### How it works
 
-**Description:** The article uses **scroll-driven visual explanation**. Scrolling does more than move past illustrations: it controls when objects, labels, routes, ranges, and tactical stages appear. A stable visual scene is progressively modified so the reader can observe one relationship at a time.
+The article uses **scroll-driven visual explanation**. As readers scroll, objects, labels, routes, ranges, and tactical stages appear. The scene stays in place while details change, making it easier to focus on one relationship at a time.
 
-Annotated technical illustrations identify drone components and roles. Maps and distance comparisons encode operational range; silhouettes and proportional drawings communicate physical scale; arrows and ordered transitions represent the movement from reconnaissance to target identification, communication, artillery direction, and attack. Photographs and video-derived evidence reconnect the explanatory diagrams to observed battlefield use.
+Labelled drawings explain drone components and roles. Maps and distance comparisons show how far drones can travel, while silhouettes and proportional drawings show their physical size. Arrows and transitions walk readers through reconnaissance, target identification, communication, artillery direction, and attack. Photographs and evidence from video connect the diagrams to observed battlefield use.
 
-The sequence changes scale deliberately. It moves from an individual device, to the immediate battlefield, to the longer-range geography of strikes. This nested structure prevents specifications such as range, cost, or payload from remaining isolated numbers. On mobile, wide compositions become vertically stacked and annotations are reduced or repositioned, but the explanatory order remains the same.
+The story starts with an individual drone, moves out to the nearby battlefield, and then shows the wider geography of long-range strikes. This gives numbers such as range, cost, and payload a context. On mobile, wide scenes become vertical sequences, with labels reduced or moved so the explanation stays in the same order.
 
 <!-- Add one or more representations here.
 
@@ -202,30 +194,30 @@ Suggested material:
 ![Figure 6 — Reuters range comparison](images/web-1-reuters-drone-range.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A table could compare model, cost, speed, payload, and range, but it would leave each drone as an isolated object. The staged diagrams reveal a **system of interdependent roles**: reconnaissance drones locate activity, communications transfer information, artillery or attack drones act on it, and longer-range systems extend the conflict beyond the front. The central insight is that battlefield effect emerges from coordination, not from one device specification.
+A table could compare drone models, costs, speeds, payloads, and ranges. The diagrams help us see **how their roles depend on one another**: reconnaissance drones locate activity, communications pass on the information, artillery or attack drones respond, and longer-range systems reach beyond the front. Their battlefield effect depends on how these roles work together.
 
-Changes in scale produce spatial knowledge. “Ten kilometres” or “several hundred kilometres” becomes a visible relationship among the front line, command infrastructure, cities, and launch or target areas. The reader can distinguish tactical devices operating near soldiers from strategic systems capable of reaching far behind the front.
+The changes in scale also help us understand distance. “Ten kilometres” or “several hundred kilometres” becomes a visible relationship between the front line, command infrastructure, cities, and launch or target areas. We can distinguish tactical drones used near soldiers from strategic systems able to reach far behind the front.
 
-The representation also makes the changing sensor-to-strike process perceptible. By placing observation, decision, and attack in one visual sequence, it shows how inexpensive aerial systems can compress the time between seeing a target and acting on that information. This operational chain, and the asymmetry between relatively low-cost devices and potentially high-value targets, would not emerge clearly from a specification table.
+Putting observation, decision, and attack in one sequence shows how inexpensive aerial systems can shorten the time between spotting a target and acting on the information. It also shows the imbalance between relatively cheap devices and potentially high-value targets. These relationships would be hard to pick up from a specification table.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
 1. Reuters gathers video evidence, technical research, interviews, and specifications.
-2. Material is verified and categorized by drone type, function, range, and stage of operation.
-3. The journalists select representative examples instead of exposing the complete evidence archive.
-4. Technical attributes are converted into diagrams, maps, scale comparisons, and an ordered operational sequence.
-5. Scrolling controls the release of information and maintains a clear explanatory path.
+2. The material is checked and organized by drone type, function, range, and stage of use.
+3. Journalists select representative examples from the evidence archive.
+4. Technical details become diagrams, maps, size and distance comparisons, and a step-by-step account of operations.
+5. Scrolling reveals the information in an order that guides the explanation.
 
 #### Audience and format
 
-The story preserves more depth than a social post but provides more guidance than a research dashboard. Readers are expected to follow an editorial explanation rather than define their own analytical query. The combination of short text, animation, and responsive graphics makes a complex military system understandable without requiring specialist knowledge.
+Readers follow an explanation chosen by the journalists. Short passages, animation, and responsive graphics make the military system understandable without specialist knowledge. The story offers more detail than a social post and more guidance than a research dashboard, where users would choose their own questions and filters.
 
-### Information Sources and Tools Used
+### Sources and tools
 
 - **Information sources:** analysis of more than 50 drone-attack videos, UAV research, and interviews with more than a dozen manufacturers, soldiers, and officials.
-- **Representation tools:** custom responsive web graphics, annotated illustrations, maps, motion, and scroll-driven transitions. Reuters does not publicly identify every software library used on the page.
+- **Representation tools:** custom responsive graphics, labelled illustrations, maps, animation, and scroll-driven transitions. Reuters does not publicly list every software library used on the page.
 - **Primary source:** [Reuters visual investigation](https://www.reuters.com/graphics/UKRAINE-CRISIS/DRONES/dwpkeyjwkpm/).
 
 ---
@@ -234,21 +226,21 @@ The story preserves more depth than a social post but provides more guidance tha
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *How Ukraine Has Faced Its Worst Month on the Battlefield in Two Years — Visualised* | Ed Gargan, Pablo Gutiérrez, and Ashley Kirk; design by Prina Shah | A responsive sequence of charts and maps explaining Russian territorial gains in Ukraine during 2024, with emphasis on November. | [The Guardian article](https://www.theguardian.com/world/ng-interactive/2024/dec/04/how-ukraine-faced-worst-month-battlefield-in-two-years-visualised) |
+| *How Ukraine Has Faced Its Worst Month on the Battlefield in Two Years — Visualised* | Ed Gargan, Pablo Gutiérrez, and Ashley Kirk; design by Prina Shah | A series of charts and maps for desktop and mobile showing Russian territorial gains in Ukraine in 2024, with a focus on November. | [The Guardian article](https://www.theguardian.com/world/ng-interactive/2024/dec/04/how-ukraine-faced-worst-month-battlefield-in-two-years-visualised) |
 
 ### Context
 
-Published in December 2024, the article investigates a headline fact: Ukraine lost more territory in November than in any month since September 2022. However, the authors do not treat square kilometres as sufficient evidence of strategic meaning. They combine changes over time with the geography and settlement structure of the captured land.
+The article was published in December 2024, after Ukraine lost more territory in November than in any month since September 2022. The authors look at how those losses compare with earlier months, where they happened, and what the captured land contained, so readers can judge what the area totals mean strategically.
 
-The main source is the Institute for the Study of War's daily control-of-terrain files, which classify areas as controlled, contested, or subject to advances.
+The main source is the Institute for the Study of War's daily control-of-terrain files. These distinguish areas under control, contested areas, and areas where advances have been recorded.
 
-### Representation used
+### How it works
 
-**Description:** The article combines two complementary representations: a **time-series view of territorial change** and a sequence of **annotated control-of-terrain maps**. The chart places months on a common temporal axis and encodes land gained or lost through magnitude, making acceleration and exceptional months visible. Annotation singles out November 2024 instead of requiring the reader to search the series unaided.
+The article combines a **time series of territorial change** with **annotated control-of-terrain maps**. The chart lines up the months on one time axis and shows the amount of land gained or lost. This makes faster changes and unusually large monthly losses easy to spot. A note highlights November 2024.
 
-The maps then replace the abstract unit of square kilometres with geographic shape. Colour distinguishes control, advance, or contested areas; overlaid boundaries locate the changes within regions; settlement labels and infrastructure references provide strategic context. The story progressively zooms from Ukraine as a whole to Donetsk and then to particular advances, allowing the reader to connect national totals with local geography.
+The maps show what those square kilometres look like on the ground. Colour distinguishes control, advances, and contested areas. Regional boundaries locate the changes, while settlement labels and infrastructure references help explain their strategic importance. The story moves from Ukraine as a whole to Donetsk and then to individual advances, connecting the national totals to local places.
 
-These views are deliberately coordinated by narrative order rather than by a dashboard filter. The time series establishes *when the change became exceptional*; the maps establish *where it happened and what the gained area contained*.
+The order of the story connects the two views. First, the time series shows *when the change became exceptional*. Then, the maps explain *where it happened and what was in the captured area*.
 
 <!-- Add one or more representations here.
 
@@ -261,31 +253,31 @@ Suggested material:
 ![Figure 8 — Territorial gains map](images/web-2-guardian-map.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A table can show that Russia took approximately 1,202 square kilometres in November 2024, but the time series reveals why that value matters: it is not simply large in isolation; it breaks with the pattern of surrounding months and marks the worst monthly territorial loss for Ukraine in roughly two years.
+A table can tell us that Russia captured approximately 1,202 square kilometres in November 2024. The chart shows why that number matters: it stands out from the surrounding months and marks Ukraine's worst monthly territorial loss in roughly two years.
 
-The maps add a second correction to the headline total. They show that most of the change was concentrated in Donetsk and that much of the measured area consisted of agricultural land, forest, or fields rather than major cities or transport hubs. The reader therefore learns that **territorial magnitude and strategic value are related but not equivalent**.
+The maps add context to that total. Most of the change happened in Donetsk, and much of the area was agricultural land, forest, or fields rather than major cities or transport hubs. We can see that **the amount of land gained and its strategic value are related, but they are not the same thing**.
 
-The shapes of the mapped advances also reveal process. Instead of imagining 1,202 square kilometres as one block changing hands at once, the reader sees several incremental and geographically uneven movements. Examining the chart and maps together produces a more defensible conclusion: November was quantitatively severe, but the consequences varied according to location, settlement structure, and proximity to strategically important places.
+The shape of the advances also tells us how the losses happened. The 1,202 square kilometres were gained through several gradual, uneven movements. Looking at the chart and maps together, we can see that November brought severe losses in area, while the consequences depended on where those losses occurred, the settlements involved, and their distance from strategically important places.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Daily territorial-control files are collected from the Institute for the Study of War.
-2. Control polygons are compared across dates to estimate gains and losses.
-3. Changes are aggregated by month and region.
-4. Settlement and infrastructure context is added to distinguish rural area from strategic locations.
-5. The article sequences charts and maps from the headline trend to a geographically qualified interpretation.
+1. Daily territorial-control files come from the Institute for the Study of War.
+2. Mapped control areas, stored as polygons, are compared across dates to estimate gains and losses.
+3. Changes are grouped by month and region.
+4. Settlement and infrastructure information adds context, helping distinguish rural land from strategic locations.
+5. The article arranges charts and maps so readers move from the headline trend to a more detailed geographic explanation.
 
 #### Audience and format
 
-The design serves citizens and professionals who need a concise explanation of a changing battlefield. It reduces the complexity of daily control files but preserves the distinction between quantity and meaning. Responsive charts and maps offer more detail on desktop while remaining readable as vertically stacked units on mobile.
+The article gives citizens and professionals a clear account of a changing battlefield. It simplifies the daily control files while keeping the difference between area gained and strategic importance visible. Desktop readers get more detail, and mobile readers can follow the charts and maps in a vertical sequence.
 
-### Information Sources and Tools Used
+### Sources and tools
 
 - **Data:** daily control-of-terrain files from the Institute for the Study of War.
-- **Transformations:** polygon comparison, land-area estimation, monthly and regional aggregation, and settlement-based contextualization.
-- **Representation tools:** custom responsive charts, annotated maps, and editorial text. The article does not identify all production libraries.
+- **Transformations:** comparing polygons, estimating land area, grouping changes by month and region, and adding settlement context.
+- **Representation tools:** custom responsive charts, annotated maps, and editorial text. The article does not list all the libraries used to make it.
 - **Primary source:** [The Guardian visual article](https://www.theguardian.com/world/ng-interactive/2024/dec/04/how-ukraine-faced-worst-month-battlefield-in-two-years-visualised).
 
 ---
@@ -294,21 +286,21 @@ The design serves citizens and professionals who need a concise explanation of a
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *The 50 Countries Most Impacted by Violent Conflict* | Powerful Countries; data source: ACLED Conflict Index | An Instagram map derived from the ACLED Conflict Index, showing the fifty countries and territories most affected by violent conflict. | [Instagram post](https://www.instagram.com/p/DMMMCKBsBXP/) |
+| *The 50 Countries Most Impacted by Violent Conflict* | Powerful Countries; data source: ACLED Conflict Index | An Instagram map based on the ACLED Conflict Index, showing the fifty countries and territories most affected by violent conflict. | [Instagram post](https://www.instagram.com/p/DMMMCKBsBXP/) |
 
 ### Context
 
-ACLED's event database contains detailed records of political violence with dates, locations, actors, event types, fatalities, and other attributes. The Conflict Index transforms those records into four higher-level dimensions: deadliness, danger to civilians, geographic diffusion, and armed-group fragmentation.
+ACLED records political violence with details such as dates, locations, actors, event types, and fatalities. The Conflict Index brings these records together into four dimensions: deadliness, danger to civilians, geographic diffusion, and armed-group fragmentation.
 
-The Instagram account Powerful Countries reduces this multidimensional analytical product to a visually immediate global overview for citizens encountering the graphic in a fast-moving feed.
+The Instagram account Powerful Countries turns that detailed analysis into a world overview that people can take in quickly while scrolling their feed.
 
-### Representation used
+### How it works
 
-**Description:** The lead representation is a **categorical world map**. Countries are the basic marks: geographic position preserves their real-world arrangement, while colour and emphasis identify the fifty countries and territories included in the Conflict Index and differentiate their conflict severity. Unselected territory remains visually quiet, producing a figure-ground contrast that lets the affected regions dominate the phone-sized image.
+The main image is a **categorical world map**. Each country stays in its geographic position, while colour and emphasis identify the fifty countries and territories included in the Conflict Index and distinguish their conflict severity. Areas outside the selection are muted, helping the highlighted regions stand out on a phone screen.
 
-The post uses a limited palette, a compact legend, a strong headline, and minimal annotation. These choices remove the need to read fifty separate rows. The viewer first perceives the global distribution, then uses labels or the caption to interpret individual cases and the index dimensions behind the ranking.
+A small set of colours, a compact legend, a clear headline, and a few labels make the map quick to read. Viewers can first take in the worldwide pattern, then check labels or the caption for individual countries and the dimensions behind the ranking.
 
-The representation is deliberately an overview rather than a precise statistical chart. Area on the screen is determined by country size, not by conflict severity, while colour carries the analytical category. Large countries therefore occupy more visual space even when their index values are not proportionally larger.
+The map gives an overview, with an important limitation: country size determines how much space it takes up. Colour shows its conflict category. A large country can therefore draw more attention even if its index value isn't proportionally higher.
 
 <!-- Add one or more representations here.
 
@@ -319,31 +311,31 @@ Suggested material:
 ![Figure 9 — ACLED Conflict Index Instagram map](images/instagram-1-acled-conflict-index.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A ranked table would communicate order, but the map reveals **geographic concentration and adjacency**. Conflict-affected countries appear as regional groupings rather than independent entries, making it easier to recognize that severe violence often occupies connected cross-border zones. The blank and highlighted areas also show that conflict burden is distributed very unevenly across the world.
+The map helps us see **where affected countries cluster and which ones are neighbours**. In a ranked table, each country appears as a separate entry. On the map, regional groups and connected cross-border zones become visible. The highlighted and blank areas also show how unevenly conflict burden is spread around the world.
 
-The map changes the question from “Which country is ranked fifth?” to “Where do severe and difficult-to-resolve conflicts cluster?” That spatial question can suggest shared regional conditions, cross-border armed-group activity, refugee movement, or neighbouring security effects that a sorted list does not invite the viewer to consider.
+These patterns invite questions about what nearby conflicts may share: regional conditions, armed groups operating across borders, refugee movements, or effects on neighbouring countries’ security. Those connections are harder to notice in a sorted list.
 
-Examining the legend and the underlying index adds another insight: severity is multidimensional. A country can appear because violence is exceptionally deadly, geographically diffuse, dangerous to civilians, fragmented among many armed groups, or severe across several dimensions. The representation is therefore useful for identifying spatial patterns, but it cannot by itself explain *why* two similarly coloured countries received similar classifications; that knowledge requires returning to the four index components.
+Reading the legend and the index behind it also makes clear that severity has several dimensions. A country may be included because violence is especially deadly, widely spread, dangerous to civilians, fragmented among armed groups, or severe across several of these measures. The map helps us spot patterns, but it can't tell us why two countries received a similar colour. For that, we need the four index components.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Individual ACLED events are coded by date, location, event type, actors, fatalities, and civilian targeting.
-2. Events are aggregated within the Conflict Index methodology.
-3. Countries are evaluated across deadliness, civilian danger, geographic diffusion, and fragmentation.
-4. The top fifty are selected and simplified into a categorical global map.
-5. Labels and short copy identify the principal message without exposing the full event-level dataset.
+1. ACLED codes events by date, location, event type, actors, fatalities, and civilian targeting.
+2. The Conflict Index methodology brings these events together.
+3. Countries are assessed for deadliness, civilian danger, geographic diffusion, and fragmentation.
+4. The top fifty are selected and shown on a simplified categorical world map.
+5. Labels and short text explain the main message without displaying the full event-level dataset.
 
 #### Audience and format
 
-Instagram users are not expected to configure filters or study a dense methodological interface. The post therefore prioritizes recognition and memorability: a global pattern, a clear hierarchy, and one principal message. Methodological detail is displaced to the caption or linked ACLED material. This increases speed of comprehension but reduces the reader's ability to inspect uncertainty or individual events.
+Someone browsing Instagram should be able to recognize and remember the main pattern quickly. The post uses a clear visual hierarchy and one central message to make that possible. Details about the method sit in the caption or linked ACLED material. This speeds up reading, but leaves less room to inspect uncertainty or individual events.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data and method:** ACLED event data and the ACLED Conflict Index.
+- **Data and method:** ACLED event records and the ACLED Conflict Index.
 - **Indicators:** deadliness, danger to civilians, geographic diffusion, and armed-group fragmentation.
-- **Representation tools:** static social-media cartography and graphic design; the exact design software is not publicly documented.
+- **Representation tools:** static social-media maps and graphic design. The exact software is not publicly documented.
 - **Sources:** [Instagram post](https://www.instagram.com/p/DMMMCKBsBXP/) and [ACLED Conflict Index](https://acleddata.com/series/acled-conflict-index).
 
 ---
@@ -352,28 +344,28 @@ Instagram users are not expected to configure filters or study a dense methodolo
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *25 Years On: The Human Toll of 9/11* | Forbes India / Network18 Creative | A pictogram comparison of estimated deaths in post-9/11 wars, the Vietnam War, the Korean War, and the 1991 Gulf War, published for the 25th anniversary of the September 11 attacks. | [Instagram post](https://www.instagram.com/p/DdJcYNuMyWO/) |
+| *25 Years On: The Human Toll of 9/11* | Forbes India / Network18 Creative | A pictogram comparison of estimated deaths in post-9/11 wars, the Vietnam War, the Korean War, and the 1991 Gulf War, marking the 25th anniversary of the September 11 attacks. | [Instagram post](https://www.instagram.com/p/DdJcYNuMyWO/) |
 
 ### Context
 
-War-death estimates are normally presented in reports and tables that distinguish conflicts, time periods, direct violent deaths, and indirect deaths caused by disease, malnutrition, displacement, or infrastructure collapse. These distinctions matter, but a table does not make the relative scale of several wars immediately perceptible to a general audience.
+War-death estimates usually come in reports and tables that separate conflicts, periods, direct violent deaths, and indirect deaths from disease, malnutrition, displacement, or infrastructure collapse. Those distinctions matter. But for a general reader, a table doesn't immediately show how the scale of one war compares with another.
 
-Published by Forbes India on 11 September 2026, the post uses the 25th anniversary of the September 11 attacks to compare the estimated human toll of major US-involved wars since 1945. Its principal sources are identified in the image as Brown University's Costs of War project, US government data, and Reuters.
+Forbes India published the post on 11 September 2026, marking the 25th anniversary of the September 11 attacks. It compares estimated deaths in major wars involving the United States since 1945. The image names Brown University's Costs of War project, US government data, and Reuters as its main sources.
 
-### Representation used
+### How it works
 
-**Description:** The graphic places four estimated death ranges on a common horizontal composition:
+The graphic places four estimated death ranges alongside one another in a horizontal layout:
 
 - **post-9/11 wars:** 4.5–4.7 million;
 - **Vietnam War:** approximately 3 million or more;
 - **Korean War:** approximately 2.5–3 million;
 - **1991 Gulf War:** approximately 143,000–206,000.
 
-Each estimate is reinforced with a differently sized block of repeated human pictograms and a documentary photograph. Post-9/11 wars are emphasized in red, while the historical comparisons use grey. A side panel adds a second consequence of 9/11: illnesses among responders and survivors, including more than 9,000 deceased members of the World Trade Center Health Program.
+Each estimate comes with a block of repeated human pictograms and a documentary photograph. The blocks differ in size, with post-9/11 wars highlighted in red and the historical comparisons in grey. A side panel covers illnesses among 9/11 responders and survivors, including more than 9,000 deceased members of the World Trade Center Health Program.
 
-The visual hierarchy is designed for a phone screen. The title states the claim, the numbers preserve the ranges, and the pictogram blocks make the order of magnitude visible without requiring close reading of a table. The repeated figures should be read as a proportional and humanizing comparison rather than a literal one-symbol-per-person unit chart, because the graphic does not supply a fixed value for each icon.
+The layout works for a phone screen. The title introduces the point, the numbers keep the ranges visible, and the blocks of figures give a quick sense of scale. The image doesn't state a fixed value for each icon, so the figures are a proportional comparison with a human reference, rather than a literal one-symbol-per-person chart.
 
-The composition combines three representational layers: exact or ranged text supports numerical lookup; pictogram mass supports rapid magnitude comparison; and photographs associate each quantity with a recognizable historical conflict. The red/grey contrast directs attention to the post-9/11 total before the viewer compares it with the historical baselines.
+The numbers, pictograms, and photographs each have a role. Readers can check the values or ranges, compare the size of the groups, and connect them to recognizable historical conflicts. The red/grey contrast draws attention to post-9/11 deaths before the historical comparisons.
 
 <!-- Add one or more representations here.
 
@@ -385,37 +377,37 @@ Suggested material:
 ![Figure 11 — Post-9/11 estimate and source detail](images/instagram-2-human-toll-detail.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A table can provide the four ranges, but the pictogram blocks make the steep difference in magnitude immediately visible. The post-9/11 estimate is represented as the largest human cluster, followed by Vietnam and Korea, while the 1991 Gulf War appears much smaller. The red emphasis also frames post-9/11 wars as the central consequence under examination rather than merely one row in a list.
+The blocks make the differences in scale visible at a glance. Post-9/11 wars form the largest group, followed by Vietnam and Korea, while the 1991 Gulf War is much smaller. Highlighting post-9/11 wars in red also makes clear which consequence the post wants readers to focus on.
 
-The representation draws attention to another form of knowledge that a simple battle-death table may omit: wars continue to produce deaths through damaged healthcare, hunger, disease, and infrastructure collapse. That expanded definition is precisely why the post-9/11 estimate is so large. The graphic therefore teaches both a magnitude comparison and the importance of what a casualty estimate includes.
+The graphic brings in deaths that a battle-death table might leave out. Damaged healthcare, hunger, disease, and infrastructure collapse keep causing deaths beyond direct violence. Including these indirect deaths is why the post-9/11 estimate is so large. The comparison helps us see both the scale of loss and how much the definition behind an estimate matters.
 
-The comparison must nevertheless be interpreted cautiously. The image combines broad estimates from conflicts of different duration and uses a post-9/11 total that explicitly includes both direct and indirect deaths. The pictograms create a persuasive visual ranking, but they do not display uncertainty beyond the printed ranges or fully explain whether every historical estimate uses an identical methodology.
+We still need to read the comparison carefully. The conflicts lasted for different periods, and the post-9/11 total explicitly includes direct and indirect deaths. The pictograms make a persuasive ranking, but only the printed ranges show uncertainty. The image also doesn't fully establish whether the historical estimates use equivalent methods.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Death estimates are assembled from Brown University's Costs of War project, US government data, and Reuters reporting.
-2. Four major US-involved war categories are selected for comparison.
-3. Point estimates and uncertainty ranges are shortened into mobile-readable labels.
-4. The quantities are encoded through repeated human pictograms, exact text labels, colour emphasis, and documentary photographs.
-5. A separate callout adds long-term deaths linked to illnesses among 9/11 responders and survivors.
-6. A footnote discloses that the post-9/11 total includes direct violent deaths and indirect deaths from war-related disease, malnutrition, and infrastructure collapse.
+1. Death estimates come from Brown University's Costs of War project, US government data, and Reuters reporting.
+2. Four major categories of wars involving the United States are chosen for comparison.
+3. Point estimates and uncertainty ranges are shortened into labels that fit a phone screen.
+4. Repeated human pictograms, exact numerical labels, colour, and documentary photographs show the quantities.
+5. A separate callout adds long-term deaths associated with illnesses among 9/11 responders and survivors.
+6. A footnote explains that post-9/11 deaths include direct violent deaths and indirect deaths from war-related disease, malnutrition, and infrastructure collapse.
 
 #### Audience and format
 
-The representation is intended for citizens encountering the subject in a social feed. It uses a familiar anniversary, repeated human symbols, contrast, and a small number of comparisons to make millions of deaths legible within seconds. Photographs provide historical context, but the quantitative message is carried by the ordered pictogram blocks and printed ranges rather than by numbers placed decoratively over images.
+The post is meant for citizens coming across the subject in a social feed. A familiar anniversary, human figures, contrasting colours, and a few comparisons make numbers in the millions easier to grasp within seconds. Photographs provide historical context, while the ordered blocks and printed ranges carry the numerical comparison.
 
-This compression makes the comparison memorable but leaves little room for methodological explanation. The source line and direct/indirect-death footnote are therefore essential, and readers seeking to reuse the numbers should consult the underlying Costs of War research.
+This makes the comparison memorable, but leaves little space to explain the methods. The source line and the footnote about direct and indirect deaths are essential. Readers who want to reuse the figures should check the underlying Costs of War research.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Sources named in the image:** Brown University Costs of War project, US government data, and Reuters.
-- **Transformations:** cross-conflict selection, aggregation of direct and indirect deaths, range simplification, and pictogram scaling.
-- **Representation tools:** static editorial infographic design combining repeated-unit symbols, typography, colour, and documentary photographs; the exact software is not disclosed.
+- **Sources named in the image:** Brown University's Costs of War project, US government data, and Reuters.
+- **Transformations:** choosing conflicts, combining direct and indirect deaths, simplifying ranges, and scaling the pictograms.
+- **Representation tools:** a static editorial infographic with repeated symbols, typography, colour, and documentary photographs. The software is not disclosed.
 - **Primary source:** [Forbes India Instagram post](https://www.instagram.com/p/DdJcYNuMyWO/).
 - **Supporting source:** [Brown University Costs of War](https://watson.brown.edu/costsofwar/).
-- **Critical limitation:** the war categories cover different periods and the post does not demonstrate that every estimate was produced with the same methodology; the comparison should be read as an order-of-magnitude overview rather than a precise statistical ranking.
+- **Critical limitation:** the categories cover different periods, and the post does not establish that every estimate uses the same method. It is an overview of orders of magnitude, rather than a precise statistical ranking.
 
 ---
 
@@ -423,21 +415,21 @@ This compression makes the comparison memorable but leaves little room for metho
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *In Three Years of War, Almost 7 Million Ukrainians Have Fled* | Statista | An X post with a horizontal bar chart comparing the countries that had registered the largest numbers of refugees from Ukraine, based on UNHCR data. | [Post on X](https://x.com/StatistaCharts/status/1894411533658001761) |
+| *In Three Years of War, Almost 7 Million Ukrainians Have Fled* | Statista | An X post with a horizontal bar chart comparing the countries with the most registered refugees from Ukraine, using UNHCR data. | [Post on X](https://x.com/StatistaCharts/status/1894411533658001761) |
 
 ### Context
 
-Russia's full-scale invasion of Ukraine produced a large cross-border displacement crisis. UNHCR data record refugee populations by host country and reporting date. In a table, the reader can retrieve exact values; on X, Statista turns the same country-by-country comparison into a compact visual ranking designed for immediate reading.
+Russia's full-scale invasion of Ukraine forced large numbers of people to cross borders. UNHCR records refugee populations by host country and reporting date. Statista uses those records for a compact ranking on X, letting readers compare countries quickly while retaining the exact figures found in the tables.
 
-The post was published on 25 February 2025, three years after the full-scale invasion. Its image reports almost 7 million registered refugees in Europe and elsewhere and emphasizes the principal destination countries.
+The post was published on 25 February 2025, three years after the full-scale invasion. It reports almost 7 million registered refugees in Europe and elsewhere and highlights the countries with the largest registered populations.
 
-### Representation used
+### How it works
 
-**Description:** The attached image is a **ranked horizontal bar chart**, not a text-only card or link preview. Country names share a left baseline and the bars extend along one quantitative scale, so length directly encodes registered refugee count. Exact values at the bar ends support lookup, while descending order turns the chart into an immediate ranking.
+The attached image is a **ranked horizontal bar chart**. Country names line up on the left, and all bars use the same numerical scale. Bar length shows the number of registered refugees, end labels give exact values, and ordering the bars from largest to smallest makes the ranking easy to follow.
 
-Germany, Russia, and Poland form a visually distinct leading group; a large length break separates them from the Czech Republic and the shorter bars for the United Kingdom, Spain, Romania, Italy, and Slovakia. A separate overall total and a small directional Ukraine icon provide context without competing with the main comparison.
+Germany, Russia, and Poland clearly form the leading group. Their bars are much longer than those for the Czech Republic, followed by the United Kingdom, Spain, Romania, Italy, and Slovakia. An overall total and a small directional Ukraine icon add context without taking attention away from the country comparison.
 
-The horizontal orientation is important for the social format: country labels remain readable, the longest values receive sufficient space, and the entire ordering fits within one mobile image. A compact source and date note preserves provenance at the bottom of the chart.
+The horizontal layout leaves room for readable country names and large values while fitting the whole ranking into one mobile image. A short source and date note at the bottom tells readers where the figures came from.
 
 <!-- Add one or more representations here.
 
@@ -448,33 +440,33 @@ Suggested material:
 ![Figure 12 — Countries hosting the largest numbers of Ukrainian refugees](images/x-1-statista-ukraine-refugees.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-The chart reveals the distribution's **shape and tiers** immediately. Germany, Russia, and Poland each register roughly one million or more refugees, after which the values drop sharply. The Czech Republic forms a second tier, while the remaining displayed countries have substantially smaller totals. These discontinuities are easier to perceive from aligned lengths than from a column of numbers.
+The bars make the **shape and tiers** of the distribution easy to see. Germany, Russia, and Poland each have roughly one million or more registrations. There is then a sharp drop to the Czech Republic, which forms a second tier, followed by much smaller totals for the other displayed countries. These gaps are easier to spot in bar lengths than in a column of numbers.
 
-The chart also corrects a possible misconception created by the overall total. “Almost seven million” is not evenly spread across Europe; a small number of countries account for a large share of the displayed registrations. This raises further analytical questions—such as burden relative to host population or change over time—that the absolute-count chart does not answer.
+The overall total could hide how uneven the distribution is. A few countries account for a large share of the registrations shown. This raises questions about how the counts compare with host populations and how they have changed over time, neither of which this absolute-count chart answers.
 
-Examining the footnote reveals another important piece of knowledge: the country values are not all synchronized to the same reporting date. Russia's value is older than most others. The graphic remains useful for approximate ranking, but the visible date discrepancy warns against treating small differences as exact contemporaneous comparisons.
+The footnote matters here: the country figures don't all refer to the same reporting date. Russia's figure is older than most of the others. The chart is still useful for an approximate ranking, but small differences shouldn't be treated as exact comparisons at the same point in time.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. UNHCR country-level refugee records are selected for people displaced from Ukraine since 24 February 2022.
-2. Reporting dates are aligned as far as possible, with exceptions disclosed in the graphic's footnote.
-3. Countries are ranked by registered refugee count.
-4. The largest destinations are selected for display and encoded as aligned horizontal bars.
-5. Exact labels, an overall total, and a short source note are added for a self-contained social image.
+1. UNHCR country-level records are selected for refugees displaced from Ukraine since 24 February 2022.
+2. Reporting dates are aligned where possible, with exceptions noted in the footnote.
+3. Countries are ranked by the number of registered refugees.
+4. The largest destinations are shown as aligned horizontal bars.
+5. Exact values, an overall total, and a short source note make the image understandable on its own.
 
 #### Audience and format
 
-X favours topicality, compression, and shareability. The post reduces a large operational dataset to one question—where refugees were registered—and one ordered comparison. Citizens can understand the pattern without opening another page, while the source label and date note preserve a route to the underlying evidence. The tradeoff is that the graphic does not show change over time, refugee shares relative to host population, or uncertainty in registration counts.
+The post fits how people use X: it is topical, quick to read, and easy to share. A large operational dataset becomes an answer to one question—where refugees were registered. Readers can see the pattern without opening another page, and the source and date notes give them a way back to the evidence. The chart leaves out trends, counts relative to host populations, and uncertainty in registration figures.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data:** UNHCR refugee-registration data concerning displacement from Ukraine.
-- **Transformations:** country aggregation, descending ranking, top-destination selection, and horizontal-bar encoding.
-- **Representation tools:** a static Statista social-media chart; the exact production software is not specified.
+- **Data:** UNHCR refugee-registration records for people displaced from Ukraine.
+- **Transformations:** grouping records by country, ranking counts from largest to smallest, choosing the leading destinations, and drawing horizontal bars.
+- **Representation tools:** a static Statista social-media chart. The production software is not specified.
 - **Sources:** [X post](https://x.com/StatistaCharts/status/1894411533658001761) and the [UNHCR Ukraine Refugee Situation portal](https://data.unhcr.org/en/situations/ukraine).
-- **Date note:** the chart states that most values cover 16 December 2024 to 16 February 2025, with Russia reported to 30 June 2024; this comparability caveat is visible in the image.
+- **Date note:** most figures cover 16 December 2024 to 16 February 2025, while Russia's figure is reported to 30 June 2024. The image makes this difference in reporting dates visible.
 
 ---
 
@@ -482,21 +474,21 @@ X favours topicality, compression, and shareability. The post reduces a large op
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *UCDP Candidate Events Data: Lethal Events at PRIO-GRID Level* | Uppsala Conflict Data Program | An X post announcing updated candidate-event data and showing lethal organized-violence events on a standardized spatial grid. | [Post on X](https://x.com/UCDP/status/1883788484592415223) |
+| *UCDP Candidate Events Data: Lethal Events at PRIO-GRID Level* | Uppsala Conflict Data Program | An X post announcing updated candidate-event data and showing lethal organized violence on a standardized spatial grid. | [Post on X](https://x.com/UCDP/status/1883788484592415223) |
 
 ### Context
 
-UCDP Candidate Events provide near-real-time records that have not yet completed the full annual data-release process. Each event can include a date, location, actors, type of organized violence, and estimated fatalities. Publishing every row in a post would be impossible, while a global total would remove spatial structure.
+UCDP Candidate Events provide near-real-time records that have not yet gone through the full annual release process. An event may include a date, location, actors, type of organized violence, and estimated fatalities. There are too many records to show individually in a post, and a global total would lose the geographic pattern.
 
-The post aggregates lethal events to PRIO-GRID cells, creating a consistent global spatial unit for a rapid map-based update.
+The post groups lethal events into PRIO-GRID cells, using the same spatial unit around the world to give readers a quick map update.
 
-### Representation used
+### How it works
 
-**Description:** The attached image is a **gridded event map**. Each georeferenced candidate event is assigned to a PRIO-GRID cell, and the cell becomes the common spatial unit rather than a country, province, or named locality. Filled cells or changes in intensity encode where lethal organized violence was recorded during the stated period.
+The image is a **gridded event map**. Each event with a location is assigned to a PRIO-GRID cell. These cells provide a common spatial unit, instead of grouping events by country, province, or named place. Filled cells or changes in intensity show where lethal organized violence was recorded during the stated period.
 
-The regular lattice creates visual comparability: every cell is processed according to the same rule, and neighbouring cells can be read as concentrations, corridors, isolated incidents, or broader zones of activity. The world map supplies geographic orientation, while a restrained legend and short annotation keep the image legible in the X feed.
+Every cell follows the same processing rule, which makes the pattern easier to compare. Nearby active cells can form concentrations, corridors, isolated incidents, or wider zones of activity. The world map helps readers locate them, while a simple legend and short notes keep the image readable in the X feed.
 
-Aggregation is central to the representation. Multiple event rows can occupy one cell, and nearby events become a spatial pattern rather than a stack of overlapping point symbols. The post then links to a higher-resolution product for readers who need exact events or attributes.
+Grouping events this way allows several records to share one cell. Nearby events become a pattern rather than overlapping dots. Readers who need individual events or more detailed attributes can follow the link to the higher-resolution product.
 
 <!-- Add one or more representations here.
 
@@ -507,32 +499,32 @@ Suggested material:
 ![Figure 13 — UCDP lethal candidate events map](images/x-2-ucdp-candidate-events.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-The map reveals **concentration, diffusion, and spatial continuity**. A table of coordinates can identify each event, but it cannot immediately show whether lethal violence forms one dense hotspot, several disconnected theatres, a border-spanning cluster, or a broad corridor. Adjacent active cells make these configurations perceptually available.
+The map shows **where violence gathers, spreads, and connects across space**. A table of coordinates identifies individual events. Here, adjacent active cells help us see whether lethal violence forms one dense hotspot, separate conflict areas, a cluster crossing a border, or a long corridor.
 
-The regular grid also changes how territory is interpreted. Because the cells do not stop at administrative borders, the representation does not imply that violence is naturally contained by countries or provinces. Cross-border continuities and peripheral conflict zones remain visible, which is especially valuable when armed activity follows terrain, trade routes, ethnic regions, or front lines rather than formal boundaries.
+The grid doesn't stop at administrative borders. That helps us notice cross-border connections and conflict zones near the edges of countries or provinces. It is especially useful where armed activity follows terrain, trade routes, ethnic regions, or front lines rather than formal boundaries.
 
-At the same time, the map reveals only the spatial structure retained after aggregation. It does not show which actors produced the violence, whether several incidents occupy the same cell, or how uncertain individual coordinates may be. Examining it therefore yields knowledge about *where violence clusters*, not a complete explanation of *who acted, why, or what happened in each event*.
+The grouping also limits what we can learn. The map doesn't show who was responsible, whether one cell contains several incidents, or how uncertain the original coordinates might be. It helps us understand *where violence clusters*, but leaves questions about *who acted, why, and what happened in each event* open.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Candidate events are filtered to the relevant reporting period and to lethal organized violence.
-2. Event coordinates are assigned to PRIO-GRID cells.
-3. Events or fatalities are aggregated within each cell.
-4. The global distribution is encoded spatially with a limited legend and compact annotation.
-5. The post links the compressed map back to the downloadable or higher-resolution material.
+1. Candidate events are filtered to the reporting period and to lethal organized violence.
+2. Their coordinates are assigned to PRIO-GRID cells.
+3. Events or fatalities are grouped within each cell.
+4. The worldwide pattern is shown with a simple legend and short notes.
+5. The post links the condensed map to downloadable or higher-resolution material.
 
 #### Audience and format
 
-The X post addresses citizens, journalists, and researchers following new releases. It compresses an update into one spatial finding while retaining a direct path to the underlying data. Compared with Instagram, the tone is closer to a research announcement: current, concise, and source-oriented.
+Citizens, journalists, and researchers following new releases can take in one geographic finding and then go straight to the underlying data. The post reads like a research announcement: current, concise, and clear about its source. That gives it a different tone from the selected Instagram examples.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data:** UCDP Candidate Events Dataset.
+- **Data:** the UCDP Candidate Events Dataset.
 - **Spatial framework:** PRIO-GRID, a standardized global grid used in conflict research.
-- **Transformations:** temporal and fatality filtering, coordinate-to-grid assignment, and spatial aggregation.
-- **Representation tools:** static cartography; the exact software used for the posted map is not specified.
+- **Transformations:** filtering by time and fatalities, assigning coordinates to cells, and grouping events by location.
+- **Representation tools:** a static map. The software used to make it is not specified.
 - **Primary source:** [UCDP post on X](https://x.com/UCDP/status/1883788484592415223).
 
 ---
@@ -541,27 +533,27 @@ The X post addresses citizens, journalists, and researchers following new releas
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *Russia Bombs Ukraine Almost Every Night. This Is What It Sounds Like.* | *The Washington Post*: Lizzie Johnson, Serhii Korolchuk, Anastacia Galouchka, Kostiantyn Khudov, Ed Ram, Yutao Chen, Júlia Ledur, Bishop Sand, and collaborators | A 2025 interactive sonic data narrative that combines recordings, scroll-driven audio, drone-launch charts, loudness comparisons, and air-raid-siren durations to represent the nightly experience of aerial war. | [Interactive article](https://www.washingtonpost.com/world/interactive/2025/ukraine-bombing-sounds-war-sirens-russia/) |
+| *Russia Bombs Ukraine Almost Every Night. This Is What It Sounds Like.* | *The Washington Post*: Lizzie Johnson, Serhii Korolchuk, Anastacia Galouchka, Kostiantyn Khudov, Ed Ram, Yutao Chen, Júlia Ledur, Bishop Sand, and collaborators | A 2025 interactive story about nights of aerial war, combining recordings, scroll-driven audio, drone-launch charts, loudness comparisons, and air-raid-siren durations. | [Interactive article](https://www.washingtonpost.com/world/interactive/2025/ukraine-bombing-sounds-war-sirens-russia/) |
 
 ### Context
 
-By 2025, Russian drone and missile attacks had made air-raid warnings and explosive sounds a recurring part of life in Ukraine. Counts of drones, missiles, interceptions, and alarm durations document the escalation, but tables cannot convey the sensory burden of repeated nighttime attacks.
+By 2025, Russian drone and missile attacks had made sirens and explosions recurring sounds of life in Ukraine. Counts of drones, missiles, interceptions, and alarm durations show how attacks escalated. They are harder to use to understand what repeated nighttime attacks sound and feel like.
 
-The Washington Post combines data with field recordings and audio-enabled scrolling. It is an alternative paradigm because sound is part of the evidential and explanatory representation: the reader does not only inspect how frequently attacks occurred, but hears the acoustic environment associated with them.
+The Washington Post combines data with recordings from the field and audio that plays as readers scroll. Sound is part of the evidence and explanation, which places this example among the alternative approaches. Readers hear the environment of an attack alongside seeing how often attacks occurred.
 
-### Representation used
+### How it works
 
-**Description:** The experience asks the reader to enable audio and is explicitly designed to be experienced with sound on. Recorded explosions, drones, and warning sirens are coordinated with a scroll-driven narrative and conventional graphics, including:
+The experience asks readers to turn on the sound and listen as they scroll. Recorded explosions, drones, and warning sirens accompany the story and graphics, including:
 
-- a weekly time series of drones launched from January 2024 to July 2025;
-- daily comparisons of drones launched, shot down, or jammed;
-- perceived-loudness comparisons between war sounds and familiar daily sounds;
-- timelines showing how many hours air-raid sirens lasted during day and night;
-- photographs, maps, annotations, and testimony that locate the sounds in lived environments.
+- a weekly time series of drone launches from January 2024 to July 2025;
+- daily comparisons of drones launched, shot down, and jammed;
+- comparisons between the perceived loudness of war sounds and familiar everyday sounds;
+- timelines showing how many hours air-raid sirens lasted during the day and at night;
+- photographs, maps, notes, and testimony that connect the sounds to the places where people live.
 
-This is better described as an **interactive sonic or aural data narrative** than as pure algorithmic sonification: it combines quantitative mappings with documentary recordings rather than translating every numeric value directly into pitch or rhythm.
+This is an **interactive sonic or aural data narrative**. It combines quantitative graphics with documentary recordings. It is not pure algorithmic sonification, which would translate numerical values directly into sounds such as pitch or rhythm.
 
-The representation alternates between three scales of evidence. Long-run charts establish escalation across months; daily graphics distinguish launches from interceptions or jamming; sound and testimony return the reader to the duration of an individual night. Scroll position synchronizes these layers, while the audio control preserves the reader's ability to enter or leave the sensory experience.
+The story moves between three scales. Charts covering several months show the escalation. Daily graphics distinguish launches from interceptions and jamming. Sound and testimony bring readers back to one night and its duration. Scrolling keeps these layers together, and an audio control lets readers choose when to listen.
 
 <!-- Add one or more representations here.
 
@@ -574,35 +566,35 @@ Suggested material:
 ![Figure 15 — Drone and siren data views](images/alternative-1-ukraine-sonic-data.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-The time series reveals a sharp escalation in the number of drones launched, while the daily graphics show that “launched,” “intercepted,” and “reached the defended area” describe different stages of the attack process. The reader can therefore distinguish the scale of the assault from the number of weapons that ultimately penetrate defenses.
+The time series shows a sharp rise in drone launches. The daily graphics separate “launched,” “intercepted,” and “reached the defended area,” helping readers distinguish the size of an assault from the number of weapons that get through the defenses.
 
-The siren timelines expose **temporal saturation**. Danger is not only the number of attacks; it is also the number of hours during which people cannot know whether an alarm will end quietly or with an impact. Day/night separation makes the disruption of sleep and ordinary routines visible in a way that a daily total cannot.
+The siren timelines show **how much time alarms take up**, or temporal saturation. People may spend hours uncertain whether an alarm will end quietly or with an impact. Separating day and night makes the disruption to sleep and ordinary routines visible in a way that a daily total cannot.
 
-The audio layer adds perceptual knowledge unavailable in a table. Loudness, repetition, mechanical drone tones, warning signals, and sudden explosions produce a bodily understanding of distance and threat. The comparison with familiar everyday sounds supplies a perceptual reference scale, while the recordings prevent the loudness values from remaining abstract measurements.
+Hearing the sounds adds something a table cannot provide. Loudness, repetition, mechanical drone tones, sirens, and sudden explosions give a bodily sense of distance and threat. Comparing them with familiar sounds provides a reference, while the recordings keep loudness measurements connected to the experience they describe.
 
-Examining the charts and sound together changes the conclusion from “drone launches increased” to a richer one: the attacks became more frequent, occupied more of the night, repeatedly forced civilians into states of alert, and created an acoustic environment that persists even when many drones are intercepted. That experiential knowledge is the central contribution of the alternative paradigm.
+Taken together, the charts and recordings show attacks becoming more frequent, occupying more of the night, and repeatedly putting civilians on alert. They also show how the acoustic environment persists even when many drones are intercepted. This helps readers understand the escalation as an experience of daily life.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Ukrainian armed-forces reports provide dates and counts for Russian drone launches and defensive outcomes.
-2. Ukrainian authorities' alarm records provide the timing and duration of air-raid sirens.
+1. Ukrainian armed-forces reports provide dates and counts of Russian drone launches and defensive outcomes.
+2. Alarm records from Ukrainian authorities provide the timing and duration of air-raid sirens.
 3. Documentary teams record attacks, drones, alarms, testimony, and affected places.
-4. Loudness references and comparisons are used to contextualize the recorded sound environment.
-5. Quantitative series are encoded as line, daily-status, and duration graphics.
-6. Scrolling synchronizes charts, narrative text, imagery, and audio so the reader moves between measurement and sensory experience.
+4. Loudness references and comparisons put the recorded sounds in context.
+5. The numerical series become line charts, daily-status graphics, and duration graphics.
+6. Scrolling brings together the charts, text, images, and audio, connecting measurements with what readers hear.
 
 #### Audience and format
 
-The experience targets a broad international audience on desktop and mobile, but it asks for active participation through sound and scrolling. Charts preserve enough quantitative structure for comparison, while the audio makes the consequences memorable and embodied. The design should be approached with headphones or speakers, and its sensory intensity warrants clear user control over audio.
+The piece is made for a broad international audience on desktop and mobile. Readers take part by scrolling and listening. The charts allow numerical comparison, and the audio makes the consequences easier to remember and feel. Headphones or speakers help with the intended experience, and the intensity of the sounds calls for clear audio controls.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Data:** Russian drone-launch and defensive-outcome figures reported by the Ukrainian armed forces; air-raid-siren data from Ukrainian authorities; loudness references from the World Health Organization.
-- **Documentary sources:** original reporting, field audio, photography, and testimony from Ukraine.
-- **Transformations:** weekly and daily aggregation, launch/interception comparison, alarm-duration calculation, perceived-loudness comparison, and narrative sequencing.
-- **Representation tools:** responsive scrollytelling, interactive audio, documentary sound, line and duration charts, maps, photography, and annotations.
+- **Data:** Russian drone-launch and defensive-outcome counts reported by the Ukrainian armed forces; air-raid-siren records from Ukrainian authorities; and loudness references from the World Health Organization.
+- **Documentary sources:** original reporting, field recordings, photography, and testimony from Ukraine.
+- **Transformations:** grouping figures by week and day, comparing launches and interceptions, calculating alarm duration, comparing perceived loudness, and arranging the story.
+- **Representation tools:** responsive scrollytelling, interactive audio, documentary recordings, line and duration charts, maps, photography, and notes.
 - **Primary source:** [The Washington Post interactive](https://www.washingtonpost.com/world/interactive/2025/ukraine-bombing-sounds-war-sirens-russia/).
 
 ---
@@ -611,21 +603,21 @@ The experience targets a broad international audience on desktop and mobile, but
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *War Up Close — VR Museum of the War in Ukraine* | Mykola Omelchenko with Discover.ua, FreegenGroup, and project collaborators | A virtual-reality and immersive exhibition using 360-degree panoramas, drone footage, photogrammetry, and 3D models to document war damage in Ukrainian cities. | [Official project](https://warupclose.com/) |
+| *War Up Close — VR Museum of the War in Ukraine* | Mykola Omelchenko with Discover.ua, FreegenGroup, and project collaborators | A virtual-reality and immersive exhibition showing war damage in Ukrainian cities through 360-degree panoramas, drone footage, photogrammetry, and 3D models. | [Official project](https://warupclose.com/) |
 
 ### Context
 
-The project documents the physical consequences of Russia's full-scale invasion of Ukraine. Its material includes destroyed residential buildings, infrastructure, streets, monuments, and public spaces. The creators present the work online, through VR headsets, and in travelling exhibitions.
+The project documents the physical effects of Russia's full-scale invasion of Ukraine: damage to residential buildings, infrastructure, streets, monuments, and public spaces. People can view the material online, through VR headsets, and in travelling exhibitions.
 
-Unlike a statistical conflict map, the project is not primarily designed to compare event frequencies. It records what damaged places look like from within and preserves spatial evidence for memory, communication, assessment, and possible reconstruction.
+Its focus is the view from inside damaged places. Recording those views preserves spatial evidence for memory, communication, assessment, and possible reconstruction. Comparing event frequencies is not its main purpose.
 
-### Representation used
+### How it works
 
-**Description:** The project uses an **immersive spatial representation** rather than a conventional statistical chart. A 360-degree panorama maps photographs around the viewer, allowing head or pointer movement to determine the field of view. The audience is positioned inside the documented location instead of looking down on it from a fixed map.
+The project uses an **immersive spatial representation**. A 360-degree panorama places photographs all around the viewer, who can look in different directions by moving their head or pointer. This puts them inside the documented location, with a view they can explore.
 
-Panoramas preserve continuous relationships among floors, façades, rooms, streets, vehicles, debris, and neighbouring buildings. Hotspots or tour links move the viewer between capture positions. Photogrammetric or laser-scanned 3D models add depth and navigable geometry, while drone footage supplies an aerial overview that is unavailable from street level.
+Panoramas show how floors, façades, rooms, streets, vehicles, debris, and neighbouring buildings connect. Hotspots or tour links move viewers between capture positions. Photogrammetric or laser-scanned 3D models add depth and geometry they can navigate, while drone footage gives a view from above.
 
-The different views operate as a scale sequence: aerial imagery establishes the extent of damage; street-level panoramas establish orientation and proximity; detailed models preserve surfaces and structural form. In exhibitions, a headset, surrounding projection, physical objects, or a themed installation can further convert viewing into bodily participation.
+Each view shows a different scale. Aerial imagery reveals the extent of damage, street-level panoramas help viewers find their bearings and judge proximity, and detailed models preserve surfaces and structural form. In an exhibition, a headset, surrounding projection, physical objects, or themed installation can make the experience more physical.
 
 <!-- Add one or more representations here.
 
@@ -638,33 +630,33 @@ Suggested material:
 ![Figure 17 — War Up Close exhibition](images/alternative-2-war-up-close-vr.png)
 -->
 
-### Knowledge produced by examining the representation
+### What we can learn from it
 
-A table can record a location, coordinates, date, building type, and damage classification, but the immersive representation reveals **how damage is arranged**. The viewer can see whether destruction is confined to one façade or continues through neighbouring rooms and buildings, how debris occupies streets, and how damaged structures relate to homes, public spaces, and infrastructure around them.
+A table can record a location, coordinates, date, building type, and damage category. The immersive view shows **how the damage is arranged**. Viewers can see whether it affects one façade or continues through nearby rooms and buildings, how debris fills streets, and how damaged structures relate to surrounding homes, public spaces, and infrastructure.
 
-Moving between aerial and ground-level views produces orientation and scale. From above, the viewer perceives the extent of an affected neighbourhood; from within a panorama, the same area becomes a sequence of walls, rooms, roads, and sight lines. A label such as “residential building destroyed” is transformed from a category into a spatial situation.
+Moving between aerial and ground-level views helps with orientation and scale. From above, viewers can take in an affected neighbourhood. Within a panorama, they see its walls, rooms, roads, and sight lines. A label such as “residential building destroyed” becomes easier to understand as a place.
 
-The representation also preserves continuity and texture that classification removes: blast direction, exposed interiors, the density of surrounding construction, distances between structures, and the coexistence of damaged and still-standing elements. These observations can support memory, testimony, public understanding, and questions for later assessment.
+The views also preserve details that a damage category leaves out: blast direction, exposed interiors, the density of nearby buildings, distances between structures, and which damaged and standing elements remain alongside one another. These observations can support memory, testimony, public understanding, and later assessment questions.
 
-The gained knowledge is experiential rather than statistically representative. A tour can show selected places with extraordinary detail, but it does not establish how common that degree of damage is across the entire war zone. The viewer learns *what these documented places are spatially like*, not the overall frequency of each damage category.
+The detail tells us about the places shown. A tour can document selected sites closely, but it doesn't tell us how common that level of damage is across the whole war zone. We learn *what these documented places are spatially like*, without being able to infer the overall frequency of each damage category.
 
-#### From raw information to representation
+#### From raw information to the finished piece
 
-1. Teams obtain access and permissions to document affected sites.
-2. They capture 360-degree photography, conventional photographs, drone video, and spatial scans.
-3. Images are stitched into panoramas; laser scanning and photogrammetry generate three-dimensional models where appropriate.
-4. Sites are organized into virtual tours and immersive exhibition sequences.
-5. The material is delivered through browsers, Google Street View or Maps, VR headsets, immersive theatres, and travelling exhibitions.
+1. Teams obtain access and permission to document affected sites.
+2. They take 360-degree images and conventional photographs, record drone video, and capture spatial scans.
+3. Images are stitched into panoramas. Laser scanning and photogrammetry produce 3D models where appropriate.
+4. Sites are arranged into virtual tours and immersive exhibition sequences.
+5. The material is shared through browsers, Google Street View or Maps, VR headsets, immersive theatres, and travelling exhibitions.
 
 #### Audience and format
 
-The primary audience is the international public, including people geographically distant from Ukraine. The project minimizes abstraction and makes the viewer an active observer inside a documented environment. It sacrifices the efficiency of statistical comparison in exchange for presence, spatial understanding, memory, and testimony.
+The project is mainly for the international public, including people far from Ukraine. It lets them look around documented places as active observers. The experience supports a sense of presence, spatial understanding, memory, and testimony, while giving up the speed of comparison that a statistical view would offer.
 
-Because immersion can intensify emotional impact, presentation should include clear contextual framing, warnings for disturbing material, transparent provenance, and care not to turn suffering into spectacle.
+Immersion can make the emotional impact stronger. The presentation should give clear context, warn about disturbing material, explain where the evidence comes from, and take care not to turn suffering into spectacle.
 
-### Information Sources and Tools Used
+### Sources and tools
 
-- **Information sources:** on-site documentary photography and video of damaged locations in Ukraine.
+- **Information sources:** documentary photographs and videos taken at damaged sites in Ukraine.
 - **Capture tools:** high-resolution 360-degree cameras, drones, laser scanning, and photogrammetry.
 - **Delivery tools:** 3D modelling, virtual-tour software, Google Street View or Maps, VR headsets, browser-based panoramas, and immersive exhibition spaces.
 - **Creators and partners:** Mykola Omelchenko, Discover.ua, FreegenGroup, and public-agency and exhibition partners.
@@ -674,49 +666,49 @@ Because immersion can intensify emotional impact, presentation should include cl
 
 ## Cross-Format Comparison
 
-The ten examples show that the transformation of war-related information depends on the target audience and the task assigned to that audience.
+The ten examples show how much the treatment of war-related information depends on who will see it and what they are expected to do with it.
 
-| **Format** | **Primary audience** | **Treatment of raw information** | **Dominant representation strategy** | **Expected audience task** | **Principal knowledge produced** |
+| **Format** | **Main audience** | **How it treats raw information** | **How it presents the information** | **What the audience is expected to do** | **What we can learn** |
 |---|---|---|---|---|---|
-| Scientific paper | Researchers and domain experts | Preserves variables, methods, uncertainty, alternatives, and provenance | Coordinated views, methodological diagrams, interaction, and parameter inspection | Compare, question, validate, and reproduce | How a result or dataset was constructed, and where assumptions affect it |
-| Responsive web article | Citizens, professionals, and researchers | Selects evidence and reveals it progressively | Scroll-driven explanation, responsive maps, charts, diagrams, and annotations | Follow a narrative and inspect selected evidence | How a phenomenon develops, operates, or varies across time and space |
-| Instagram | Citizens and broad public | Reduces the evidence to one main message or a short carousel | Strong hierarchy and a simplified map or chart optimized for a phone screen | Recognize and remember a pattern quickly | One salient comparison, spatial pattern, scale, or consequence |
-| X | Citizens, journalists, and news-oriented users | Narrows data to a current period, release, or observation | Compact visual claim, ranked bar chart, or one map | Notice, understand, share, and follow a source | What changed, how cases compare, where activity is concentrated, or why an update matters |
-| Alternative paradigm | Visitors and general public | Combines data or documented places with sound, spatial immersion, and sensory experience | Interactive audio, VR, 360-degree media, documentary recordings, and scrollytelling | Hear or experience duration, magnitude, proximity, or place | What repeated attacks or a damaged environment mean at human scale |
+| Scientific paper | Researchers and domain experts | Keeps variables, methods, uncertainty, alternatives, and source history | Coordinated views, method diagrams, interaction, and checks of parameter settings | Compare, question, validate, and reproduce | How data or results were built and how assumptions affect them |
+| Responsive web article | Citizens, professionals, and researchers | Selects evidence and reveals it step by step | Scroll-driven explanations with responsive maps, charts, diagrams, and notes | Follow the story and examine selected evidence | How something unfolds, works, or varies over time and space |
+| Instagram | Citizens and the broad public | Reduces evidence to one main message or a short carousel | A clear visual hierarchy and a simplified map or chart that fits a phone screen | Quickly recognize and remember a pattern | A striking comparison, geographic pattern, scale, or consequence |
+| X | Citizens, journalists, and people following the news | Focuses on a current period, release, or observation | One compact visual claim, ranked bar chart, or map | Notice, understand, share, and follow the source | What changed, how cases compare, where activity clusters, or why an update matters |
+| Alternative paradigm | Visitors and the general public | Combines data or documented places with sound, immersion, and sensory experience | Interactive audio, VR, 360-degree media, documentary recordings, and scrollytelling | Hear or experience duration, magnitude, proximity, or place | What repeated attacks or damaged environments mean at a human scale |
 
-### How the formats portray raw information differently
+### How each format handles the information
 
-Scientific papers use data as **evidence to inspect**. Their representations retain complexity because peers must be able to challenge the method and determine whether the conclusion is defensible. VEHICLE exposes source overlap and parameter sensitivity; the topic-driver framework's Cluster View exposes ambiguous semantic matches and lets an expert decide which word associations should enter the analysis.
+Scientific papers treat data as **evidence we can inspect**. They keep enough detail for other researchers to question the method and judge the conclusion. VEHICLE shows overlap between sources and sensitivity to settings. The topic-driver framework’s Cluster View shows ambiguous word matches and lets experts decide which associations belong in the analysis.
 
-Responsive web articles use data as **an explained phenomenon**. Reuters and *The Guardian* select evidence and determine the order in which it appears. The reader receives more depth than in social media, but the exploration is bounded by an editorial story.
+Responsive web articles turn data into **something the reader can follow and understand**. Reuters and *The Guardian* choose the evidence and the order in which it appears. Readers get more depth than a social post offers, with an editorial story guiding how far and in which directions they explore.
 
-Instagram uses data as **a visually memorable message**. The evidence is heavily reduced, and strong hierarchy is necessary because the post appears among unrelated content on a small screen. In the selected examples, a map communicates geographic concentration while a pictogram chart communicates order of magnitude. The format is effective for recognition and awareness, but definitions—especially the distinction between direct and indirect war deaths—must remain visible in the image, caption, or linked source.
+Instagram turns data into **a message people can quickly recognize and remember**. A post has to work on a small screen among unrelated content, so it reduces the detail and gives the main point visual priority. In these examples, the map shows geographic concentration and the pictograms show order of magnitude. Definitions still need to be available in the image, caption, or linked source, especially the difference between direct and indirect war deaths.
 
-X uses data as **a compact and current finding**. A ranked bar chart or a newly released map can circulate quickly among citizens, journalists, and researchers. The narrow question and strong claim improve immediacy, but the reporting date, denominator, and source must be visible so that fast comparison does not become misleading.
+X turns data into **a compact finding about a current topic**. Ranked bars or a new map can spread quickly among citizens, journalists, and researchers. A focused question and clear claim help people understand an update, but the reporting date, denominator, and source must stay visible for the comparison to be valid.
 
-Alternative paradigms use data or documentary evidence as **experience**. The Washington Post's sonic narrative makes the repetition, loudness, and duration of aerial attacks perceptible; *War Up Close* reconstructs damaged places. These forms supplement numerical comparison with sensory and spatial knowledge, making temporal saturation, continuity, and proximity easier to understand.
+Alternative approaches turn data or documentary evidence into **an experience**. The Washington Post lets readers hear the repetition, loudness, and duration of aerial attacks. *War Up Close* lets them look around damaged environments. Alongside numerical comparison, these formats help us understand how time is taken up by danger, how places connect, and how close the effects can feel.
 
-### Representation-to-knowledge synthesis
+### What each example helps us see
 
-| **Case study** | **What the representation encodes** | **Knowledge produced by examining it** |
+| **Case study** | **How it shows the information** | **What it helps us understand** |
 |---|---|---|
-| VEHICLE | Parameter combinations as repeated histograms; events through linked geography and time; source and taxonomy composition through stacked bars and a radial tree | Whether integration is stable, where sources systematically disagree, and whether an apparently good global match hides regional or categorical failures |
-| Topic-driver framework, Figure 10 | Words as frequency-scaled bubbles; seed concepts through colour; semantic similarity through distance and clustering; accepted terms through a filter container | Which machine-generated word associations match the researcher's intended meaning, which are ambiguous, and why the proposed drought–civilian-abuse link remains weak |
-| Reuters drone investigation | Drone roles, ranges, scale, and operational stages through scroll-driven diagrams, maps, arrows, and annotated imagery | How different drones form a reconnaissance-to-strike system, how tactical and strategic ranges differ, and how the sensor-to-strike process is compressed |
-| *The Guardian* territorial-change story | Monthly change through a common time axis; control and advance through coloured geographic areas and annotations | Why November 2024 was exceptional, where the changes occurred, and why square kilometres gained do not directly equal strategic value |
-| ACLED Conflict Index Instagram map | Countries through geographic position; inclusion and severity through categorical colour and emphasis | Where severe conflicts form regional clusters and cross-border belts, while also revealing that similar categories may arise from different dimensions of severity |
-| Forbes India human-toll pictogram | Death ranges through printed values and repeated human symbols; editorial priority through red/grey contrast and photographs | The order-of-magnitude difference among the selected wars and the decisive effect of including indirect deaths in the post-9/11 estimate |
-| Statista Ukrainian-refugee chart | Host countries through aligned horizontal bars, descending order, and exact value labels | The concentration of registrations in a small leading group, the steep falloff after the top three, and the comparability problem created by different reporting dates |
-| UCDP candidate-events grid map | Lethal events aggregated into uniform spatial cells | Hotspots, corridors, isolated theatres, and cross-border continuities that are not apparent from coordinate rows or country totals |
-| Washington Post sonic narrative | Attack frequency, interceptions, loudness, and siren duration through charts synchronized with documentary audio | Escalation as an acoustic and temporal burden: repeated disrupted nights, uncertainty during alarms, and persistent threat even when many drones are intercepted |
-| *War Up Close* | Damaged sites through navigable 360-degree panoramas, aerial footage, and reconstructed 3D geometry | Spatial continuity, orientation, proximity, and the relationship between damaged rooms, buildings, streets, and neighbourhoods—without claiming statistical representativeness |
+| VEHICLE | Repeated histograms show parameter combinations; linked map and time views show events; stacked bars and a radial tree show source and classification makeup | Whether integration is stable, where sources disagree systematically, and whether good overall matching hides failures in a region or category |
+| Topic-driver framework, Figure 10 | Circle sizes show word frequency; colour shows the starting concept; distance and groups show related meanings; a selection box holds accepted terms | Which automated associations fit the intended meaning, which are ambiguous, and why the proposed drought–civilian-abuse link is weak |
+| Reuters drone investigation | Scroll-driven diagrams, maps, arrows, and labelled images show drone roles, ranges, scale, and operational stages | How drones work together from reconnaissance to strike, how tactical and strategic ranges differ, and how the sensor-to-strike process gets shorter |
+| *The Guardian* territorial-change story | A shared time axis shows monthly change; coloured areas and notes show control and advances | Why November 2024 stood out, where changes happened, and why area gained does not directly tell us strategic value |
+| ACLED Conflict Index Instagram map | Location identifies countries; colour and emphasis show inclusion and severity | Where severe conflicts cluster within regions and across borders, and how similar classifications can reflect different measures of severity |
+| Forbes India human-toll pictogram | Printed values and repeated figures show death ranges; red/grey contrast and photographs guide attention | How the selected wars differ in order of magnitude, and how including indirect deaths shapes the post-9/11 estimate |
+| Statista Ukrainian-refugee chart | Aligned horizontal bars, descending order, and exact labels show host-country counts | How registrations concentrate in the leading countries, how sharply counts drop after the top three, and how different reporting dates affect comparison |
+| UCDP candidate-events grid map | Lethal events are grouped into uniform spatial cells | Hotspots, corridors, isolated conflict areas, and cross-border patterns that are harder to spot in coordinates or country totals |
+| Washington Post sonic narrative | Charts and documentary audio show attack frequency, interceptions, loudness, and siren duration together | How escalation affects sound and time, through disrupted nights, uncertainty during alarms, and continued threat even when drones are intercepted |
+| *War Up Close* | Navigable 360-degree panoramas, aerial footage, and reconstructed 3D geometry show damaged sites | How damaged rooms, buildings, streets, and neighbourhoods connect, and their orientation and proximity, without assuming they are statistically representative |
 
 ### General conclusion
 
-The same type of raw record—date, location, actor, event type, fatality count, displacement status, territorial control, or damage classification—can support very different representations. Simplification is not inherently a weakness. It becomes problematic when the information removed is necessary to interpret the claim responsibly.
+The same kinds of records—dates, locations, actors, event types, fatalities, displacement status, territorial control, or damage categories—can become very different representations. Simplifying them is not automatically a weakness. It becomes a problem when the missing information is needed to interpret the claim responsibly.
 
-The appropriate design question is therefore not only “Which chart represents these data?” but:
+Choosing a design means thinking beyond which chart fits the data:
 
-> **Who is expected to view the representation, what should they be able to learn or do, and which contextual information must remain visible for that interpretation to be valid?**
+> **Who is going to see this, what should they learn or be able to do, and what context do they need to interpret it properly?**
 
-Across all formats, responsible war visualization should make the source and time period explicit, distinguish observations from estimates, avoid treating fatality figures as exact when the source does not support that precision, provide definitions for categories such as civilian targeting or territorial control, and use emotional imagery without turning suffering into spectacle.
+Whatever the format, readers should be able to see where the information comes from and which period it covers. Observations and estimates should be clearly distinguished, and fatality figures should not look more precise than the sources allow. Terms such as civilian targeting and territorial control need clear definitions. Emotional imagery also needs care, so that suffering does not become spectacle.
