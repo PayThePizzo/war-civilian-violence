@@ -529,7 +529,7 @@ interface TimelineState {
 `mode = share` converts the three categories to:
 
 ```text
-0–100%
+0-100%
 ```
 
 and makes it possible to see **changes in composition**, regardless of absolute intensity.
@@ -1042,7 +1042,7 @@ store.setState({ focusWeek: next });
 Interval:
 
 ```text
-500–800 ms
+500-800 ms
 ```
 
 per week, adjustable.
@@ -2034,7 +2034,7 @@ State:
 
 ```text
 Actor = All
-Date = Apr 2023–Dec 2025
+Date = Apr 2023-Dec 2025
 Week = latest/initial
 ```
 
@@ -2211,7 +2211,7 @@ Breakpoint:
 >= 1200 px
 full visualization
 
-768–1199 px
+768-1199 px
 reduced controls / reduced labels
 
 < 768 px

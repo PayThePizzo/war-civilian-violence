@@ -2,7 +2,7 @@
 
 **Tema:** War
 **Dataset:** UCDP Georeferenced Event Dataset (GED) Global
-**Caso principale:** Sudan, idealmente **2023–2025**
+**Caso principale:** Sudan, idealmente **2023-2025**
 **Focus analitico:** rapporto tra combattimento armato e violenza unilaterale contro i civili.
 
 Titolo di lavoro:
@@ -435,7 +435,7 @@ Qui userei:
 
 > **slopegraph / dumbbell / diverging actor comparison**
 
-Massimo 5–6 attori.
+Massimo 5-6 attori.
 
 Per esempio:
 

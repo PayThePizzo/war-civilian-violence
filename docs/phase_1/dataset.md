@@ -6,7 +6,7 @@ The project uses the UCDP Georeferenced Event Dataset (UCDP GED) as its source d
 
 ## Case study scope
 
-The intended case study is Sudan during 2023–2025.
+The intended case study is Sudan during 2023-2025.
 
 ## Raw-data handling policy
 

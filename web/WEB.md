@@ -1416,7 +1416,7 @@ Actor: [All actors]
 [data loaded: ...]
 
 Sudan
-2023–2025
+2023-2025
 ```
 
 If this foundation works, it means that:

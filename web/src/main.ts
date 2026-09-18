@@ -60,7 +60,7 @@ async function main(): Promise<void> {
   }));
 
   const { country, analysis_start, analysis_end } = data.metadata;
-  requireElement("analysis-period").textContent = `${country} · ${analysis_start} – ${analysis_end}`;
+  requireElement("analysis-period").textContent = `${country} · ${analysis_start} - ${analysis_end}`;
   app.setAttribute("aria-busy", "false");
   status.hidden = true;
 }

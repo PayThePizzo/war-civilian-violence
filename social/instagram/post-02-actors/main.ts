@@ -236,7 +236,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   const end = new Date(`${analysisEnd}T00:00:00.000Z`);
   const footer = document.createElement("p");
   footer.className = "social-footer";
-  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}–${formatMonthYear(end)}`;
+  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
   wrap.append(footer);
   return wrap;
 }

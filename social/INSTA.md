@@ -42,7 +42,7 @@ I would not copy the full timeline from the website. The Instagram version shoul
 │ │ Short evidence-based statement      │ │
 │ └─────────────────────────────────────┘ │
 │                                         │
-│ UCDP GED · Sudan · 2023–2025           │
+│ UCDP GED · Sudan · 2023-2025           │
 └─────────────────────────────────────────┘
 ```
 
@@ -70,7 +70,7 @@ I would avoid causal statements.
 
 ### Annotations
 
-Annotations become important here. I would select at most **2–3 moments**:
+Annotations become important here. I would select at most **2-3 moments**:
 
 ```text
 peak in one-sided share

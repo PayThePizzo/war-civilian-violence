@@ -212,7 +212,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   footer.className = "social-footer";
   const start = new Date(`${analysisStart}T00:00:00.000Z`);
   const end = new Date(`${analysisEnd}T00:00:00.000Z`);
-  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}–${formatMonthYear(end)}`;
+  footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
   return footer;
 }
 
