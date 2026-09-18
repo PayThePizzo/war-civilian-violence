@@ -43,6 +43,8 @@ These patterns invite to question about what nearby conflicts may share.Plus, th
 
 One problem that persist, it that the map helps us spot patterns, but it cannot tell us why two countries received a similar colour. For that, we need the four index components.
 
+To sum up, this visualization let us learn about where severe conflicts cluster within regions and across borders, and how similar classifications can reflect different measures of severity.
+
 ---
 
 ## Pipeline from raw information to the visualizations
