@@ -25,7 +25,7 @@ First of all, the graphic places **four estimated death ranges** alongside one a
 - **Korean War:** approximately $2.5-3$ million;
 - **1991 Gulf War:** approximately $143,000-206,000$.
 
-Each of the estimates comes with a block of repeated **human pictograms** and documentary photograph. However, it is not indicated whether there is a fixed value (in terms of lost human lives) for each icon.
+Each of the estimates comes with a block of repeated **human pictograms** and documentary photograph (which provides context). However, it is not indicated whether there is a fixed value (in terms of lost human lives) for each icon.
 
 Another aspect to consider is that, the blocks **differ in size** (directly proportional to the estimates), which is used to sort them from left to right in descending order. On the other hand, grouping multiple wars for the "Post 9/11" wars feels like cheating if they do not mention which wars they are referring to (ex: Iraq).
 
@@ -34,6 +34,8 @@ A **side panel** covers illnesses among 9/11 responders and survivors, including
 **The layout works well for a phone screen**: the title introduces the point, the numbers keep the ranges visible, and the blocks of figures give a quick sense of scale. Unfortunately, the image seems to be a bit packed.
 
 The **usage of the red/grey contrast draws attention** to post-9/11 deaths before the historical comparisons.
+
+Overall, elements such as a tragic anniversary, human figures, contrasting colours, and a few comparisons **make numbers easier to understand within seconds**.
 
 ---
 
@@ -46,14 +48,6 @@ First, the **blocks make the differences in scale really easy to see**. The read
 Secondly, **the graphic includes deaths that a battle-death table might leave out**. We know well that bombs and bullets are not the only aspect of war that brings death. In fact, damaged healthcare, hunger, diseases, and infrastructure collapse are all fatal, but they are not always taken into account. This comparison helps us focus on a new definition of war fatilities, one that recognizes how the consequences of destruction affect people's llves (even after the end of a conflict).
 
 Unfortunately some aspects like, grouping multiple wars estimates and comparing different historical periods (with different world demographics) might not seem fair since we might not have sources for non-combat deaths.
-
----
-
-## Audience and format
-
-The post is meant for citizens coming across the subject in a social feed. A familiar anniversary, human figures, contrasting colours, and a few comparisons make numbers in the millions easier to grasp within seconds. Photographs provide historical context, while the ordered blocks and printed ranges carry the numerical comparison.
-
-This makes the comparison memorable, but leaves little space to explain the methods. The source line and the footnote about direct and indirect deaths are essential. Readers who want to reuse the figures should check the underlying Costs of War research.
 
 ---
 
