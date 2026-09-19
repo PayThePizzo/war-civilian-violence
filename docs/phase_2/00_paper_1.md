@@ -11,11 +11,9 @@
 
 ## Context: Combining Conflict Datasets
 
-Researchers often need to combine conflict records from different organizations. That isn't straightforward: the same incident can appear in several databases with different dates, locations, actor names, event categories, or levels of geographic detail. An incident may also appear in one source and be missing from another.
+Researchers often need to combine conflict records from different organizations. That isn't straightforward: the **same incident can appear in several databases** with different dates, locations, actor names, event categories, or levels of geographic detail. An incident may also appear in one source and be missing from another.
 
-The paper looks at the results of MELTT, a semi-automatic procedure for matching and combining conflict datasets. MELTT uses limits on distance and time, along with hierarchical classifications, to decide which records may describe the same event. Changing these settings can change the matches. A table can list those matches, but it's harder to see the overall pattern, the overlap between sources, or how much the results depend on the settings.
-
-VEHICLE helps researchers check this process before they use the combined data in statistical analysis.
+The paper looks at the results of MELTT, a semi-automatic procedure for matching and combining conflict datasets. MELTT **uses limits on distance and time, along with hierarchical classifications, to decide which records may describe the same event**. A table can list those matches, but it is harder to see the overall pattern.
 
 ---
 
@@ -49,26 +47,34 @@ The interface uses **multiple coordinated views**. Each shows a different part o
 
 ### Other Options
 
-Brushing, filtering, highlighting, and drill-down link the views. Select a bar, map region, parameter cell, or tree branch, and the same records are highlighted across the interface. This makes it easier to follow a problem through the different views.
+Brushing, filtering, highlighting, and drill-down link the views. Select a bar, map region, parameter cell, or tree branch, and the same records are highlighted across the interface.
+
+This makes it easier to follow a problem through the different views.
 
 ---
 
 ## Knowledge: What can we learn from it?
 
-The linked views help show whether agreement and disagreement between sources follow **systematic patterns**. A table can tell us which records matched. The interface also shows whether matching failures gather in a particular country, period, source, actor category, or part of the event classification. For instance,
+The linked views help show whether agreement and disagreement between sources follow **systematic patterns**. A table. instead, can only tell us which records matched.
 
-- Clusters in TempMap may point to uneven geographic or time coverage
+The interface also shows whether matching failures gather in a particular country, period or part of the event classification. For example,
+
+- Clusters in TempMap may point to uneven geographic or time coverage, while
 - Uneven stacked bars may suggest that one source supplies a disproportionate share of certain event types.
 
-ParaMultiples helps researchers judge **how stable the integration is**. If nearby cells look similar, small changes to the thresholds probably make little difference to the combined dataset. A sudden change between cells points to a parameter "cliff": a small choice produces a very different result. That kind of sensitivity is almost impossible to spot in a single exported match table.
+In particular ParaMultiples helps researchers judge **how stable the integration is**. If the nearby cells look similar, small changes to the thresholds probably make little difference to the combined dataset. On the other hand, a sudden change between cells points to a parameter "cliff": a small choice produces a very different result. **That kind of sensitivity is almost impossible to spot in a match table**.
 
-The views also make it easier to notice local problems in results that look good overall. A setting may produce an acceptable total while the map or classification reveals a serious failure in one region or category. We can therefore learn *where the sources agree, where they disagree, which choices affect that disagreement, and whether the combined dataset is reliable enough for a particular research question*.
+The views also **make it easier to notice local problems in results that look good overall.** A setting may produce an acceptable total while the map or classification reveals a serious failure.
+
+Thus, we can learn *where the sources agree, where they disagree, which choices affect that disagreement, and whether the combined dataset is reliable enough for a particular research question*.
 
 ---
 
 ## Pipeline from raw information to the visualizations
 
-1. ACLED, UCDP GED, the Global Terrorism Database, and the Social Conflict Analysis Database collect conflict records independently.
+From the paper, we can briefly summarize the representations pipeline as follows:
+
+1. Data is collected autonoumously by ACLED, UCDP GED, the Global Terrorism Database, and the Social Conflict Analysis Database.
 2. The records are standardized and sorted using shared classifications for actors, event types, and geographic precision.
 3. MELTT uses distance and time thresholds to find possible matches, then calculates similarity using the classifications.
 4. VEHICLE calculates counts, distributions, match scores, and differences between settings.
@@ -76,8 +82,4 @@ The views also make it easier to notice local problems in results that look good
 
 ### Sources and tools
 
-- **Data:** ACLED, UCDP GED, Global Terrorism Database, and Social Conflict Analysis Database. The study covers 197,502 conflict events in Africa from 1997 to 2016.
-- **Transformation method:** MELTT's hierarchical event-matching procedure, using distance and time settings.
-- **Design method:** Munzner's Nested Model, domain-task abstraction, iterative prototypes, case studies, and evaluation with conflict researchers.
-- **Representation tools:** a browser-based visual-analytics application with custom interactive statistical, geographic, and hierarchical views. The paper focuses on how the system looks and works, rather than on a particular commercial charting tool.
-- **Primary source:** [Computer Graphics Forum article](https://onlinelibrary.wiley.com/doi/full/10.1111/cgf.14284).
+- **Primary sources:** [ACLED](https://acleddata.com/), [UCDP GED](https://ucdp.uu.se/ged/), [Global Terrorism Database](https://www.start.umd.edu/data-tools/GTD), and [Social Conflict Analysis Database](https://korbel.du.edu/sie/social-conflict-analysis-database/). The study covers 197,502 conflict events in Africa from 1997 to 2016.
