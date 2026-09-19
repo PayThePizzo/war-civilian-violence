@@ -14,8 +14,6 @@ I would not copy the full timeline from the website. The Instagram version shoul
 
 ```text
 ┌─────────────────────────────────────────┐
-│ FROM BATTLEFIELD TO CIVILIANS          │
-│                                         │
 │ How did violence change over time       │
 │ in Sudan?                               │
 │                                         │

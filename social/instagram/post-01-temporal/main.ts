@@ -48,7 +48,6 @@ async function render(): Promise<void> {
 
   root.innerHTML = "";
   root.append(
-    buildEyebrow(),
     buildHeadline(),
     buildSubtitle(),
     buildDivider(),
@@ -104,13 +103,6 @@ function selectAnnotatedWeeks(weekly: WeeklyMetric[]): AnnotatedWeek[] {
   return selected
     .sort((a, b) => a.week.week_start.getTime() - b.week.week_start.getTime())
     .map((entry, index) => ({ ...entry, rank: index + 1 }));
-}
-
-function buildEyebrow(): HTMLParagraphElement {
-  const eyebrow = document.createElement("p");
-  eyebrow.className = "social-eyebrow";
-  eyebrow.textContent = "From Battlefield to Civilians · UCDP GED";
-  return eyebrow;
 }
 
 function buildHeadline(): HTMLHeadingElement {

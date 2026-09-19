@@ -55,7 +55,6 @@ async function render(): Promise<void> {
 
   root.innerHTML = "";
   root.append(
-    buildEyebrow(),
     buildHeadline(),
     buildSubtitle(),
     buildDivider(),
@@ -69,13 +68,6 @@ async function render(): Promise<void> {
   );
 
   document.body.dataset.renderState = "ready";
-}
-
-function buildEyebrow(): HTMLParagraphElement {
-  const eyebrow = document.createElement("p");
-  eyebrow.className = "social-eyebrow";
-  eyebrow.textContent = "From Battlefield to Civilians · UCDP GED";
-  return eyebrow;
 }
 
 function buildHeadline(): HTMLHeadingElement {

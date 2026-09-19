@@ -69,16 +69,6 @@ body {
   padding: 80px;
 }
 
-.social-eyebrow {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 16px;
-}
-
 .social-headline {
   font-family: var(--font-serif);
   font-weight: 500;

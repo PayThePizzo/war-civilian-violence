@@ -125,7 +125,6 @@ async function render(): Promise<void> {
   const leftCol = document.createElement("div");
   leftCol.className = "x-left-col";
   leftCol.append(
-    buildEyebrow(),
     buildHeadline(),
     buildSubtitle(),
     Object.assign(document.createElement("div"), { className: "spacer" }),
@@ -148,13 +147,6 @@ async function render(): Promise<void> {
   root.append(leftCol, rightCol);
 
   document.body.dataset.renderState = "ready";
-}
-
-function buildEyebrow(): HTMLParagraphElement {
-  const eyebrow = document.createElement("p");
-  eyebrow.className = "social-eyebrow";
-  eyebrow.textContent = "From Battlefield to Civilians · UCDP GED";
-  return eyebrow;
 }
 
 function buildHeadline(): HTMLHeadingElement {

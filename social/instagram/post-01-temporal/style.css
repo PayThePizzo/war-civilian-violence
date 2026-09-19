@@ -1,5 +1,5 @@
 /* Post 1 ("WHEN") - layout and typography specific to this post, on top of
- * social.css's shared canvas/eyebrow/headline/subtitle/finding/footer rules. */
+ * social.css's shared canvas/headline/subtitle/finding/footer rules. */
 
 .social-divider {
   border: none;
@@ -123,7 +123,7 @@ svg text {
 }
 
 .social-headline {
-  font-size: 44px;
+  font-size: 52px;
   margin-bottom: 14px;
 }
 
