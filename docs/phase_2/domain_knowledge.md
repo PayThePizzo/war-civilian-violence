@@ -1,6 +1,7 @@
 # Phase 2 - Domain Knowledge: Representing War Across Media
 
 This phase looks at how information about war (our selected theme) changes when it moves between media and reaches different audiences.
+
 For each example, we ask what information was selected, how it was grouped and shown, and how the finished piece helps people understand it.
 
 ---
@@ -17,7 +18,9 @@ The ten examples show how much the treatment of war-related information depends 
 | X | Citizens, journalists, and people following the news | Focuses on a current period, release, or observation | One compact visual claim, ranked bar chart, or map | Notice, understand, share, and follow the source | What changed, how cases compare, where activity clusters, or why an update matters |
 | Alternative paradigm | Visitors and the general public | Combines data or documented places with sound, immersion, and sensory experience | Interactive audio, VR, 360-degree media, documentary recordings, and scrollytelling | Hear or experience duration, magnitude, proximity, or place | What repeated attacks or damaged environments mean at a human scale |
 
-### How each format handles the information
+---
+
+## How each format handles the information
 
 Scientific papers treat data as **evidence we can inspect**. They keep enough detail for other researchers to question the method and judge the conclusion. VEHICLE shows overlap between sources and sensitivity to settings. The topic-driver framework’s Cluster View shows ambiguous word matches and lets experts decide which associations belong in the analysis.
 
@@ -29,7 +32,9 @@ X turns data into **a compact finding about a current topic**. Ranked bars or a 
 
 Alternative approaches turn data or documentary evidence into **an experience**. The Washington Post lets readers hear the repetition, loudness, and duration of aerial attacks. *War Up Close* lets them look around damaged environments. Alongside numerical comparison, these formats help us understand how time is taken up by danger, how places connect, and how close the effects can feel.
 
-### What each example helps us see
+---
+
+## What each example helps us see
 
 | **Case study** | **How it shows the information** | **What it helps us understand** |
 |---|---|---|
@@ -44,12 +49,3 @@ Alternative approaches turn data or documentary evidence into **an experience**.
 | Washington Post sonic narrative | Charts and documentary audio show attack frequency, interceptions, loudness, and siren duration together | How escalation affects sound and time, through disrupted nights, uncertainty during alarms, and continued threat even when drones are intercepted |
 | *War Up Close* | Navigable 360-degree panoramas, aerial footage, and reconstructed 3D geometry show damaged sites | How damaged rooms, buildings, streets, and neighbourhoods connect, and their orientation and proximity, without assuming they are statistically representative |
 
-### General conclusion
-
-The same kinds of records-dates, locations, actors, event types, fatalities, displacement status, territorial control, or damage categories-can become very different representations. Simplifying them is not automatically a weakness. It becomes a problem when the missing information is needed to interpret the claim responsibly.
-
-Choosing a design means thinking beyond which chart fits the data:
-
-> **Who is going to see this, what should they learn or be able to do, and what context do they need to interpret it properly?**
-
-Whatever the format, readers should be able to see where the information comes from and which period it covers. Observations and estimates should be clearly distinguished, and fatality figures should not look more precise than the sources allow. Terms such as civilian targeting and territorial control need clear definitions. Emotional imagery also needs care, so that suffering does not become spectacle.

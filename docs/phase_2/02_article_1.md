@@ -21,13 +21,7 @@ The article uses **scroll-driven visual explanation**. As readers scroll it can 
 
 The story (i) starts with an individual drone, (ii) then moves to the nearby battlefield, and finally (iii) it shows the wider geography of long-range strikes.
 
-The drone scene stays in place while details change, making it easier to focus on one relationship at a time.
-
-Let us look at the drone scroll-driven information visualization.
-
-![Drone Scroll](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/gifs/Article1.gif?raw=TRUE)
-
-Later on, there are also labelled drawings explain drone components and roles. Maps and distance comparisons show how far drones can travel, while silhouettes and proportional drawings show their physical size.
+The drone scene stays in place while details change, making it easier to focus on one relationship at a time. Later on, there are also labelled drawings explain drone components and roles. Maps and distance comparisons show how far drones can travel, while silhouettes and proportional drawings show their physical size.
 
 ![Surveillance](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article1%20-%20Surveillance.png?raw=TRUE)
 

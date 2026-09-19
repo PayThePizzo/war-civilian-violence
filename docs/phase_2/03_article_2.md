@@ -17,11 +17,7 @@ The main source is the Institute for the Study of War's daily control-of-terrain
 
 ## Representations: Lost Terrain and Chart
 
-The article combines a **time series of territorial change** with **annotated control-of-terrain maps**.
-
-![Lost Terrain](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/gifs/Article2.gif?raw=TRUE)
-
-The chart lines up the months on one time axis and shows the amount of land gained or lost. This makes faster changes and unusually large monthly losses easy to spot. A note highlights November 2024.
+The article combines a **time series of territorial change** with **annotated control-of-terrain maps**. The chart lines up the months on one time axis and shows the amount of land gained or lost. This makes faster changes and unusually large monthly losses easy to spot. A note highlights November 2024.
 
 ![Chart](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article2%20-%20Chart.png?raw=TRUE)
 
