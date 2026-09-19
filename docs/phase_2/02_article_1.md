@@ -9,7 +9,7 @@
 
 ## Context: Drone Combat
 
-When the article was published in March 2024, drones had become central to reconnaissance, artillery guidance, direct attacks, and long-range strikes in Ukraine. Reuters drew on more than 50 attack videos, technical UAV research, interviews with manufacturers, soldiers, and officials, and information about drone types and battlefield roles.
+When the article was published in March 2024, drones had become central to direct attacks and long-range strikes in Ukraine.
 
 Reuters needed to explain how this technology works on the battlefield to a broad audience, including citizens, journalists, professionals, and people interested in policy.
 
@@ -17,9 +17,13 @@ Reuters needed to explain how this technology works on the battlefield to a broa
 
 ## Representations: Drone and Maps
 
-The article uses **scroll-driven visual explanation**. As readers scroll, objects, labels, routes, ranges, and tactical stages appear. The scene stays in place while details change, making it easier to focus on one relationship at a time.
+The article uses **scroll-driven visual explanation**. As readers scroll it can see routes, ranges, and tactical stages appear.
 
-Let us look at the drone scroll-driven information visualizzation.
+The story (i) starts with an individual drone, (ii) then moves to the nearby battlefield, and finally (iii) it shows the wider geography of long-range strikes.
+
+The drone scene stays in place while details change, making it easier to focus on one relationship at a time.
+
+Let us look at the drone scroll-driven information visualization.
 
 ![Drone Scroll](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/gifs/Article1.gif?raw=TRUE)
 
@@ -27,40 +31,41 @@ Later on, there are also labelled drawings explain drone components and roles. M
 
 ![Surveillance](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article1%20-%20Surveillance.png?raw=TRUE)
 
-Arrows and transitions walk readers through reconnaissance, target identification, communication, artillery direction, and attack. Photographs and evidence from video connect the diagrams to observed battlefield use.
-
-The story starts with an individual drone, moves out to the nearby battlefield, and then shows the wider geography of long-range strikes. 
+Arrows and transitions walk readers through target identification, communication and attack. Furthermore, real photos and video evidence manage to connect the diagrams to observed battlefield use.
 
 ![Surveillance](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_2/images/Article%201%20-%20Map.png?raw=TRUE)
 
-This gives numbers such as range, cost, and payload a context. On mobile, wide scenes become vertical sequences, with labels reduced or moved so the explanation stays in the same order.
+This last map gives a context to "numbers" such as range and cost. On mobile, wide scenes become vertical sequences, with labels reduced or moved so the explanation stays in the same order.
+
+Overall, the article makes readers follow an explanation chosen by the journalists. There is a storyline that connects the zoom-in of the drone's components to a zoomed-out map of the whole conflict. The reading and understanding is facilitated by short passages, animations, and responsive graphics.
 
 ---
 
 ## Knowledge: What can we learn from it?
 
-A table could compare drone models, costs, speeds, payloads, and ranges. The diagrams help us see **how their roles depend on one another**: reconnaissance drones locate activity, communications pass on the information, artillery or attack drones respond, and longer-range systems reach beyond the front. Their battlefield effect depends on how these roles work together.
+A table could compare drone models, costs, speeds and ranges. The diagrams help us see **how their roles depend on one another**:
 
-The changes in scale also help us understand distance. "Ten kilometres" or "several hundred kilometres" becomes a visible relationship between the front line, command infrastructure, cities, and launch or target areas. We can distinguish tactical drones used near soldiers from strategic systems able to reach far behind the front.
+1. Reconnaissance drones find the activity,
+2. Communications pass on the information,
+3. Artillery or attack drones respond,
+4. Longer-range systems reach beyond the front.
 
-Putting observation, decision, and attack in one sequence shows how inexpensive aerial systems can shorten the time between spotting a target and acting on the information. It also shows the imbalance between relatively cheap devices and potentially high-value targets. These relationships would be hard to pick up from a specification table.
+Their **battlefield effect depends on how these roles work together**.
+
+The **changes in scale also help us understand distance**. "Ten kilometres" or "several hundred kilometres" becomes a **visible relationship between the front line**,cities and target areas.
+
+Putting observation, decision, and attack in one sequence shows **how low-cost drone systems can immediately act after spotting activity**. It also shows the imbalance between relatively cheap devices and potentially high-value targets. These relationships would be hard to pick up from a table.
 
 ---
 
 ## Pipeline from raw information to the visualizations
 
-1. Reuters gathers video evidence, technical research, interviews, and specifications.
-2. The material is checked and organized by drone type, function, range, and stage of use.
-3. Journalists select representative examples from the evidence archive.
-4. Technical details become diagrams, maps, size and distance comparisons, and a step-by-step account of operations.
-5. Scrolling reveals the information in an order that guides the explanation.
-
-### Audience and format
-
-Readers follow an explanation chosen by the journalists. Short passages, animation, and responsive graphics make the military system understandable without specialist knowledge. The story offers more detail than a social post and more guidance than a research dashboard, where users would choose their own questions and filters.
+Unfortunately we initially had **no description** of how the visualization was made.
 
 ### Sources and tools
 
-- **Information sources:** analysis of more than 50 drone-attack videos, UAV research, and interviews with more than a dozen manufacturers, soldiers, and officials.
-- **Representation tools:** custom responsive graphics, labelled illustrations, maps, animation, and scroll-driven transitions. Reuters does not publicly list every software library used on the page.
-- **Primary source:** [Reuters visual investigation](https://www.reuters.com/graphics/UKRAINE-CRISIS/DRONES/dwpkeyjwkpm/).
+- **Primary sources:** [Royal United Services Institute (RUSI)](https://www.rusi.org/), [ACLED: Armed Conflict Location & Event Data Project](https://acleddata.com/) (Drone attacks from Feb. 24, 2022, to March 12, 2024), [Institute for the Study of War](https://understandingwar.org/) with [American Enterprise Institute’s Critical Threats Project](https://www.criticalthreats.org/) (Russian-occupied territory data as of 3 p.m. EST, March 12), [Council on Foreign Relations](https://www.cfr.org/), [CSET: Center for Security and Emerging Technology](https://cset.georgetown.edu/)
+
+For what concenrs the videos of FPV drone attacks, the article states that: 
+
+"The videos have been verified by Eleanor Whalley, of Reuters' Visual Verification team. They were sourced from Telegram channels or provided by various drone units of the Ukrainian Army (including the Azov Brigade in Kremina, the 110th Mechanised Brigade in Lastochkyne and Avdiivka, and the State Border Service of Ukraine in Vodyane and Hryanykivka)."
