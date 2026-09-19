@@ -68,18 +68,18 @@ npm run export:instagram   # or export:x
 
 ## Architecture
 
-### Pipeline (Python) → derived CSVs → 4 web visualizations
+### Pipeline (Python) -> derived CSVs -> 4 web visualizations
 
 ```
 data/raw/GEDEvent_v26_1.csv
-  → 01_clean_events.py        → data/processed/events_clean.parquet   (1 row = 1 UCDP event)
-  → 02_build_actor_events.py  → data/processed/actor_events.parquet   (1 row = actor × event)
-                               → data/processed/actor_lookup.csv
-  → 03_build_weekly_metrics.py → data/derived/weekly_metrics.csv      (Web 1: timeline)
-  → 04_build_h3_metrics.py     → data/derived/h3_weekly_metrics.csv   (Web 2: H3 map)
-  → 05_build_actor_profiles.py → data/derived/actor_profiles.csv      (Web 3: actor fingerprints)
-  → 06_build_event_windows.py  → data/derived/event_windows.csv       (Web 4: before/after episodes)
-  → 07_validate_outputs.py     → data/validation/validation_report.json + validation_failures.csv
+  -> 01_clean_events.py        -> data/processed/events_clean.parquet   (1 row = 1 UCDP event)
+  -> 02_build_actor_events.py  -> data/processed/actor_events.parquet   (1 row = actor × event)
+                               -> data/processed/actor_lookup.csv
+  -> 03_build_weekly_metrics.py -> data/derived/weekly_metrics.csv      (Web 1: timeline)
+  -> 04_build_h3_metrics.py     -> data/derived/h3_weekly_metrics.csv   (Web 2: H3 map)
+  -> 05_build_actor_profiles.py -> data/derived/actor_profiles.csv      (Web 3: actor fingerprints)
+  -> 06_build_event_windows.py  -> data/derived/event_windows.csv       (Web 4: before/after episodes)
+  -> 07_validate_outputs.py     -> data/validation/validation_report.json + validation_failures.csv
 ```
 
 `build_all.py` runs all stages in strict order and stops immediately on the first failure - never continues with stale downstream outputs. It also writes `data/derived/metadata.json` (frontend-facing config subset) and `data/derived/build_manifest.json` (provenance/checksums/row counts).

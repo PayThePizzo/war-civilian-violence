@@ -18,7 +18,7 @@ Shared plumbing used by all four, not repeated per section below:
 |---|---|
 | `src/app/state.ts`, `src/app/store.ts` | The two-field global state and its pub/sub store. |
 | `src/data/types.ts` | TypeScript row shapes, one per CSV, matching `DATA_FILES.md` field names exactly. |
-| `src/data/parsers.ts` | Per-column CSV → typed value conversion (dates, numbers, nullable numbers, booleans); fails loud on schema drift. |
+| `src/data/parsers.ts` | Per-column CSV -> typed value conversion (dates, numbers, nullable numbers, booleans); fails loud on schema drift. |
 | `src/data/loaders.ts` | Fetches and parses all five files (`weekly_metrics.csv`, `h3_weekly_metrics.csv`, `actor_profiles.csv`, `event_windows.csv`, `metadata.json`) once at startup. |
 | `src/data/selectors.ts` | Pure read-only queries over the loaded data (filtering, the `__ALL__`-safe aggregations, episode ranking). Every view reads through here, never the raw arrays directly. |
 | `src/ui/ActorSelector.ts` | The global actor dropdown + Reset button, in the `#scope-bar` nav; writes `selectedActorId` to the store. |
@@ -93,7 +93,7 @@ An H3-hexagon choropleth over an OpenStreetMap base layer. Two modes:
 - **Week** - hexagons for a single week, entered automatically when a week is clicked in Timeline
   (or advanced manually with a ◀ / Play / ▶ stepper).
 
-Hexagon fill color interpolates from "combat" to "one-sided" (orange → red) on the chosen share
+Hexagon fill color interpolates from "combat" to "one-sided" (orange -> red) on the chosen share
 metric; opacity/elevation (2D/3D toggle) scales with the chosen intensity metric (events,
 best-estimate fatalities, or one-sided civilian fatalities).
 
@@ -136,7 +136,7 @@ same scope plus the number of cells actually drawn.
   dropdown, or a Web3/Web4 click that only touches `selectedActorId` - must not clobber a user's
   manual ▶/Play stepping or their manual return to Overview mode, since mode/week/metric/2D-3D are
   all local-only state.
-- **Hover:** deck.gl picking → tooltip with the cell's full metric breakdown.
+- **Hover:** deck.gl picking -> tooltip with the cell's full metric breakdown.
 - No write-back to the global store from this view - it is purely a consumer of `selectedActorId`
   and `focusWeek`.
 
@@ -163,7 +163,7 @@ dimension."), and a second line discloses that the skewed count/fatality axes us
 | File | Role |
 |---|---|
 | `src/viz/actors/ActorParallelCoordinates.ts` | The view class: builds the axes/lines, the intro/scale-note copy, the "Show minor actors" toggle, hover/click interaction, and hosts the detail panel. |
-| `src/viz/actors/actorMath.ts` | Pure, DOM-free helpers: the fixed `AXES` definition, `buildAxisScales` (symlog for skewed count/fatality axes, fixed linear [0,1] for the share axis), `axisPositions`, `pointsForProfile`, and `METRIC_LABELS` - the human-friendly names (e.g. `active_h3_cell_count` → "Geographic spread") shared by the axis titles and the detail card so no raw CSV field name ever reaches the UI. Unit-tested. |
+| `src/viz/actors/actorMath.ts` | Pure, DOM-free helpers: the fixed `AXES` definition, `buildAxisScales` (symlog for skewed count/fatality axes, fixed linear [0,1] for the share axis), `axisPositions`, `pointsForProfile`, and `METRIC_LABELS` - the human-friendly names (e.g. `active_h3_cell_count` -> "Geographic spread") shared by the axis titles and the detail card so no raw CSV field name ever reaches the UI. Unit-tested. |
 | `src/viz/actors/ActorDetails.ts` | Renders the side-panel card for one actor profile (or a placeholder), grouped into Activity, One-sided violence, Losses / geography, and Active period sections. |
 | `src/viz/actors/ActorTooltip.ts` | Small cursor tooltip (actor name + one-sided share) so a hovered line is identifiable before the detail panel catches up. |
 | `src/viz/actors/actors.css` | 75/25 layout, axis/line styling (normal/faded/highlighted/selected), grouped details card. |
@@ -241,7 +241,7 @@ statistic is computed for this panel beyond a plain count of `is_observed_week` 
 | `src/viz/event-windows/EventWindowMatrix.ts` | The view class: owns the metric selector, the two-column layout, the matrix SVG (header, T0 band, per-episode rows, per-week cells), hosts the summary component, tracks hovered/selected episode, and handles row/cell click. |
 | `src/viz/event-windows/EventWindowSummary.ts` | Renders Part A: the caption line plus the median line + IQR band chart. |
 | `src/viz/event-windows/EventWindowDetails.ts` | Renders the persistent Episode Details panel for one episode (or the placeholder). |
-| `src/viz/event-windows/eventWindowMath.ts` | Pure, DOM-free helpers: `groupEpisodes` (rows → episodes, order-preserving), `relativeWeekRange`, `medianBand` (per-week median/Q1/Q3, excluding unobserved weeks from the statistic entirely rather than treating them as zero), `sequentialColor` (white→hex intensity, `null` stays `null` so the caller hatches instead of coloring), `circleRadius` (sqrt-scaled, with a min-radius floor and a max-radius cap), and `BACKGROUND_METRIC_LABELS` - the human-friendly names shared by the selector, the summary caption, and the details panel. Unit-tested. |
+| `src/viz/event-windows/eventWindowMath.ts` | Pure, DOM-free helpers: `groupEpisodes` (rows -> episodes, order-preserving), `relativeWeekRange`, `medianBand` (per-week median/Q1/Q3, excluding unobserved weeks from the statistic entirely rather than treating them as zero), `sequentialColor` (white->hex intensity, `null` stays `null` so the caller hatches instead of coloring), `circleRadius` (sqrt-scaled, with a min-radius floor and a max-radius cap), and `BACKGROUND_METRIC_LABELS` - the human-friendly names shared by the selector, the summary caption, and the details panel. Unit-tested. |
 | `src/viz/event-windows/EventWindowTooltip.ts` | Builds the per-cell hover tooltip, grouped into Actor / Episode, Current position (relative week, calendar week, and an explicit Observed / Not observed status), Combat context, and Civilian violence (including `one_sided_civilian_fatalities`, not just the generic `civilian_fatalities`). Also exports `metricValue`, reused by the details panel so "not observed" reads identically in both places. |
 | `src/viz/event-windows/event-windows.css` | Two-column layout (stacking below ~56rem), matrix/summary layout, T0 band, row stripes, the SVG hatch `<pattern>` for unobserved cells, legend, details panel, tooltip styling. |
 

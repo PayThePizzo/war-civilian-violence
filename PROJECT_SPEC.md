@@ -43,7 +43,7 @@ As an initial resolution, I would use **H3 resolution 5**, which corresponds to 
 The browser should primarily:
 
 ```text
-load → filter → render → interact
+load -> filter -> render -> interact
 ```
 
 It should not load the entire GED and rebuild complex aggregations every time.
@@ -162,7 +162,7 @@ event 123 | RSF
 For a one-sided event:
 
 ```text
-RSF → civilians
+RSF -> civilians
 ```
 
 we create only:
@@ -434,7 +434,7 @@ Steps:
 ```text
 events_clean
       ↓
-floor date → week
+floor date -> week
       ↓
 group unique events by week
       ↓
@@ -1507,8 +1507,8 @@ civilian fatalities
 So:
 
 ```text
-cell intensity → direct combat
-circle size    → civilian targeting
+cell intensity -> direct combat
+circle size    -> civilian targeting
 ```
 
 T0 is always vertically aligned.
@@ -1610,8 +1610,8 @@ actual combat fatalities
 Normalized:
 
 ```text
-0 → low relative to this episode
-1 → high relative to this episode
+0 -> low relative to this episode
+1 -> high relative to this episode
 ```
 
 The second option helps compare the **temporal shape** of episodes with very different intensities.
@@ -2056,10 +2056,10 @@ Immediately:
 
 ```text
 WEB 1
-timeline → RSF only
+timeline -> RSF only
 
 WEB 2
-map → RSF events
+map -> RSF events
 
 WEB 3
 RSF highlighted

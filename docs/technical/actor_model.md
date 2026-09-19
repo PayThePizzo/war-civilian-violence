@@ -58,11 +58,11 @@ name, regardless of whether it appears as `side_a` or `side_b`, or under
 state-based/non-state/one-sided). Result on this 1,807-row subset: **zero
 collisions in either direction.** For example:
 
-- `RSF` → id `8635` as `side_b` in state-based, `side_b` in non-state, and
+- `RSF` -> id `8635` as `side_b` in state-based, `side_b` in non-state, and
   `side_a` in one-sided - same id every time.
-- `Government of Sudan` → id `112` as `side_a` in both state-based and
+- `Government of Sudan` -> id `112` as `side_a` in both state-based and
   one-sided.
-- `SFA` → id `9645` as `side_b` in state-based and `side_a` in one-sided.
+- `SFA` -> id `9645` as `side_b` in state-based and `side_a` in one-sided.
 
 So within this filtered dataset, `side_a_new_id`/`side_b_new_id` are a
 reliable, role-independent, violence-type-independent key for a given
@@ -151,7 +151,7 @@ What's proposed instead, and implemented in `scripts/features.py` (§7):
 ## 7. Helpers implemented
 
 Two additions to `scripts/features.py`, following the existing pure
-`Series → Series` pattern:
+`Series -> Series` pattern:
 
 - `derive_one_sided_perpetrator_id(side_a_new_id, type_of_violence)`
 - `derive_one_sided_perpetrator_name(side_a, type_of_violence)`

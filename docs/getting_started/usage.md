@@ -213,4 +213,4 @@ npm run sync-data
 npm run dev
 ```
 
-This is the expected zero-to-running workflow for the project: raw data → configured pipeline → derived outputs → live front-end.
+This is the expected zero-to-running workflow for the project: raw data -> configured pipeline -> derived outputs -> live front-end.

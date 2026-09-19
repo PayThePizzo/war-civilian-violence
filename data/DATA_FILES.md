@@ -187,9 +187,9 @@ is_one_sided
 Definitions:
 
 ```text
-type_of_violence = 1 → state-based
-type_of_violence = 2 → non-state
-type_of_violence = 3 → one-sided
+type_of_violence = 1 -> state-based
+type_of_violence = 2 -> non-state
+type_of_violence = 3 -> one-sided
 ```
 
 For this project:
@@ -1410,9 +1410,9 @@ A missing value means that the quantity is unavailable, not applicable, or outsi
 
 Examples:
 
-- a week within the study period with no one-sided events → `0`;
-- `actor_deaths_suffered` for the synthetic `__ALL__` actor → missing;
-- a relative event-window week outside the analysis period → missing and `is_observed_week = False`;
-- an event without valid coordinates → coordinates may be missing and `spatial_eligible = False`.
+- a week within the study period with no one-sided events -> `0`;
+- `actor_deaths_suffered` for the synthetic `__ALL__` actor -> missing;
+- a relative event-window week outside the analysis period -> missing and `is_observed_week = False`;
+- an event without valid coordinates -> coordinates may be missing and `spatial_eligible = False`.
 
 This distinction must be preserved by both preprocessing and visualization code.

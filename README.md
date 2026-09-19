@@ -29,7 +29,7 @@ Patterns of **one-sided violence against civilians** in the **Sudan conflict**, 
 
 > When and where do armed actors shift from direct combat toward deliberate violence against civilians, and what temporal, spatial, and actor-specific patterns accompany this transition?
 
-Analysis window: **2023-04-15 → 2025-12-31**, Sudan only.
+Analysis window: **2023-04-15 -> 2025-12-31**, Sudan only.
 
 ---
 
@@ -115,7 +115,7 @@ flowchart LR
 
 ## ⚙️ The pipeline
 
-Python does all the heavy lifting once. The browser only does `load → filter → render → interact`.
+Python does all the heavy lifting once. The browser only does `load -> filter -> render -> interact`.
 
 ```mermaid
 flowchart TD
@@ -173,7 +173,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A["📅 Weekly series per actor<br/>one_sided_civilian_fatalities"] --> B["⛰️ Local maxima<br/>ties → earliest week"]
+    A["📅 Weekly series per actor<br/>one_sided_civilian_fatalities"] --> B["⛰️ Local maxima<br/>ties -> earliest week"]
     B --> C["📊 Rank by magnitude"]
     C --> D["✂️ Greedy filter<br/>min gap 6 weeks"]
     D --> E["🔟 Keep top 10 per actor"]
@@ -274,7 +274,7 @@ npm run export     # PNGs land in social/output/
 war-civilian-violence/
 ├── 📜 PROJECT_SPEC.md        design narrative and methodological cautions
 ├── ⚙️ config/                 config.yaml, the single source of tunables
-├── 🐍 scripts/               01 → 07 pipeline stages + build_all.py
+├── 🐍 scripts/               01 -> 07 pipeline stages + build_all.py
 ├── 📦 data/
 │   ├── DATA_FILES.md         schema authority: exact field names
 │   ├── raw/                  GED download (git-ignored)

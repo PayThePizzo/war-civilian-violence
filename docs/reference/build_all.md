@@ -7,8 +7,8 @@ Run the complete project data-preparation pipeline. This is the orchestrator, no
 Execute all seven pipeline stages in strict order, stopping immediately if any stage fails, then write frontend-facing metadata and a build manifest.
 
 ```text
-01_clean_events → 02_build_actor_events → 03_build_weekly_metrics →
-04_build_h3_metrics → 05_build_actor_profiles → 06_build_event_windows →
+01_clean_events -> 02_build_actor_events -> 03_build_weekly_metrics ->
+04_build_h3_metrics -> 05_build_actor_profiles -> 06_build_event_windows ->
 07_validate_outputs
 ```
 

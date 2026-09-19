@@ -123,7 +123,7 @@ An even better solution might be **three maps**:
 EARLY          MIDDLE          LATE
 ┌───────┐      ┌───────┐      ┌───────┐
 │       │      │       │      │       │
-│ map   │  →   │ map   │  →   │ map   │
+│ map   │  ->   │ map   │  ->   │ map   │
 │       │      │       │      │       │
 └───────┘      └───────┘      └───────┘
 ```
@@ -287,9 +287,9 @@ and then take a screenshot.
 I would reuse the exact palette from the website:
 
 ```text
-State-based → orange
-Non-state   → light blue
-One-sided   → red
+State-based -> orange
+Non-state   -> light blue
+One-sided   -> red
 ```
 
 as the current visualizations already do.

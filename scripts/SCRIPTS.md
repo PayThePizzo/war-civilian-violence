@@ -64,14 +64,14 @@ week_start = event_date.to_period("W-SUN").start_time
 so the week runs:
 
 ```text
-Monday → Sunday
+Monday -> Sunday
 ```
 
 For example:
 
 ```text
 2024-06-03 ... 2024-06-09
-→ week_start = 2024-06-03
+-> week_start = 2024-06-03
 ```
 
 ---
@@ -290,7 +290,7 @@ event_id = primary key
 ### 3. Rename the key
 
 ```python
-id → event_id
+id -> event_id
 ```
 
 This makes its meaning clearer in the derived datasets.
@@ -3250,8 +3250,8 @@ header only.
 # Exit code
 
 ```text
-0 → all checks passed
-1 → at least one check failed
+0 -> all checks passed
+1 -> at least one check failed
 ```
 
 ---

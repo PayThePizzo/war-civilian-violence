@@ -128,7 +128,7 @@ What did visualization reveal?
 
 Questo crea una progressione:
 
-> **tempo → spazio → attori → relazione tra eventi**
+> **tempo -> spazio -> attori -> relazione tra eventi**
 
 che risponde molto bene all'obiettivo del corso.
 
@@ -202,11 +202,11 @@ Ogni esagono aggrega eventi geograficamente vicini.
 
 Possibili encoding:
 
-* altezza → intensità;
-* colore → composizione della violenza;
-* saturazione → intensità;
-* tooltip → eventi, fatalità, attori;
-* tempo → slider.
+* altezza -> intensità;
+* colore -> composizione della violenza;
+* saturazione -> intensità;
+* tooltip -> eventi, fatalità, attori;
+* tempo -> slider.
 
 La versione 3D può essere testata, ma non deve essere obbligatoria.
 
@@ -440,7 +440,7 @@ Massimo 5-6 attori.
 Per esempio:
 
 ```text
-More battle-oriented ←────────────→ More civilian-oriented
+More battle-oriented ←────────────-> More civilian-oriented
 
 Actor A        ●
 Actor B                              ●
@@ -701,13 +701,13 @@ actor A is losing
 Non possiamo automaticamente interpretare una sequenza:
 
 ```text
-battle → civilians
+battle -> civilians
 ```
 
 come:
 
 ```text
-military defeat → deliberate retaliation
+military defeat -> deliberate retaliation
 ```
 
 Non possiamo parlare di:

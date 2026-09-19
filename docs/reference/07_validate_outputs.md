@@ -44,8 +44,8 @@ data/derived/event_windows.csv
 ## Exit code
 
 ```text
-0 → all checks passed
-1 → at least one check failed
+0 -> all checks passed
+1 -> at least one check failed
 ```
 
 ## Implementation notes

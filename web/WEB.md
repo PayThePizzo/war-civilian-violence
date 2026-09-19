@@ -542,7 +542,7 @@ as spikes or lollipops.
 
 # 13. Web 1 interactions
 
-Hover over a week → a shared vertical line across all three panels.
+Hover over a week -> a shared vertical line across all three panels.
 
 Tooltip:
 
@@ -572,7 +572,7 @@ This updates Web 2.
 Time zooming/brushing remains local:
 
 ```text
-drag → zoom timeline
+drag -> zoom timeline
 ```
 
 but **does not change Web 3 or Web 4**.
@@ -683,16 +683,16 @@ Responsibilities:
 
 ```text
 ConflictMap.ts
-→ MapLibre instance + orchestration
+-> MapLibre instance + orchestration
 
 H3Layer.ts
-→ create/update H3HexagonLayer
+-> create/update H3HexagonLayer
 
 MapControls.ts
-→ time + metric + 2D/3D
+-> time + metric + 2D/3D
 
 MapTooltip.ts
-→ hover content
+-> hover content
 ```
 
 ---
@@ -782,10 +782,10 @@ Default 2D:
 
 ```text
 fill colour
-→ one_sided_event_share
+-> one_sided_event_share
 
 opacity
-→ event_count
+-> event_count
 ```
 
 Toggle:
@@ -797,8 +797,8 @@ Toggle:
 In 3D:
 
 ```text
-height → event_count
-colour → one_sided_event_share
+height -> event_count
+colour -> one_sided_event_share
 ```
 
 Other permitted controls:
@@ -987,7 +987,7 @@ one_sided_event_share
 I would use:
 
 ```text
-0 → 1
+0 -> 1
 ```
 
 on a linear scale.
@@ -1017,10 +1017,10 @@ store.setState({
 From that point onward:
 
 ```text
-Web 1 → actor timeline
-Web 2 → actor map
-Web 3 → selected actor
-Web 4 → actor episodes
+Web 1 -> actor timeline
+Web 2 -> actor map
+Web 3 -> selected actor
+Web 4 -> actor episodes
 ```
 
 This is the site's main interaction across views.
@@ -1099,10 +1099,10 @@ Encoding:
 
 ```text
 cell colour
-→ combat metric
+-> combat metric
 
 circle size
-→ one_sided_civilian_fatalities
+-> one_sided_civilian_fatalities
 ```
 
 ---
@@ -1177,15 +1177,15 @@ The script distinguishes:
 
 ```text
 week inside analysis period, no violence
-→ zero
+-> zero
 ```
 
 from:
 
 ```text
 week outside analysis period
-→ NA
-→ is_observed_week = False
+-> NA
+-> is_observed_week = False
 ```
 
 
@@ -1370,13 +1370,13 @@ I would follow this exact order:
 12. Create common CSS/tokens
 13. Implement actor selector
 14. Implement Web 1
-15. Connect Web 1 → focusWeek
+15. Connect Web 1 -> focusWeek
 16. Implement Web 2
 17. Connect Timeline ↔ Map
 18. Implement Web 3
 19. Connect actor selection globally
 20. Implement Web 4
-21. Connect episode → actor/week
+21. Connect episode -> actor/week
 22. Add tooltips + empty states
 23. Add responsive behavior
 24. Add narrative text/findings

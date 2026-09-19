@@ -15,12 +15,12 @@ data/processed/actor_events.parquet
 
 ## Temporal definition
 
-`week_start` is the Monday of the week containing `date_start` (`date_start.to_period("W-SUN").start_time`); weeks run Monday → Sunday. Not driven by `config.temporal.week_start` - the Monday anchoring is structural.
+`week_start` is the Monday of the week containing `date_start` (`date_start.to_period("W-SUN").start_time`); weeks run Monday -> Sunday. Not driven by `config.temporal.week_start` - the Monday anchoring is structural.
 
 ## Transformations
 
 1. Compute `week_start` for both input datasets.
-2. Build a complete weekly grid spanning `analysis.start_date` → `analysis.end_date`, so weeks with zero events are represented explicitly (not dropped from the timeline).
+2. Build a complete weekly grid spanning `analysis.start_date` -> `analysis.end_date`, so weeks with zero events are represented explicitly (not dropped from the timeline).
 3. **Global aggregation** - from `events_clean.parquet` only, grouped by `week_start`, emitted as `actor_id = "__ALL__"`, `actor_name = "All actors"`.
 4. **Actor aggregation** - from `actor_events.parquet`, grouped by `(actor_id, actor_name, week_start)`. `event_count` uses `nunique(event_id)`, never `len(group)`.
 5. `active_location_count` = `nunique(where_coordinates)` over non-null values.
@@ -52,7 +52,7 @@ __ALL__.event_count == unique events_clean.parquet events for that week
 
 Structured as `load_events_clean`, `load_actor_events`, `validate_inputs`, `compute_week_start`, `build_full_week_grid`, `aggregate_global`, `build_canonical_actor_names`, `aggregate_actors`, `validate_weekly_metrics`, `finalize`, `print_summary`, `main`.
 
-Actor display names are **not** read from `actor_lookup.csv` (not a declared input of this stage) - `build_canonical_actor_names` re-derives a stable `actor_id → actor_name` mapping in-script using the same most-frequent-name technique as [`02_build_actor_events.py`](02_build_actor_events.md). `validate_weekly_metrics` independently re-derives the `__ALL__` series from `events_clean` as a defense-in-depth check (not a replacement for [`07_validate_outputs.py`](07_validate_outputs.md)).
+Actor display names are **not** read from `actor_lookup.csv` (not a declared input of this stage) - `build_canonical_actor_names` re-derives a stable `actor_id -> actor_name` mapping in-script using the same most-frequent-name technique as [`02_build_actor_events.py`](02_build_actor_events.md). `validate_weekly_metrics` independently re-derives the `__ALL__` series from `events_clean` as a defense-in-depth check (not a replacement for [`07_validate_outputs.py`](07_validate_outputs.md)).
 
 **Status:** implemented (506 lines), not yet run against the raw GED file.
 
