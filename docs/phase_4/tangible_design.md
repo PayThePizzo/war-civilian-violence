@@ -343,16 +343,7 @@ This is the starting point of the story. Fatalities are relatively low compared 
 
 **2D top view**
 
-```text
-                         🔴 S1
-                           │
-
-                           │
-             🟠 S2 ─── [⚪ S2] ─── ∅
-
-                           │
-                           🏠
-```
+![Assembly 1](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly1.png?raw=TRUE)
 
 **Column after Assembly 1**
 
@@ -384,16 +375,7 @@ Compared with W-3, the cylinder grows from Size 2 to Size 3. The increase is mai
 
 **2D top view**
 
-```text
-                         🔴 S2
-                           │
-
-                           │
-             🟠 S3 ─── [⚪ S3] ─── ∅
-
-                           │
-                           🏠
-```
+![Assembly 2](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly2.png?raw=TRUE)
 
 **Column after Assembly 2**
 
@@ -427,16 +409,7 @@ The total falls compared with W-2 but remains in the same physical size class. S
 
 **2D top view**
 
-```text
-                         🔴 S1
-                           │
-
-                           │
-             🟠 S3 ─── [⚪ S3] ─── ∅
-
-                           │
-                           🏠
-```
+![Assembly 3](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly3.png?raw=TRUE)
 
 **Column after Assembly 3**
 
@@ -475,16 +448,7 @@ The bottom actor icon also changes from the Government of Sudan to SFA.
 
 **2D top view**
 
-```text
-                         🔴 S5
-                           │
-
-                           │
-             🟠 S3 ─── [⚪ S5] ─── ∅
-
-                           │
-                          🏛️
-```
+![Assembly 4](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly4.png?raw=TRUE)
 
 **Column after Assembly 4**
 
@@ -525,16 +489,7 @@ The total drops sharply after W0, but it remains much higher than in the three p
 
 **2D top view**
 
-```text
-                         🔴 S4
-                           │
-
-                           │
-             🟠 S2 ─── [⚪ S4] ─── ∅
-
-                           │
-                          🏛️
-```
+![Assembly 5](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly5.png?raw=TRUE)
 
 **Column after Assembly 5**
 
@@ -578,16 +533,8 @@ At W+2, one-sided fatalities disappear from the weekly total. The red top positi
 
 **2D top view**
 
-```text
-                           ∅
-                           │
+![Assembly 6](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly6.png?raw=TRUE)
 
-                           │
-             🟠 S3 ─── [⚪ S3] ─── ∅
-
-                           │
-                           🏠
-```
 
 **Column after Assembly 6**
 
@@ -634,16 +581,8 @@ The final week follows the pattern already seen in W+2. The red one-sided add-on
 
 **2D top view**
 
-```text
-                           ∅
-                           │
+![Assembly 7](https://github.com/PayThePizzo/war-civilian-violence/blob/main/docs/phase_4/images/Assembly7.png?raw=TRUE)
 
-                           │
-             🟠 S3 ─── [⚪ S3] ─── ∅
-
-                           │
-                           🏠
-```
 
 **Final column**
 
