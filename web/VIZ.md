@@ -93,7 +93,7 @@ An H3-hexagon choropleth over an OpenStreetMap base layer. Two modes:
 - **Week** - hexagons for a single week, entered automatically when a week is clicked in Timeline
   (or advanced manually with a ◀ / Play / ▶ stepper).
 
-Hexagon fill color interpolates from "combat" to "one-sided" (blue → green) on the chosen share
+Hexagon fill color interpolates from "combat" to "one-sided" (orange → red) on the chosen share
 metric; opacity/elevation (2D/3D toggle) scales with the chosen intensity metric (events,
 best-estimate fatalities, or one-sided civilian fatalities).
 
@@ -214,7 +214,7 @@ The left column has two parts sharing one x-axis (relative week, -8..+8 by defau
   dashed vertical reference line.
 - **Matrix (Part B):** one row per episode (`actor · T0 date`, on alternating faint row stripes for
   easier tracking across 17 week columns), one column per relative week. Cell fill = the same
-  background metric; a green circle overlay, sized by `one_sided_civilian_fatalities` with a floor
+  background metric; a red circle overlay, sized by `one_sided_civilian_fatalities` with a floor
   radius so small non-zero values stay visible and a cap so large ones never fully cover the cell,
   marks the civilian toll at each point. The T0 column gets both the header's dashed line and a
   subtle background band running the full height of the matrix, so it reads as a column, not just a

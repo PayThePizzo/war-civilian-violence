@@ -116,6 +116,18 @@ svg text {
   color: var(--ink);
 }
 
+.annotation-item-context {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 8px;
+}
+
 .annotation-item-detail {
   font-size: 13px;
   line-height: 1.3;

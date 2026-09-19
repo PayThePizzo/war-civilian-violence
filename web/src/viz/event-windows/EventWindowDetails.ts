@@ -1,4 +1,5 @@
 /** Builds the Web 4 persistent Episode Details side panel: shows the hovered or selected episode. */
+import { contextForWeek } from "../../data/context";
 import type { EventWindow } from "../../data/types";
 import { formatCount, formatWeekLabel } from "../../utils/format";
 import { metricValue } from "./EventWindowTooltip";
@@ -62,13 +63,18 @@ export function renderEventWindowDetails(episode: Episode | null, options: Event
   heading.className = "ew-details-heading";
   heading.textContent = episode.actorName;
 
+  const context = contextForWeek(episode.t0Date);
+  const episodeRows = [
+    row("T0 date", formatWeekLabel(episode.t0Date)),
+    row("Episode rank", String(episode.peakRank)),
+    row("Peak metric value", formatCount(t0Row?.peak_metric_value ?? episode.rows[0]?.peak_metric_value ?? 0)),
+  ];
+  // External context, not a UCDP field: labels what the T0 week coincides with, no causal claim.
+  if (context) episodeRows.push(row("T0 coincides with", context.label));
+
   panel.append(
     heading,
-    group("Episode", [
-      row("T0 date", formatWeekLabel(episode.t0Date)),
-      row("Episode rank", String(episode.peakRank)),
-      row("Peak metric value", formatCount(t0Row?.peak_metric_value ?? episode.rows[0]?.peak_metric_value ?? 0)),
-    ]),
+    group("Episode", episodeRows),
     group("At T0", [
       row("Combat events", t0Row ? metricValue(t0Row.combat_event_count) : "not observed"),
       row("Combatant fatalities", t0Row ? metricValue(t0Row.combatant_fatalities) : "not observed"),

@@ -494,6 +494,7 @@ export class Timeline {
         const g = enter.append("g").attr("class", "annotation");
         g.append("line").attr("class", "annotation-line").attr("y1", markerY).attr("y2", EVENTS_HEIGHT + LABEL_HEIGHT);
         g.append("circle").attr("class", "annotation-dot").attr("r", 3).attr("cy", markerY);
+        g.append("text").attr("class", "annotation-label").attr("y", markerY - 6);
         g.append("title");
         return g;
       })
@@ -502,6 +503,13 @@ export class Timeline {
         const node = select(nodes[index]);
         node.select("line.annotation-line").attr("x1", x).attr("x2", x);
         node.select("circle.annotation-dot").attr("cx", x);
+        // Right-align near the right edge so the label never runs off the plot.
+        const nearRightEdge = x > this.xScale.range()[1] - 140;
+        node
+          .select("text.annotation-label")
+          .attr("x", nearRightEdge ? x + 4 : x)
+          .attr("text-anchor", nearRightEdge ? "end" : "middle")
+          .text(annotation.label);
         node.select("title").text(`${formatWeekLabel(annotation.week)} - ${annotation.label}`);
       });
   }

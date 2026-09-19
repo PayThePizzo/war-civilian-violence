@@ -42,6 +42,7 @@
 /* Optional annotation markers (req. §7) - invisible until Timeline.setAnnotations() is used. */
 .annotation-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 1, 2; opacity: 0.6; }
 .annotation-dot { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; }
+.annotation-label { fill: var(--body-text); font-size: 0.7rem; font-weight: 600; }
 
 .tooltip {
   position: absolute;

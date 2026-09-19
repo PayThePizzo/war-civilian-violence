@@ -58,7 +58,7 @@
   width: 6rem;
   height: 0.5rem;
   border-radius: 999px;
-  background: linear-gradient(to right, #2a78d6, #1baf7a);
+  background: linear-gradient(to right, #f28c28, #c8281e);
 }
 .map-legend-caption { margin: 0; color: var(--muted); }
 

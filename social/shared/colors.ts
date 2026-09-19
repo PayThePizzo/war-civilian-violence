@@ -1,11 +1,11 @@
 /**
- * Same semantic palette as web/src/utils/colors.ts, copied verbatim rather
- * than imported across the social/web package boundary. This is the *only*
- * color allowed to encode violence-category data in the Instagram posts,
+ * Same semantic palette as web/src/utils/colors.ts (state-based orange, non-state light blue,
+ * one-sided red), copied verbatim rather than imported across the social/web package boundary.
+ * This is the *only* color allowed to encode violence-category data in the Instagram/X posts,
  * exactly as on the website - never invent a separate palette here.
  */
 export const violenceColors = Object.freeze({
-  stateBased: "#2a78d6",
-  nonState: "#eb6834",
-  oneSided: "#1baf7a",
+  stateBased: "#f28c28",
+  nonState: "#55a8e6",
+  oneSided: "#c8281e",
 } as const);

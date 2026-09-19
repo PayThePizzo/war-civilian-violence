@@ -8,6 +8,7 @@
 import { area as d3Area, extent, line as d3Line, max, scaleLinear, scaleUtc } from "d3";
 import { loadSocialData } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
+import { contextForWeek } from "../../shared/context";
 import { formatCount, formatMonthYear, formatPercent, formatWeekLabel } from "../../shared/format";
 import type { WeeklyMetric } from "../../shared/types";
 
@@ -386,12 +387,21 @@ function buildAnnotationList(annotations: AnnotatedWeek[]): HTMLDivElement {
     const date = document.createElement("span");
     date.className = "annotation-item-date";
     date.textContent = formatWeekLabel(annotation.week.week_start);
+    const context = contextForWeek(annotation.week.week_start);
     const detail = document.createElement("span");
     detail.className = "annotation-item-detail";
     detail.textContent = `${formatCount(
       annotation.week.one_sided_civilian_fatalities,
     )} one-sided civilian fatalities in events dated to this week (${formatPercent(annotation.week.one_sided_event_share)} of events)`;
-    body.append(date, detail);
+    body.append(date);
+    // External context (not a UCDP field): what this week coincides with, no causal claim.
+    if (context) {
+      const tag = document.createElement("span");
+      tag.className = "annotation-item-context";
+      tag.textContent = context.label;
+      body.append(tag);
+    }
+    body.append(detail);
     item.append(badge, body);
     list.append(item);
   }

@@ -1,11 +1,11 @@
 /**
- * Shared semantic colors for every visualization and legend.
- * First three slots of the validated categorical palette (blue/orange/aqua);
- * see dataviz skill's palette.md - this ordering clears the CVD/contrast gates
- * as an all-pairs-safe set, which a hand-picked triple did not.
+ * Shared semantic colors for every visualization and legend: state-based = orange,
+ * non-state = light blue, one-sided violence against civilians = red. Author-chosen palette
+ * (not the dataviz skill's validated set); orange vs red are separated by lightness, so keep
+ * the two from being the only cue where they touch (see legends and direct labels).
  */
 export const violenceColors = Object.freeze({
-  stateBased: "#2a78d6",
-  nonState: "#eb6834",
-  oneSided: "#1baf7a",
+  stateBased: "#f28c28",
+  nonState: "#55a8e6",
+  oneSided: "#c8281e",
 } as const);

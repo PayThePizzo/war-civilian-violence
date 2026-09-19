@@ -1,4 +1,5 @@
 /** Builds the Web 4 matrix cell hover tooltip (WEB.md §36). */
+import { contextForWeek } from "../../data/context";
 import type { EventWindow } from "../../data/types";
 import { formatCount, formatWeekLabel } from "../../utils/format";
 import type { Episode } from "./eventWindowMath";
@@ -32,6 +33,7 @@ export function renderEventWindowTooltip(episode: Episode, cell: EventWindow): H
   const heading = document.createElement("p");
   heading.className = "tooltip-heading";
   heading.textContent = episode.actorName;
+  const context = contextForWeek(cell.calendar_week);
   content.append(
     heading,
     sectionHeading("Actor / Episode"),
@@ -41,6 +43,7 @@ export function renderEventWindowTooltip(episode: Episode, cell: EventWindow): H
     row("Relative week", cell.relative_week === 0 ? "T0" : `T${cell.relative_week > 0 ? "+" : ""}${cell.relative_week}`),
     row("Calendar week", formatWeekLabel(cell.calendar_week)),
     row("Status", cell.is_observed_week ? "Observed" : "Not observed"),
+    ...(context ? [row("Coincides with", context.label)] : []),
     sectionHeading("Combat context"),
     row("Combat events", metricValue(cell.combat_event_count)),
     row("Combatant fatalities", metricValue(cell.combatant_fatalities)),

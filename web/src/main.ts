@@ -4,6 +4,7 @@ import "./styles/global.css";
 import "./styles/layout.css";
 import { initialState } from "./app/state";
 import { createStore } from "./app/store";
+import { contextAnnotations } from "./data/context";
 import { loadAppData } from "./data/loaders";
 import { createActorSelector } from "./ui/ActorSelector";
 import { createViolenceLegend } from "./ui/Legend";
@@ -41,7 +42,7 @@ async function main(): Promise<void> {
   cleanups.push(() => actorSelector.destroy());
   cleanups.push(createViolenceLegend(requireElement("hero")));
 
-  const timeline = new Timeline(requireElement("when-viz"), data, store);
+  const timeline = new Timeline(requireElement("when-viz"), data, store, contextAnnotations());
   cleanups.push(() => timeline.destroy());
   const map = new ConflictMap(requireElement("where"), data);
   cleanups.push(() => map.destroy());

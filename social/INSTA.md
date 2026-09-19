@@ -287,9 +287,9 @@ and then take a screenshot.
 I would reuse the exact palette from the website:
 
 ```text
-State-based → blue
-Non-state   → orange
-One-sided   → green
+State-based → orange
+Non-state   → light blue
+One-sided   → red
 ```
 
 as the current visualizations already do.
