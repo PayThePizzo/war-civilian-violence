@@ -20,7 +20,18 @@ nav:
   - Usage: getting_started/usage.md
 # - Project Technical Details:                              # Technical details of the project
 - Phase 1 - Dataset: phase_1/dataset.md                     # Report/Deliverables for Phase 1
-- Phase 2 - Domain Knowledge: phase_2/domain_knowledge.md   # Report/Deliverables for Phase 2
+- Phase 2 - Domain Knowledge: 
+  - Overview: phase_2/domain_knowledge.md   # Report/Deliverables for Phase 2
+  - Paper 1: phase_2/00_paper_1.md
+  - Paper 2: phase_2/01_paper_2.md
+  - Article 1: phase_2/02_article_1.md
+  - Article 2: phase_2/03_article_2.md
+  - Instagram Post 1: phase_2/04_insta_1.md
+  - Instagram Post 2: phase_2/05_insta_2.md
+  - X Post 1: phase_2/06_x_1.md
+  - X Post 2: phase_2/07_x_2.md
+  - Alternative Paradigm 1: phase_2/08_alt_1.md
+  - Alternative Paradigm 2: phase_2/09_alt_2.md
 - Phase 3 - Visual Design:                                  # Report/Deliverables for Phase 3
   - Project Intro and Idea: phase_3/idea.md
   - Methodology: phase_3/methodology.md
