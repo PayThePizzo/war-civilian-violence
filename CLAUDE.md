@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Analysis of the UCDP Georeferenced Event Dataset (GED) to study patterns of one-sided violence against civilians in the Sudan conflict (2023-04-15 to 2025-12-31). Output is a Python data pipeline feeding a vanilla-JS/D3/MapLibre/deck.gl web app plus social-media exports.
+Analysis of the UCDP Georeferenced Event Dataset (GED) to study patterns of one-sided violence against civilians in the Sudan conflict (2023-04-15 to 2025-12-31). Output is a Python data pipeline feeding a Vite + TypeScript / D3 / MapLibre / deck.gl web app (`web/`) plus static social-media exports (`social/`).
 
 Three spec docs exist and disagree in places - authority order when they conflict:
 
@@ -14,10 +14,12 @@ Three spec docs exist and disagree in places - authority order when they conflic
 
 Resolved mismatches (decided 2026-09-12):
 - Config key is `actors.min_events` (matches `config/config.yaml`) - `scripts/SCRIPTS.md` previously said `min_events_web3`, now corrected to match.
-- Frontend stays on the **Vite + TypeScript** plan from PROJECT_SPEC.md §1/§52/§57. `web/` (plain JS, no `package.json`) hasn't caught up yet - scaffolding Vite+TS and migrating `web/js/*.js` into it is outstanding work, not a scope change.
+- Frontend is **Vite + TypeScript** (PROJECT_SPEC.md §1/§52/§57), now scaffolded in `web/` (see Frontend below). The old plain-JS `web/js/*` layout no longer exists.
 - Episode IDs are **actor_id-based**: `<actor_id>__<YYYY-MM-DD>` (e.g. `ucdp-1234__2024-06-03`), per SCRIPTS.md/DATA_FILES.md - not the actor_name-based `RSF_2024_06_03` example in PROJECT_SPEC.md §43.
 
-All pipeline scripts are implemented (`scripts/01_clean_events.py` through `07_validate_outputs.py` plus `build_all.py`, 338-866 lines each, each with a runnable `if __name__ == "__main__":` entry point) - not yet run end-to-end against the raw GED file. `PROJECT_SPEC.md` has worked pseudocode per transformation step, useful for cross-checking implementation choices. Per-script reference docs (purpose, inputs, config keys, outputs, invariants) live in `docs/reference/*.md`, built via `mkdocs`.
+All pipeline scripts are implemented (`scripts/01_clean_events.py` through `07_validate_outputs.py` plus `build_all.py`, each with a runnable `if __name__ == "__main__":` entry point) and have been **run end-to-end against the raw GED file**: `data/processed/`, `data/derived/` and `data/validation/` are populated, and `validation_report.json` reports `PASS` (146/146 checks). `PROJECT_SPEC.md` has worked pseudocode per transformation step, useful for cross-checking implementation choices. Per-script reference docs (purpose, inputs, config keys, outputs, invariants) live in `docs/reference/*.md`, built via `mkdocs`. Phase reports (dataset, domain knowledge, visual design, tangible design) live in `docs/phase_1` to `docs/phase_4`.
+
+**Frozen inputs for the frontend:** `web/WEB.md` records the decision that `scripts/`, `config/`, `data/processed/` and `data/derived/` are no longer changed for frontend work - `web/` and `social/` only consume the four derived CSVs plus `metadata.json`. If a view needs a new field, raise it before touching the pipeline.
 
 ## Commands
 
@@ -43,9 +45,26 @@ poetry run python scripts/build_all.py
 poetry run mkdocs serve
 ```
 
-There is no test suite yet (`tests/` is empty, no pytest config in `pyproject.toml`).
+There is no Python test suite (no root `tests/`, no pytest config in `pyproject.toml`); the pipeline is checked by `07_validate_outputs.py`.
 
-Web frontend (`web/`) target is Vite + TypeScript (see PROJECT_SPEC.md §1/§52/§57), but is currently unscaffolded - plain JS static files only (`web/index.html`, `web/js/*`, `web/styles/*`), no `package.json` yet. Scaffolding Vite+TS and porting `web/js/*.js` is outstanding.
+Frontend and social workspaces are separate npm projects (each has its own `package.json`, run from inside the folder):
+
+```bash
+# web app (Vite + TS)
+cd web
+npm install
+npm run dev        # sync-data (data/derived -> web/.generated/data), then vite
+npm run build      # sync-data, tsc, vite build
+npm test           # node --test tests/*.test.mjs (view math + integration)
+
+# social posts (Vite + Playwright)
+cd social
+npm install
+npm run export             # build, then render all posts to social/output/*.png
+npm run export:instagram   # or export:x
+```
+
+`web/.generated/`, `social/.generated/` and `social/output/*.png` are git-ignored build artifacts. `data/derived/metadata.json` and `build_manifest.json` are git-ignored too.
 
 ## Architecture
 
@@ -89,9 +108,17 @@ Events with missing/invalid coordinates are **retained** (not dropped) through `
 
 Peaks in `one_sided_civilian_fatalities` per actor are found via local-maximum detection, plateau ties broken by earliest week, ranked by magnitude, and greedily filtered by `min_gap_weeks` separation, capped at `top_k_per_actor`. Weeks inside the analysis period with genuinely zero events get `0`; weeks outside the analysis period get `NA` + `is_observed_week = False` - these must not be conflated. Findings from this view describe temporal association only, never causation ("military pressure caused attacks on civilians" is an explicit non-claim - see PROJECT_SPEC.md §66).
 
-### Frontend state architecture (planned/in-progress, see PROJECT_SPEC.md §6-7, 59-61)
+### Frontend (`web/`, see `web/WEB.md` for the plan and `web/VIZ.md` for the four views)
 
-Four visualizations (currently `web/js/views/timeline.js`, `map.js`, `actors.js`, `event-study.js`; will move to `src/viz/*` once Vite+TS is scaffolded, per PROJECT_SPEC.md §52) share one small global store (`selectedActorId`, `dateRange`, `focusWeek`, `violenceTypes`, `selectedHexId`, `selectedEpisodeId`). Rule of thumb: state that changes *another* visualization is global; state meaningful only within one view (hover, tooltip position, brush drag, 3D toggle) stays local to that view.
+Layout: `src/viz/{timeline,map,actors,event-windows}/` (one folder per view, with a `*Math.ts` for pure logic that `tests/*.test.mjs` cover), `src/data/{loaders,parsers,selectors,types}.ts` (CSV -> typed rows; views read through `selectors.ts`, never raw arrays), `src/app/{state,store}.ts`, `src/ui/`, `src/utils/`, `src/styles/`. No analytical logic in the browser - only filtering, scaling, layout. `data/derived/` is copied into `web/.generated/data/` by `npm run sync-data`.
+
+Global state is deliberately tiny: `AppState = { selectedActorId, focusWeek }` (`src/app/state.ts`, defaults `"__ALL__"` / `null`). The earlier plan (PROJECT_SPEC.md §6-7, 59-61) listed six fields (`dateRange`, `violenceTypes`, `selectedHexId`, `selectedEpisodeId` too); those were **not** adopted and stay view-local. Rule of thumb: state that changes *another* visualization is global; state meaningful only within one view (hover, tooltip position, brush drag, 3D toggle) stays local to that view. `main.ts` builds the store and routes `store.subscribe` to each view's `update(state)`.
+
+Styling: one token system in `src/styles/tokens.css`; `src/utils/colors.ts` (`violenceColors`, three hues) is the only place color encodes data.
+
+### Social (`social/`)
+
+Static 4:5 (Instagram) and 16:9 (X) posts rendered from the same derived CSVs as the web app, one folder per post under `social/instagram/` and `social/x/`, shared code in `social/shared/`, specs in `social/INSTA.md`. Not screenshots of the interactive views.
 
 ### Fail-loud convention
 
