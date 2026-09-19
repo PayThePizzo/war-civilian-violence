@@ -336,7 +336,7 @@ def select_episodes(collapsed: list, min_gap_weeks: int, top_k: int) -> list:
 
     Returns:
         list: Selected `(week_start, value)` tuples, ordered by descending
-            magnitude (ascending date as tie-breaker) — i.e. in `peak_rank`
+            magnitude (ascending date as tie-breaker) - i.e. in `peak_rank`
             order.
     """
     ordered = sorted(collapsed, key=lambda item: (-item[1], item[0]))
@@ -416,7 +416,7 @@ def build_window_rows(episode: dict, actor_name: str, actor_weekly: pd.DataFrame
 
     # Compared against week-start Mondays (calendar_week is always
     # week-aligned), not the raw configured dates, which need not fall on a
-    # Monday themselves — this must match 03_build_weekly_metrics.py's
+    # Monday themselves - this must match 03_build_weekly_metrics.py's
     # build_full_week_grid exactly, or a real week present in the weekly
     # grid can get misclassified as unobserved.
     first_observed_week = pd.Timestamp(config.analysis.start_date).to_period("W-SUN").start_time

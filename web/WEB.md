@@ -44,17 +44,17 @@ TypeScript data layer
 shared state
  actor + week
         │
-        ├── Web 1 — WHEN
-        ├── Web 2 — WHERE
-        ├── Web 3 — WHO
-        └── Web 4 — BEFORE / AFTER
+        ├── Web 1 - WHEN
+        ├── Web 2 - WHERE
+        ├── Web 3 - WHO
+        └── Web 4 - BEFORE / AFTER
 ```
 
 The frontend does not load `events_clean.parquet` or `actor_events.parquet`: all analytical logic remains in the Python pipeline. This is consistent with the contracts already established.
 
 ---
 
-# 2. First step — create the Vite project
+# 2. First step - create the Vite project
 
 From the repository root:
 
@@ -442,7 +442,7 @@ Source
 
 ---
 
-# WEB 1 — WHEN
+# WEB 1 - WHEN
 
 ## 10. Input
 
@@ -638,7 +638,7 @@ D3 directly provides UTC time scales, area/stack functions, and SVG rendering. (
 
 ---
 
-# WEB 2 — WHERE
+# WEB 2 - WHERE
 
 ## 16. Input
 
@@ -859,7 +859,7 @@ This is exactly the contract expected by the official layer. ([deck.gl][1])
 
 ---
 
-# WEB 3 — WHO
+# WEB 3 - WHO
 
 ## 23. Input
 
@@ -1027,7 +1027,7 @@ This is the site's main interaction across views.
 
 ---
 
-# WEB 4 — BEFORE / AFTER
+# WEB 4 - BEFORE / AFTER
 
 ## 30. Input
 
@@ -1064,7 +1064,7 @@ src/viz/event-windows/
 
 Two components.
 
-### Part A — Summary
+### Part A - Summary
 
 ```text
 04 / BEFORE & AFTER?
@@ -1083,7 +1083,7 @@ Median combat activity across displayed episodes
 ░░░░ interquartile range
 ```
 
-### Part B — Matrix
+### Part B - Matrix
 
 ```text
                                     T0

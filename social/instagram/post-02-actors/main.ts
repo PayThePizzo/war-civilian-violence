@@ -1,5 +1,5 @@
 /**
- * Instagram post 2 — "WHO shows a different violence profile?"
+ * Instagram post 2 - "WHO shows a different violence profile?"
  * Static, non-interactive counterpart of Web 3's parallel-coordinates plot
  * (web/src/viz/actors/ActorParallelCoordinates.ts, VIZ.md §3): same
  * eligible_for_web3 actor universe and one-sided semantic color, but

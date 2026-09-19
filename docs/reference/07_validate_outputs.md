@@ -1,10 +1,10 @@
 # `07_validate_outputs.py`
 
-Validate the complete processed and derived data pipeline — the final integrity gate before the visualization layer.
+Validate the complete processed and derived data pipeline - the final integrity gate before the visualization layer.
 
 ## Responsibility
 
-Verify that every prior stage's outputs satisfy their declared schemas, value constraints, relational constraints, and cross-dataset invariants. It does **not** generate analytical data and must never silently repair a failing dataset — corrections belong in the upstream stage that produced the invalid output.
+Verify that every prior stage's outputs satisfy their declared schemas, value constraints, relational constraints, and cross-dataset invariants. It does **not** generate analytical data and must never silently repair a failing dataset - corrections belong in the upstream stage that produced the invalid output.
 
 ## Input
 
@@ -37,9 +37,9 @@ data/derived/event_windows.csv
 
 ## Output
 
-**`data/validation/validation_report.json`** — machine-readable summary, e.g. `{"status": "PASS", "checks_run": 47, "checks_passed": 47, "checks_failed": 0}`.
+**`data/validation/validation_report.json`** - machine-readable summary, e.g. `{"status": "PASS", "checks_run": 47, "checks_passed": 47, "checks_failed": 0}`.
 
-**`data/validation/validation_failures.csv`** — always created; header-only when everything passes, one or more rows per failed check otherwise (`check_id`, `message`, plus optional `dataset`, `severity`, `row_identifier`, `expected`, `observed`).
+**`data/validation/validation_failures.csv`** - always created; header-only when everything passes, one or more rows per failed check otherwise (`check_id`, `message`, plus optional `dataset`, `severity`, `row_identifier`, `expected`, `observed`).
 
 ## Exit code
 
@@ -50,7 +50,7 @@ data/derived/event_windows.csv
 
 ## Implementation notes
 
-Structured around a `ValidationRecorder` class plus `load_all`, `check_schema`, `check_events`, `check_actor_events`, `check_actor_lookup`, `check_weekly_global`, `check_weekly_decomposition`, `check_h3_conservation`, `check_actor_profile_consistency`, `check_event_windows`, `check_shares`, `check_na_policy`, `write_validation_report`, `write_validation_failures`, `print_summary`, `main`. Several of these checks duplicate lighter-weight defense-in-depth versions already embedded in scripts 03-06 ([`03_build_weekly_metrics.py`](03_build_weekly_metrics.md), [`04_build_h3_metrics.py`](04_build_h3_metrics.md), [`05_build_actor_profiles.py`](05_build_actor_profiles.md)) — this script is the authoritative, pipeline-wide gate.
+Structured around a `ValidationRecorder` class plus `load_all`, `check_schema`, `check_events`, `check_actor_events`, `check_actor_lookup`, `check_weekly_global`, `check_weekly_decomposition`, `check_h3_conservation`, `check_actor_profile_consistency`, `check_event_windows`, `check_shares`, `check_na_policy`, `write_validation_report`, `write_validation_failures`, `print_summary`, `main`. Several of these checks duplicate lighter-weight defense-in-depth versions already embedded in scripts 03-06 ([`03_build_weekly_metrics.py`](03_build_weekly_metrics.md), [`04_build_h3_metrics.py`](04_build_h3_metrics.md), [`05_build_actor_profiles.py`](05_build_actor_profiles.md)) - this script is the authoritative, pipeline-wide gate.
 
 **Status:** implemented (866 lines), not yet run against the raw GED file.
 

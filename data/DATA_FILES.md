@@ -508,7 +508,7 @@ They are not intended to replace the cleaned event data as the source of truth.
 
 ### Purpose
 
-Primary dataset for **Web 1 — Conflict Timeline**.
+Primary dataset for **Web 1 - Conflict Timeline**.
 
 It also provides the weekly actor time series used by the event-window analysis.
 
@@ -522,7 +522,7 @@ CSV.
 
 ### Consumers
 
-- Web 1 — temporal visualization
+- Web 1 - temporal visualization
 - `06_build_event_windows.py`
 - `07_validate_outputs.py`
 
@@ -643,7 +643,7 @@ must match the number of unique events in `events_clean.parquet` assigned to tha
 
 ### Purpose
 
-Primary dataset for **Web 2 — Spatio-temporal Conflict Map**.
+Primary dataset for **Web 2 - Spatio-temporal Conflict Map**.
 
 Events are aggregated into H3 cells to produce a consistent geographic grid over time.
 
@@ -657,7 +657,7 @@ CSV.
 
 ### Consumers
 
-- Web 2 — H3 conflict map
+- Web 2 - H3 conflict map
 - `07_validate_outputs.py`
 
 ### Unit of observation
@@ -758,7 +758,7 @@ must equal the number of unique spatially eligible events for that week.
 
 ### Purpose
 
-Primary dataset for **Web 3 — Actor Violence Fingerprints**.
+Primary dataset for **Web 3 - Actor Violence Fingerprints**.
 
 It summarizes each armed actor through temporal, behavioral, fatality, and geographic metrics.
 
@@ -772,7 +772,7 @@ CSV.
 
 ### Consumers
 
-- Web 3 — parallel coordinates / actor profile view
+- Web 3 - parallel coordinates / actor profile view
 - actor filtering controls
 - `06_build_event_windows.py`
 - `07_validate_outputs.py`
@@ -874,7 +874,7 @@ All counts and fatality values must be non-negative.
 
 ### Purpose
 
-Primary dataset for **Web 4 — Event-centred Before / After Analysis**.
+Primary dataset for **Web 4 - Event-centred Before / After Analysis**.
 
 It aligns major one-sided-violence episodes around a common relative-time origin:
 
@@ -894,7 +894,7 @@ CSV.
 
 ### Consumers
 
-- Web 4 — event-centred matrix
+- Web 4 - event-centred matrix
 - event-window summary visualization
 - `07_validate_outputs.py`
 
@@ -1307,10 +1307,10 @@ build_manifest.json
 
 | Visualization | Primary dataset | Supporting datasets |
 |---|---|---|
-| Web 1 — Conflict Timeline | `weekly_metrics.csv` | `metadata.json`, `actor_lookup.csv` |
-| Web 2 — Spatio-temporal H3 Map | `h3_weekly_metrics.csv` | `metadata.json`, `actor_lookup.csv` |
-| Web 3 — Actor Violence Fingerprints | `actor_profiles.csv` | `actor_lookup.csv`, `metadata.json` |
-| Web 4 — Before / After | `event_windows.csv` | `actor_profiles.csv`, `metadata.json` |
+| Web 1 - Conflict Timeline | `weekly_metrics.csv` | `metadata.json`, `actor_lookup.csv` |
+| Web 2 - Spatio-temporal H3 Map | `h3_weekly_metrics.csv` | `metadata.json`, `actor_lookup.csv` |
+| Web 3 - Actor Violence Fingerprints | `actor_profiles.csv` | `actor_lookup.csv`, `metadata.json` |
+| Web 4 - Before / After | `event_windows.csv` | `actor_profiles.csv`, `metadata.json` |
 | Instagram temporal story | derived from Web 1 / Web 4 data | same analytical datasets |
 | Instagram geographic story | derived from Web 2 data | same analytical datasets |
 | X temporal finding | derived from Web 4 data | same analytical datasets |

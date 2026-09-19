@@ -2,7 +2,7 @@ For Instagram, I would take a different approach from the web: **I would not use
 
 I would keep the scripts and datasets unchanged. I would directly reuse the same `weekly_metrics.csv`, `h3_weekly_metrics.csv`, `actor_profiles.csv`, and possibly `event_windows.csv` already used by the frontend.
 
-## Instagram 1 — How violence changed over time
+## Instagram 1 - How violence changed over time
 
 This would be the main temporal post, based primarily on **Web 1**.
 
@@ -84,7 +84,7 @@ I would not annotate every peak.
 
 ---
 
-# Instagram 2 — Geography of violence
+# Instagram 2 - Geography of violence
 
 The second post should be deliberately different from the first and based on **Web 2**.
 
@@ -152,11 +152,11 @@ This would give you:
 
 ### Instagram 1
 
-**WHEN — temporal change**
+**WHEN - temporal change**
 
 ### Instagram 2
 
-**WHO — actor differences**
+**WHO - actor differences**
 
 and leave the map primarily for the web.
 
@@ -332,7 +332,7 @@ Instagram is for **taking away a message**.
 
 ## The two outputs I would settle on
 
-### Instagram Post 1 — Temporal
+### Instagram Post 1 - Temporal
 
 **Title**
 
@@ -352,7 +352,7 @@ Show that the relative importance of one-sided violence changes over time.
 
 ---
 
-### Instagram Post 2 — Actors
+### Instagram Post 2 - Actors
 
 **Title**
 

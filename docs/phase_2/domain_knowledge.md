@@ -46,7 +46,7 @@ Alternative approaches turn data or documentary evidence into **an experience**.
 
 ### General conclusion
 
-The same kinds of records—dates, locations, actors, event types, fatalities, displacement status, territorial control, or damage categories—can become very different representations. Simplifying them is not automatically a weakness. It becomes a problem when the missing information is needed to interpret the claim responsibly.
+The same kinds of records-dates, locations, actors, event types, fatalities, displacement status, territorial control, or damage categories-can become very different representations. Simplifying them is not automatically a weakness. It becomes a problem when the missing information is needed to interpret the claim responsibly.
 
 Choosing a design means thinking beyond which chart fits the data:
 

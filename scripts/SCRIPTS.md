@@ -148,7 +148,7 @@ civilians deliberately targeted in one-sided violence
 
 ---
 
-# 01 — `01_clean_events.py`
+# 01 - `01_clean_events.py`
 
 ## Responsibility
 
@@ -825,7 +825,7 @@ Built in `01_clean_events.py` as a pure-function pipeline (`load_raw`,
 be tested in isolation.
 
 - The stub's `from project_paths import conf_path` line was extended to
-  also import `raw_dataset_csv`, `events_clean`, `processed_data_dir` — the
+  also import `raw_dataset_csv`, `events_clean`, `processed_data_dir` - the
   stub only imported `conf_path`.
 - Violence-type codes and labels are read from
   `config.analysis.violence_types` (`state_based`/`non_state`/`one_sided`)
@@ -843,11 +843,11 @@ be tested in isolation.
 - `main()` creates `processed_data_dir` with `os.makedirs(..., exist_ok=True)`
   before writing, since `project_paths.py` deliberately never creates
   directories itself.
-- Built, not run — no raw GED file has been executed against it yet.
+- Built, not run - no raw GED file has been executed against it yet.
 
 ---
 
-# 02 — `02_build_actor_events.py`
+# 02 - `02_build_actor_events.py`
 
 ## Responsibility
 
@@ -1298,13 +1298,13 @@ Built in `02_build_actor_events.py`, structured as `load_events_clean`,
 `print_summary`, `main`.
 
 - The stub's imports were broken (`from project_paths import conf_dir,
-  conf_path, data_dir, log_dir, run_dir, calib_dir` — `log_dir`, `run_dir`,
+  conf_path, data_dir, log_dir, run_dir, calib_dir` - `log_dir`, `run_dir`,
   `calib_dir` don't exist in `project_paths.py`). Replaced with `conf_path,
   events_clean, actor_events, actor_lookup, processed_data_dir`; also
   dropped the unused `save_to_config` import.
 - `expand_side(df, side)` builds one side's rows (`"a"` or `"b"`) at a
   time; `expand_actor_events` calls it on the combat subset for both sides
-  and on the one-sided subset for side `"a"` only, then concatenates —
+  and on the one-sided subset for side `"a"` only, then concatenates -
   matches the "two rows for combat / one row for one-sided" rule directly
   in the row-construction step rather than as a post-filter.
 - `build_actor_id_series` prefers `ucdp:<int(side_new_id)>`; the
@@ -1314,7 +1314,7 @@ Built in `02_build_actor_events.py`, structured as `load_events_clean`,
 - Fallback usage is tracked via an internal `_used_id_fallback` boolean
   column, reported by `report_actor_id_fallback_usage` (warn, not fail),
   then dropped by `finalize_actor_events`'s explicit
-  `ACTOR_EVENTS_COLUMN_ORDER` slice — never reaches the parquet output.
+  `ACTOR_EVENTS_COLUMN_ORDER` slice - never reaches the parquet output.
 - `validate_actor_event_pairs` is the only hard fail in this script
   (duplicate `(event_id, actor_id)`), matching the "FAIL" call in
   SCRIPTS.md step 8. Missing `side_*_new_id` and actor-name ambiguity are
@@ -1327,7 +1327,7 @@ Built in `02_build_actor_events.py`, structured as `load_events_clean`,
 
 ---
 
-# 03 — `03_build_weekly_metrics.py`
+# 03 - `03_build_weekly_metrics.py`
 
 ## Responsibility
 
@@ -1727,11 +1727,11 @@ Built in `03_build_weekly_metrics.py`, structured as `load_events_clean`,
   matching the convention established in `01_clean_events.py`.
 - Zero-week completion in `aggregate_actors` reindexes only over actors
   that actually appear in `actor_events` (`actor_ids = df["actor_id"].unique()`)
-  crossed with the full week grid — not the full theoretical actor
+  crossed with the full week grid - not the full theoretical actor
   universe, since an actor with zero recorded activity never appears in
   `actor_events` at all.
 - `validate_weekly_metrics` re-derives the `__ALL__` series independently
-  from `events_clean` and cross-checks it against the assembled output —
+  from `events_clean` and cross-checks it against the assembled output -
   duplicates part of what `07_validate_outputs.py` will do at the
   pipeline-integrity-gate level, kept here as an in-script fail-fast check
   (defense in depth, not a replacement for step 07).
@@ -1740,7 +1740,7 @@ Built in `03_build_weekly_metrics.py`, structured as `load_events_clean`,
 
 ---
 
-# 04 — `04_build_h3_metrics.py`
+# 04 - `04_build_h3_metrics.py`
 
 ## Responsibility
 
@@ -2063,20 +2063,20 @@ Built in `04_build_h3_metrics.py`, structured as `load_events_clean`,
 - The stub only imported `conf_path`; extended to also import
   `events_clean`, `actor_events`, `h3_weekly_metrics`, `derived_data_dir`.
   Added the `h3` package import (already a `pyproject.toml` dependency,
-  `h3 = "^4.5.0"`) — v4 API: `h3.latlng_to_cell`, `h3.is_valid_cell`,
+  `h3 = "^4.5.0"`) - v4 API: `h3.latlng_to_cell`, `h3.is_valid_cell`,
   `h3.get_resolution`, `h3.cell_to_latlng`.
 - `filter_spatially_eligible` is applied independently to both
-  `events_clean` and `actor_events` before H3 assignment — this is the
+  `events_clean` and `actor_events` before H3 assignment - this is the
   only script in the pipeline that drops rows on `spatial_eligible`; every
   other stage retains spatially ineligible rows.
 - `assign_h3_cells` computes `h3_id` row-by-row via `DataFrame.apply`
   (the `h3` package has no native vectorized/batch API), then hard-fails
   (`ValueError`) if any generated cell is invalid or resolves to a
-  different resolution than configured — matches steps 2-3's "Check" call
+  different resolution than configured - matches steps 2-3's "Check" call
   exactly as a post-generation assertion rather than a pre-condition.
 - `build_h3_centers` computes `h3.cell_to_latlng` once per **distinct**
   `h3_id` (via `.unique()` before mapping), not once per row, then joins
-  the result back onto both aggregated frames in `finalize` — avoids
+  the result back onto both aggregated frames in `finalize` - avoids
   redundant per-row center computation for cells that recur across many
   weeks/actors.
 - **No complete week x H3-cell grid is built** here, unlike
@@ -2088,7 +2088,7 @@ Built in `04_build_h3_metrics.py`, structured as `load_events_clean`,
   h3_id) combinations with at least one event appear.
 - Actor display names are re-derived in-script
   (`build_canonical_actor_names`), same technique and same rationale as
-  `03_build_weekly_metrics.py` — `actor_lookup.csv` is not a declared
+  `03_build_weekly_metrics.py` - `actor_lookup.csv` is not a declared
   input of this stage.
 - Violence-type membership counts use `config.analysis.violence_types`
   codes, not hardcoded `1/2/3`, matching every earlier script.
@@ -2098,7 +2098,7 @@ Built in `04_build_h3_metrics.py`, structured as `load_events_clean`,
   twice.
 - `validate_h3_metrics` re-derives the spatial-conservation check (step 9
   / DATA_FILES.md invariant) independently from the spatially eligible
-  subset of `events_clean` — same defense-in-depth relationship to
+  subset of `events_clean` - same defense-in-depth relationship to
   `07_validate_outputs.py` as `03_build_weekly_metrics.py`'s analogous
   check.
 - `main()` creates `derived_data_dir` before writing.
@@ -2106,7 +2106,7 @@ Built in `04_build_h3_metrics.py`, structured as `load_events_clean`,
 
 ---
 
-# 05 — `05_build_actor_profiles.py`
+# 05 - `05_build_actor_profiles.py`
 
 ## Responsibility
 
@@ -2485,7 +2485,7 @@ Built in `05_build_actor_profiles.py`, structured as `load_actor_events`,
   (`Expected inputs` for this script explicitly names `actor_lookup.csv`,
   unlike scripts 03/04). This is the same fragmentation concern as those
   two scripts, but resolved differently here because the canonical-name
-  file is actually an available input — no need to re-derive a mode-name
+  file is actually an available input - no need to re-derive a mode-name
   in-script.
 - `build_geographic_metrics` filters to `spatial_eligible` rows and
   assigns H3 cells at `config.spatial.h3_resolution` independently of
@@ -2505,25 +2505,25 @@ Built in `05_build_actor_profiles.py`, structured as `load_actor_events`,
   `one_sided_civilian_fatalities`. DATA_FILES.md §7 lists the field name
   without specifying which civilian-fatality column it divides; the
   broader one was chosen because `one_sided_events_per_active_week` already
-  covers the one-sided-specific angle as a separate column — flagging this
+  covers the one-sided-specific angle as a separate column - flagging this
   as a decision worth a second look, not a settled fact.
 - `combatant_fatalities_in_involved_events` is computed as a plain
   `sum(combatant_fatalities)` over all of an actor's rows, not filtered to
-  combat rows first — safe because `combatant_fatalities` is already `0`
+  combat rows first - safe because `combatant_fatalities` is already `0`
   on one-sided rows (set in `01_clean_events.py`), so the unfiltered sum
   equals the combat-only sum without an extra boolean mask.
 - `eligible_for_web3` reads `config.actors.min_events` (matches
   `config/config.yaml`; see the resolved `min_events` vs. `min_events_web3`
   mismatch noted in `CLAUDE.md`).
 - `validate_actor_profiles` re-derives `total_event_count` per actor
-  directly from `actor_events` and cross-checks — same defense-in-depth
+  directly from `actor_events` and cross-checks - same defense-in-depth
   relationship to `07_validate_outputs.py` as the checks in scripts 03/04.
 - `main()` creates `derived_data_dir` before writing.
 - Built, not run.
 
 ---
 
-# 06 — `06_build_event_windows.py`
+# 06 - `06_build_event_windows.py`
 
 ## Responsibility
 
@@ -2986,12 +2986,12 @@ Built in `06_build_event_windows.py`, structured as `load_weekly_metrics`,
   relied on for the final Web 4 dataset.
 - Peak-candidate detection (`detect_peak_candidates`) uses `shift(1)` /
   `shift(-1)` with boundary weeks' missing neighbour filled as `-1` (not
-  `NaN` or `0`) — since all metric values are `>= 0`, `-1` guarantees a
+  `NaN` or `0`) - since all metric values are `>= 0`, `-1` guarantees a
   real boundary value of `0` still fails the `> 0` gate rather than
   artificially becoming a candidate, while any positive boundary value
   correctly passes the neighbour comparison.
 - `collapse_plateaus` only merges candidate weeks that are both (a)
-  calendar-adjacent (`+7 days`, i.e. no gap) and (b) equal-valued — two
+  calendar-adjacent (`+7 days`, i.e. no gap) and (b) equal-valued - two
   separate candidate weeks with the same value but a gap between them are
   treated as two distinct peaks, not one plateau, matching "consecutive
   weeks forming a plateau" literally.
@@ -3008,20 +3008,20 @@ Built in `06_build_event_windows.py`, structured as `load_weekly_metrics`,
   `actor_weekly.loc[calendar_week, col]` on a `week_start`-indexed frame;
   a week could in principle be `is_observed_week=True` (inside the
   analysis period) yet absent from `actor_weekly.index` only if
-  `03_build_weekly_metrics.py`'s zero-fill grid were incomplete — the
+  `03_build_weekly_metrics.py`'s zero-fill grid were incomplete - the
   `calendar_week in actor_weekly.index` guard falls back to `NaN` in that
   case rather than raising, since that would be a script-03 contract
   violation, not something this script should paper over or hard-fail on
   mid-loop.
 - `validate_event_windows` is skipped entirely (`if len(result) > 0`) when
-  zero episodes are detected across all actors — an empty output is valid
+  zero episodes are detected across all actors - an empty output is valid
   (e.g. on a small/test dataset with no qualifying peaks), not a failure.
 - `main()` creates `derived_data_dir` before writing.
 - Built, not run.
 
 ---
 
-# 07 — `07_validate_outputs.py`
+# 07 - `07_validate_outputs.py`
 
 This script is very important. It must not generate analytical data.
 
@@ -3459,7 +3459,7 @@ min_gap_weeks > 0
 
 ---
 
-# Additional output 1 — metadata
+# Additional output 1 - metadata
 
 ```text
 data/derived/metadata.json
@@ -3482,7 +3482,7 @@ Contains only information useful to the frontend:
 
 ---
 
-# Additional output 2 — manifest
+# Additional output 2 - manifest
 
 ```text
 data/derived/build_manifest.json

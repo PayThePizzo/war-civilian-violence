@@ -40,7 +40,7 @@ min_gap_weeks > 0
 
 ## Additional outputs
 
-**`data/derived/metadata.json`** — frontend-facing subset of the analytical configuration (the web app should read this rather than parsing the YAML config directly):
+**`data/derived/metadata.json`** - frontend-facing subset of the analytical configuration (the web app should read this rather than parsing the YAML config directly):
 
 ```json
 {
@@ -55,7 +55,7 @@ min_gap_weeks > 0
 }
 ```
 
-**`data/derived/build_manifest.json`** — technical provenance for reproducibility/debugging: `raw_input_path`, `raw_input_sha256`, `config_path`, `config_sha256`, row counts for every processed/derived output, `validation_status`, `build_timestamp`.
+**`data/derived/build_manifest.json`** - technical provenance for reproducibility/debugging: `raw_input_path`, `raw_input_sha256`, `config_path`, `config_sha256`, row counts for every processed/derived output, `validation_status`, `build_timestamp`.
 
 A build is successful only when [`07_validate_outputs.py`](07_validate_outputs.md) reports a `PASS` status.
 

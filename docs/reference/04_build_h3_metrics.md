@@ -1,6 +1,6 @@
 # `04_build_h3_metrics.py`
 
-Build weekly H3 spatial aggregations for the conflict map — **Web 2: WHERE?**
+Build weekly H3 spatial aggregations for the conflict map - **Web 2: WHERE?**
 
 ## Responsibility
 
@@ -20,7 +20,7 @@ spatial:
 
 ## Spatial eligibility
 
-This is the **only** stage in the pipeline that drops rows on `spatial_eligible` — every other stage retains spatially ineligible rows. Filters both inputs to `spatial_eligible == True` before H3 assignment.
+This is the **only** stage in the pipeline that drops rows on `spatial_eligible` - every other stage retains spatially ineligible rows. Filters both inputs to `spatial_eligible == True` before H3 assignment.
 
 ## Transformations
 
@@ -28,13 +28,13 @@ This is the **only** stage in the pipeline that drops rows on `spatial_eligible`
 2. Generate `h3_id = h3.latlng_to_cell(latitude, longitude, resolution)` per row.
 3. Validate each generated cell (`h3.is_valid_cell`) and that its resolution matches `config.spatial.h3_resolution`; hard-fail otherwise.
 4. Compute H3 cell centers (`h3_center_lat`, `h3_center_lon`).
-5. **Global aggregation** — from `events_clean`, grouped by `(week_start, h3_id)`, `actor_id = "__ALL__"`.
-6. **Actor aggregation** — from `actor_events`, grouped by `(actor_id, week_start, h3_id)`.
+5. **Global aggregation** - from `events_clean`, grouped by `(week_start, h3_id)`, `actor_id = "__ALL__"`.
+6. **Actor aggregation** - from `actor_events`, grouped by `(actor_id, week_start, h3_id)`.
 7. Compute event/fatality counts per group.
 8. `civilian_fatality_share = civilian_fatalities / best_fatalities` and `one_sided_civilian_fatality_share = one_sided_civilian_fatalities / best_fatalities`, both `0` when `best_fatalities == 0`.
 9. Validate that, per week, `sum(__ALL__.event_count across H3 cells)` equals the number of spatially eligible unique events for that week.
 
-Unlike [`03_build_weekly_metrics.py`](03_build_weekly_metrics.md), **no** complete week × H3-cell grid is built — a dense grid would be dominated by empty (week, cell) pairs and bloat the output. Only combinations with at least one event appear.
+Unlike [`03_build_weekly_metrics.py`](03_build_weekly_metrics.md), **no** complete week × H3-cell grid is built - a dense grid would be dominated by empty (week, cell) pairs and bloat the output. Only combinations with at least one event appear.
 
 ## Output
 

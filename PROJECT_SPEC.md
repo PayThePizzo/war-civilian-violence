@@ -359,7 +359,7 @@ Timeline highlights week
 
 ---
 
-# WEB 1 — CONFLICT TIMELINE
+# WEB 1 - CONFLICT TIMELINE
 
 # 8. Question
 
@@ -679,7 +679,7 @@ Do not simply leave the chart empty.
 
 ---
 
-# WEB 2 — SPATIO-TEMPORAL H3 MAP
+# WEB 2 - SPATIO-TEMPORAL H3 MAP
 
 # 17. Question
 
@@ -1055,7 +1055,7 @@ autoplay = false
 
 ---
 
-# WEB 3 — ACTOR VIOLENCE FINGERPRINTS
+# WEB 3 - ACTOR VIOLENCE FINGERPRINTS
 
 # 30. Question
 
@@ -1348,7 +1348,7 @@ That mini chart can be simple: the main analytical value remains in the parallel
 
 ---
 
-# WEB 4 — EVENT-CENTRED BEFORE / AFTER
+# WEB 4 - EVENT-CENTRED BEFORE / AFTER
 
 # 40. Question
 
@@ -1651,7 +1651,7 @@ This completes the connections among the four views.
 # 50. Web 4 tooltip
 
 ```text
-RSF — Episode 2
+RSF - Episode 2
 
 T0:
 3 Jun 2024

@@ -1,5 +1,5 @@
 /**
- * Instagram post 1 — "WHEN does violence turn toward civilians?"
+ * Instagram post 1 - "WHEN does violence turn toward civilians?"
  * Static, non-interactive counterpart of Web 1's Timeline (web/src/viz/timeline/Timeline.ts):
  * same __ALL__ weekly series and semantic colors, but re-composed as one editorial
  * image (larger type, minimal axes, no brush/tooltip/controls) rather than a
@@ -124,7 +124,7 @@ function buildSubtitle(): HTMLParagraphElement {
   const subtitle = document.createElement("p");
   subtitle.className = "social-subtitle";
   subtitle.textContent =
-    "Weekly composition of recorded violence in Sudan — state-based, non-state, and one-sided against civilians.";
+    "Weekly composition of recorded violence in Sudan - state-based, non-state, and one-sided against civilians.";
   return subtitle;
 }
 

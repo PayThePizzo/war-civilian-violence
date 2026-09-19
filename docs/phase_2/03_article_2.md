@@ -3,7 +3,7 @@
 
 | **Title** | **Author(s)** | **Description** | **Link** |
 |---|---|---|---|
-| *How Ukraine Has Faced Its Worst Month on the Battlefield in Two Years — Visualised* | Ed Gargan, Pablo Gutiérrez, and Ashley Kirk; design by Prina Shah | A series of charts and maps for desktop and mobile showing Russian territorial gains in Ukraine in 2024, with a focus on November. | [The Guardian article](https://www.theguardian.com/world/ng-interactive/2024/dec/04/how-ukraine-faced-worst-month-battlefield-in-two-years-visualised) |
+| *How Ukraine Has Faced Its Worst Month on the Battlefield in Two Years - Visualised* | Ed Gargan, Pablo Gutiérrez, and Ashley Kirk; design by Prina Shah | A series of charts and maps for desktop and mobile showing Russian territorial gains in Ukraine in 2024, with a focus on November. | [The Guardian article](https://www.theguardian.com/world/ng-interactive/2024/dec/04/how-ukraine-faced-worst-month-battlefield-in-two-years-visualised) |
 
 ---
 

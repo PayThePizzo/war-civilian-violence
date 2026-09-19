@@ -1,5 +1,5 @@
 /**
- * X post 2 — "Do combat and civilian targeting occupy the same space?"
+ * X post 2 - "Do combat and civilian targeting occupy the same space?"
  * Static, non-interactive counterpart of Web 2's MapLibre/deck.gl H3 map
  * (web/src/viz/map/ConflictMap.ts, VIZ.md §2): same __ALL__ h3_weekly_metrics
  * rows, same h3_center_lat/h3_center_lon positions (never recomputed), and

@@ -56,13 +56,13 @@ actor_events = os.path.abspath(os.path.join(processed_data_dir, "actor_events.pa
 # Canonical actor identifier/name mapping
 actor_lookup = os.path.abspath(os.path.join(processed_data_dir, "actor_lookup.csv"))
 
-# Dataset for Web 1 — temporal conflict visualization
+# Dataset for Web 1 - temporal conflict visualization
 weekly_metrics = os.path.abspath(os.path.join(derived_data_dir, "weekly_metrics.csv"))
-# Dataset for Web 2 — H3 spatial visualization
+# Dataset for Web 2 - H3 spatial visualization
 h3_weekly_metrics = os.path.abspath(os.path.join(derived_data_dir, "h3_weekly_metrics.csv"))    
-# Dataset for Web 3 — actor violence profiles
+# Dataset for Web 3 - actor violence profiles
 actor_profiles = os.path.abspath(os.path.join(derived_data_dir, "actor_profiles.csv"))
-# Dataset for Web 4 — event-centred before/after analysis
+# Dataset for Web 4 - event-centred before/after analysis
 event_windows = os.path.abspath(os.path.join(derived_data_dir, "event_windows.csv"))
 # Metadata exposed to the web frontend
 metadata = os.path.abspath(os.path.join(derived_data_dir, "metadata.json"))

@@ -1,5 +1,5 @@
 /**
- * X post 1 — "What happens around major episodes of one-sided violence?"
+ * X post 1 - "What happens around major episodes of one-sided violence?"
  * Static, non-interactive counterpart of Web 4's event-window matrix
  * (web/src/viz/event-windows/EventWindowMatrix.ts, VIZ.md §4): same
  * pipeline-defined episodes/relative weeks and semantic colors, but

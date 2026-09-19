@@ -37,7 +37,7 @@ Non necessariamente “causa”, “rappresaglia” o “decisione tattica”.
 
 Le quattro rappresentazioni web corrispondono a quattro sotto-domande.
 
-### Web 1 — WHEN?
+### Web 1 - WHEN?
 
 > Come cambia nel tempo la composizione della violenza?
 
@@ -50,7 +50,7 @@ Vogliamo identificare:
 
 ---
 
-### Web 2 — WHERE?
+### Web 2 - WHERE?
 
 > Dove si concentra la violenza e come cambia geograficamente nel tempo?
 
@@ -63,7 +63,7 @@ Vogliamo capire:
 
 ---
 
-### Web 3 — WHO?
+### Web 3 - WHO?
 
 > Quali attori presentano profili di violenza differenti?
 
@@ -78,7 +78,7 @@ Confrontiamo gli attori in termini di:
 
 ---
 
-### Web 4 — BEFORE / AFTER?
+### Web 4 - BEFORE / AFTER?
 
 > Cosa accade attorno ai principali episodi di violenza contro civili?
 
@@ -106,19 +106,19 @@ Le organizzerei come una storia:
 FROM BATTLEFIELD TO CIVILIANS
           │
           ▼
-01 — WHEN?
+01 - WHEN?
 How does violence change over time?
           │
           ▼
-02 — WHERE?
+02 - WHERE?
 How does violence move across space?
           │
           ▼
-03 — WHO?
+03 - WHO?
 Which actors behave differently?
           │
           ▼
-04 — BEFORE / AFTER?
+04 - BEFORE / AFTER?
 What surrounds peaks of civilian violence?
           │
           ▼
@@ -134,7 +134,7 @@ che risponde molto bene all'obiettivo del corso.
 
 ---
 
-# 5. Web visualization 1 — Conflict Timeline
+# 5. Web visualization 1 - Conflict Timeline
 
 ## Obiettivo
 
@@ -188,7 +188,7 @@ La rappresentazione dovrebbe permettere di dire cose del tipo:
 
 ---
 
-# 6. Web visualization 2 — Spatio-temporal Conflict Map
+# 6. Web visualization 2 - Spatio-temporal Conflict Map
 
 ## Obiettivo
 
@@ -238,7 +238,7 @@ da
 
 ---
 
-# 7. Web visualization 3 — Actor Violence Fingerprints
+# 7. Web visualization 3 - Actor Violence Fingerprints
 
 ## Obiettivo
 
@@ -275,7 +275,7 @@ Questo è esattamente il tipo di informazione difficilmente visibile in una tabe
 
 ---
 
-# 8. Web visualization 4 — Event-centred temporal analysis
+# 8. Web visualization 4 - Event-centred temporal analysis
 
 Questa è la rappresentazione analiticamente più importante.
 
@@ -344,7 +344,7 @@ Instagram deve raccontare, non permettere esplorazione.
 
 Userei immagini **1080×1350, 4:5**, principalmente carousel.
 
-## Instagram 1 — Temporal Story
+## Instagram 1 - Temporal Story
 
 Tema:
 
@@ -352,29 +352,29 @@ Tema:
 
 Possibile sequenza:
 
-**Slide 1 — Hook**
+**Slide 1 - Hook**
 
 Titolo + elemento grafico molto semplice.
 
-**Slide 2 — Conflict**
+**Slide 2 - Conflict**
 
 Timeline del combattimento.
 
-**Slide 3 — Shift**
+**Slide 3 - Shift**
 
 Comparsa/aumento della one-sided violence.
 
-**Slide 4 — Actors**
+**Slide 4 - Actors**
 
 Confronto dei principali attori.
 
-**Slide 5 — Finding**
+**Slide 5 - Finding**
 
 Messaggio principale + numero/statistica rilevante.
 
 ---
 
-# 10. Instagram 2 — Geographic Story
+# 10. Instagram 2 - Geographic Story
 
 Tema:
 
@@ -406,7 +406,7 @@ Qui userei **small multiple maps**, sfruttando lo swipe come sequenza temporale.
 
 ---
 
-# 11. X post 1 — Main temporal finding
+# 11. X post 1 - Main temporal finding
 
 Su X farei un'immagine singola molto più condensata.
 
@@ -429,7 +429,7 @@ Il post stesso può fornire il resto del contesto.
 
 ---
 
-# 12. X post 2 — Actor comparison
+# 12. X post 2 - Actor comparison
 
 Qui userei:
 
@@ -590,10 +590,10 @@ Questo è importante anche per la consegna.
 
 | Representation       | Dataset                   |
 | -------------------- | ------------------------- |
-| Web 1 — Timeline     | `weekly_conflict.csv`     |
-| Web 2 — Map          | `spatial_hex.csv`         |
-| Web 3 — Actors       | `actor_profiles.csv`      |
-| Web 4 — Before/After | `event_windows.csv`       |
+| Web 1 - Timeline     | `weekly_conflict.csv`     |
+| Web 2 - Map          | `spatial_hex.csv`         |
+| Web 3 - Actors       | `actor_profiles.csv`      |
+| Web 4 - Before/After | `event_windows.csv`       |
 | Instagram 1          | derivato da Web 1 + Web 4 |
 | Instagram 2          | derivato da Web 2         |
 | X 1                  | derivato da Web 4         |

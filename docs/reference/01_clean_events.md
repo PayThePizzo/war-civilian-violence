@@ -8,7 +8,7 @@ Transform the original GED file into a clean, project-specific **event-level** d
 
 > 1 input row = 1 UCDP event = 1 output row.
 
-Does **not** perform actor expansion, weekly aggregation, spatial aggregation, episode detection, or visualization-specific transformations — those are delegated to later pipeline stages.
+Does **not** perform actor expansion, weekly aggregation, spatial aggregation, episode detection, or visualization-specific transformations - those are delegated to later pipeline stages.
 
 ## Input
 
@@ -53,7 +53,7 @@ analysis:
 9. Validate `low <= best <= high` where all three are available (hard fail, not a warning).
 10. Derive `combatant_fatalities = deaths_a + deaths_b` (combat events only, else 0), `civilian_fatalities = deaths_civilians`, `one_sided_civilian_fatalities` (`deaths_civilians` when `type_of_violence == 3`, else 0).
 11. Diagnostic-only check that `side_a` is present for one-sided events (does not reject on `deaths_a == 0` / `deaths_b == 0`).
-12. Validate coordinates; derive `spatial_eligible` (`-90 <= latitude <= 90` and `-180 <= longitude <= 180`, both non-null). Invalid/missing coordinates do **not** drop the row — Web 1, 3, and 4 still use these events; only Web 2 (H3 map) requires `spatial_eligible = True`.
+12. Validate coordinates; derive `spatial_eligible` (`-90 <= latitude <= 90` and `-180 <= longitude <= 180`, both non-null). Invalid/missing coordinates do **not** drop the row - Web 1, 3, and 4 still use these events; only Web 2 (H3 map) requires `spatial_eligible = True`.
 13. Conservative `.str.strip()` normalization on descriptive text fields (no aggressive actor-name normalization here).
 14. Sort by `(date_start, event_id)`.
 
@@ -67,7 +67,7 @@ One row per retained UCDP event, with the canonical column set: `event_id`, date
 
 ## Fail-loud conditions
 
-Missing required columns; null/duplicate `event_id`; unparseable dates; `date_start > date_end`; unsupported `type_of_violence`; negative fatality counts; `low > best > high` violations. Invalid coordinates are the one exception — flagged via `spatial_eligible = False`, never rejected.
+Missing required columns; null/duplicate `event_id`; unparseable dates; `date_start > date_end`; unsupported `type_of_violence`; negative fatality counts; `low > best > high` violations. Invalid coordinates are the one exception - flagged via `spatial_eligible = False`, never rejected.
 
 ## Implementation notes
 
