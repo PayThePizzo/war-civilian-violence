@@ -41,7 +41,7 @@ This gives numbers such as range, cost, and payload a context. On mobile, wide s
 
 A table could compare drone models, costs, speeds, payloads, and ranges. The diagrams help us see **how their roles depend on one another**: reconnaissance drones locate activity, communications pass on the information, artillery or attack drones respond, and longer-range systems reach beyond the front. Their battlefield effect depends on how these roles work together.
 
-The changes in scale also help us understand distance. “Ten kilometres” or “several hundred kilometres” becomes a visible relationship between the front line, command infrastructure, cities, and launch or target areas. We can distinguish tactical drones used near soldiers from strategic systems able to reach far behind the front.
+The changes in scale also help us understand distance. "Ten kilometres" or "several hundred kilometres" becomes a visible relationship between the front line, command infrastructure, cities, and launch or target areas. We can distinguish tactical drones used near soldiers from strategic systems able to reach far behind the front.
 
 Putting observation, decision, and attack in one sequence shows how inexpensive aerial systems can shorten the time between spotting a target and acting on the information. It also shows the imbalance between relatively cheap devices and potentially high-value targets. These relationships would be hard to pick up from a specification table.
 

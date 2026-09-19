@@ -11,7 +11,7 @@
 
 This paper presents a visual-analytics framework for exploring whether topics in media collections relate to possible outside event drivers. Researchers can retrieve events through related words, test possible causal links, and add annotations. They can also inspect the words behind a match and use their knowledge of the subject to refine it.
 
-Here, we look at **Figure 10 in Section 7.2**, “Climate-Induced Unrest During Drought.” The case study asks whether the 2014 drought in the Greater Horn of Africa coincided with reports of social unrest and political violence. The analyst selects an agriculture topic from a social-unrest media collection, ACLED events labelled “violence against civilians,” and the starting terms **water**, **food**, **farmer**, and **climate**.
+Here, we look at **Figure 10 in Section 7.2**, "Climate-Induced Unrest During Drought." The case study asks whether the 2014 drought in the Greater Horn of Africa coincided with reports of social unrest and political violence. The analyst selects an agriculture topic from a social-unrest media collection, ACLED events labelled "violence against civilians," and the starting terms **water**, **food**, **farmer**, and **climate**.
 
 ---
 

@@ -214,11 +214,11 @@ appears in both the SAF and RSF profiles.
 
 This is correct when we are asking:
 
-> “Which events involve SAF?”
+> "Which events involve SAF?"
 
 But it would be wrong to aggregate the actor-event table to answer:
 
-> “How many events occurred in Sudan overall?”
+> "How many events occurred in Sudan overall?"
 
 because the same event would be counted twice.
 
@@ -1358,11 +1358,11 @@ This is the central part:
 
 Not:
 
-> “Does military defeat cause retaliation?”
+> "Does military defeat cause retaliation?"
 
 but:
 
-> **“What patterns surround these episodes?”**
+> **"What patterns surround these episodes?"**
 
 ---
 
@@ -1403,7 +1403,7 @@ episodes:
   min_gap_weeks: 6
 ```
 
-We do not manually select “interesting episodes.”
+We do not manually select "interesting episodes."
 
 ---
 
@@ -2378,7 +2378,7 @@ The order should be:
 15. social exports
 ```
 
-So the next concrete technical step is not yet “building the timeline”: it is defining **the exact schema of the derived datasets and the Python preprocessing**. Once that is done, the four visualizations become reasonably self-contained implementations and, above all, all social media outputs can be derived from the same data without creating a second parallel pipeline.
+So the next concrete technical step is not yet "building the timeline": it is defining **the exact schema of the derived datasets and the Python preprocessing**. Once that is done, the four visualizations become reasonably self-contained implementations and, above all, all social media outputs can be derived from the same data without creating a second parallel pipeline.
 
 [1]: https://deck.gl/docs/api-reference/geo-layers/h3-hexagon-layer?utm_source=chatgpt.com "H3HexagonLayer | deck.gl"
 [2]: https://h3geo.org/docs/core-library/restable/?utm_source=chatgpt.com "Tables of Cell Statistics Across Resolutions | H3"

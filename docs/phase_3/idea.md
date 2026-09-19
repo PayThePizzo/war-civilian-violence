@@ -9,7 +9,7 @@ Titolo di lavoro:
 
 > **From Battlefield to Civilians: Patterns of One-Sided Violence in the Sudan Conflict**
 
-L'idea centrale non è dimostrare che una fazione “perde e quindi attacca i civili”, perché il GED non permette di osservare direttamente decisioni strategiche o perdita di territorio.
+L'idea centrale non è dimostrare che una fazione "perde e quindi attacca i civili", perché il GED non permette di osservare direttamente decisioni strategiche o perdita di territorio.
 
 Il progetto cerca invece di mostrare **quando, dove e per quali attori il conflitto cambia forma**, passando da scontri tra attori armati a violenza deliberata contro civili.
 
@@ -29,7 +29,7 @@ La parola chiave è quindi:
 
 > **shift**
 
-Non necessariamente “causa”, “rappresaglia” o “decisione tattica”.
+Non necessariamente "causa", "rappresaglia" o "decisione tattica".
 
 ---
 
@@ -184,7 +184,7 @@ L'utente può:
 
 La rappresentazione dovrebbe permettere di dire cose del tipo:
 
-> “La composizione della violenza non rimane costante: determinati periodi di intensa attività militare sono seguiti o accompagnati da una maggiore presenza di one-sided violence.”
+> "La composizione della violenza non rimane costante: determinati periodi di intensa attività militare sono seguiti o accompagnati da una maggiore presenza di one-sided violence."
 
 ---
 
@@ -330,7 +330,7 @@ Questa dovrebbe permettere l'affermazione principale del progetto.
 
 Per esempio:
 
-> “I principali picchi di one-sided violence tendono a verificarsi in prossimità di periodi caratterizzati da una maggiore intensità del combattimento.”
+> "I principali picchi di one-sided violence tendono a verificarsi in prossimità di periodi caratterizzati da una maggiore intensità del combattimento."
 
 Oppure potremmo scoprire il contrario.
 
@@ -752,7 +752,7 @@ Eventualmente possiamo mostrare l'incertezza nei tooltip o in una visualizzazion
 
 # 20. Etica visiva
 
-Dato l'argomento eviterei una visual language troppo “militare” o spettacolare.
+Dato l'argomento eviterei una visual language troppo "militare" o spettacolare.
 
 Quindi niente:
 

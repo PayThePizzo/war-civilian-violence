@@ -60,7 +60,7 @@ The linked views help show whether agreement and disagreement between sources fo
 - Clusters in TempMap may point to uneven geographic or time coverage
 - Uneven stacked bars may suggest that one source supplies a disproportionate share of certain event types.
 
-ParaMultiples helps researchers judge **how stable the integration is**. If nearby cells look similar, small changes to the thresholds probably make little difference to the combined dataset. A sudden change between cells points to a parameter “cliff”: a small choice produces a very different result. That kind of sensitivity is almost impossible to spot in a single exported match table.
+ParaMultiples helps researchers judge **how stable the integration is**. If nearby cells look similar, small changes to the thresholds probably make little difference to the combined dataset. A sudden change between cells points to a parameter "cliff": a small choice produces a very different result. That kind of sensitivity is almost impossible to spot in a single exported match table.
 
 The views also make it easier to notice local problems in results that look good overall. A setting may produce an acceptable total while the map or classification reveals a serious failure in one region or category. We can therefore learn *where the sources agree, where they disagree, which choices affect that disagreement, and whether the combined dataset is reliable enough for a particular research question*.
 

@@ -2745,11 +2745,11 @@ is_observed_week = False
 
 Zero would mean:
 
-> “we observed that week and there were no events.”
+> "we observed that week and there were no events."
 
 NA means:
 
-> “this week is outside the analysis period.”
+> "this week is outside the analysis period."
 
 ---
 
@@ -3656,7 +3656,7 @@ I would assign:
 NA
 ```
 
-because there is no meaningful concept of “deaths suffered by all actors” without risking a change in interpretation.
+because there is no meaningful concept of "deaths suffered by all actors" without risking a change in interpretation.
 
 This gives us three clearly distinct measures in Web 4:
 
@@ -3675,6 +3675,6 @@ how many fatalities are attributed
 specifically to the actor
 ```
 
-The third measure is particularly useful for the original question about the possible relationship between **observable military pressure** and subsequent violence against civilians, without improperly turning it into a measure of “defeat.”
+The third measure is particularly useful for the original question about the possible relationship between **observable military pressure** and subsequent violence against civilians, without improperly turning it into a measure of "defeat."
 
 The natural next step would be to turn this specification into a **concrete `project.yml` schema + shared functions (`paths.py`, `config.py`, `schemas.py`, `validation.py`)**, because many of the checks described here should not be duplicated seven times.
