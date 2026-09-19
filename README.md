@@ -15,7 +15,7 @@ Patterns of **one-sided violence against civilians** in the **Sudan conflict**, 
 ![License](https://img.shields.io/badge/license-GPLv3-blue)
 
 <!-- 🖼️ HERO IMAGE: wide banner (~1600x600).
-     Suggested: the weekly timeline area chart (blue / orange / green) from Web 1.
+     Suggested: the weekly timeline area chart (orange / light blue / red) from Web 1.
      Save as: docs/assets/readme/hero.png -->
 > 🖼️ **[ HERO BANNER GOES HERE ]** `docs/assets/readme/hero.png`
 
