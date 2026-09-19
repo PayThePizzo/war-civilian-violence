@@ -5,17 +5,17 @@ This tangible representation focuses on the **seven weeks surrounding the El Fas
 Each cylinder represents one week. The tower develops **from past to future, bottom to top**:
 
 ```text
-                FUTURE
-                  ↑
-                 W+3
-                 W+2
-                 W+1
-                 W0   ← El Fasher reference week
-                 W-1
-                 W-2
-                 W-3
-                  ↑
-                 PAST
+FUTURE
+  ↑
+  W+3
+  W+2
+  W+1
+  W0   <- El Fasher reference week
+  W-1
+  W-2
+  W-3
+  ↑
+  PAST
 ```
 
 The representation is intentionally simple. The size of the cylinder shows the total number of fatalities in the week, while three fixed positions around each cylinder show the composition of those fatalities by violence type. A fourth position identifies the main actor for that week.
@@ -163,15 +163,7 @@ This produces the following main actor sequence:
 
 Each cylinder represents **one week**.
 
-The cylinders are stacked chronologically from bottom to top:
-
-```text
-BOTTOM
-W-3 → W-2 → W-1 → W0 → W+1 → W+2 → W+3
-                                             TOP
-```
-
-The **circumference of the cylinder represents total fatalities**.
+The cylinders are stacked chronologically from bottom to top and the **circumference of the cylinder represents total fatalities**.
 
 Five cylinder sizes are available. Because the W0 value is much larger than the surrounding weeks, we use a simple magnitude-based classification:
 
@@ -239,7 +231,7 @@ The **size of every circle represents fatalities**, using the same scale:
 
 The three circles therefore use exactly the same quantitative rule.
 
-#### One-sided — 🔴 Top
+#### One-sided - 🔴 Top
 
 | Week | Fatalities | Circle |
 |---|---:|---|
@@ -251,7 +243,7 @@ The three circles therefore use exactly the same quantitative rule.
 | W+2 | 0 | No circle |
 | W+3 | 0 | No circle |
 
-#### State-based — 🟠 Left
+#### State-based - 🟠 Left
 
 | Week | Fatalities | Circle |
 |---|---:|---|
@@ -263,29 +255,27 @@ The three circles therefore use exactly the same quantitative rule.
 | W+2 | 163 | Size 3 |
 | W+3 | 119 | Size 3 |
 
-#### Non-state — 🔵 Right
+#### Non-state - 🔵 Right
 
 No non-state events are recorded during the selected seven-week period.
 
 Therefore:
 
 ```text
-W-3 → no cyan circle
-W-2 → no cyan circle
-W-1 → no cyan circle
-W0  → no cyan circle
-W+1 → no cyan circle
-W+2 → no cyan circle
-W+3 → no cyan circle
+W-3 -> no cyan circle
+W-2 -> no cyan circle
+W-1 -> no cyan circle
+W0  -> no cyan circle
+W+1 -> no cyan circle
+W+2 -> no cyan circle
+W+3 -> no cyan circle
 ```
 
 The empty right-side position is meaningful: it represents **zero non-state fatalities**.
 
 ### Other icons
 
-The bottom hole identifies the main actor.
-
-The physical mapping is:
+The bottom hole identifies the main actor, and the physical mapping is:
 
 | Icon | Actor |
 |---|---|
@@ -297,77 +287,28 @@ The actor icon is categorical: its size does not change.
 
 The four diagonal holes are ignored and remain empty.
 
-The complete grammar is therefore:
-
-```text
-CYLINDER           = one week
-CYLINDER SIZE      = total fatalities
-
-TOP 🔴             = one-sided fatalities
-LEFT 🟠            = state-based fatalities
-RIGHT 🔵           = non-state fatalities
-
-CIRCLE SIZE        = number of fatalities
-
-BOTTOM ICON        = main actor
-
-HEIGHT             = time
-```
-
 ### Accessible Choices
 
-The physicalization does not rely on color alone.
-
-For a sighted user, the three violence categories are immediately recognizable through red, orange and cyan.
-
-For a non-sighted user, the same categories are recognizable through their **fixed positions**:
+The physicalization does not rely on color alone. For a non-sighted user, the three violence categories are recognizable through their **fixed positions**:
 
 ```text
-                         TOP
-                    ONE-SIDED
-                         ●
-                         │
+                    TOP
+              ONE-SIDED
+                    ●
+                    │
 
-                         │
-      STATE-BASED ●─────┼─────● NON-STATE
-             LEFT        │        RIGHT
-                         │
+                    │
+STATE-BASED ●────---┼─────● NON-STATE
+        LEFT        │        RIGHT
+                    │
 
-                     MAIN ACTOR
-                       BOTTOM
+                MAIN ACTOR
+                  BOTTOM
 ```
 
-All cylinders are assembled with the holes aligned. This creates stable **virtual columns** through the whole tower:
+Furthermore, cylinders are assembled with the holes aligned. This creates stable "**virtual columns**" through the whole tower.
 
-```text
-Top column    → One-sided fatalities
-Left column   → State-based fatalities
-Right column  → Non-state fatalities
-Bottom column → Main actor
-```
-
-A tactile orientation plate is placed next to the tower. It includes:
-
-- the four directions;
-- a tactile example of each actor icon;
-- examples of the different circle sizes;
-- examples of the different cylinder sizes;
-- Braille or raised labels for the variables.
-
-A raised arrow indicates the temporal direction:
-
-```text
-       FUTURE
-          ↑
-          │
-          │
-         TIME
-          │
-          │
-        PAST
-```
-
-Because W0 is the central cylinder, it can also be identified through a small tactile reference mark on the fourth level. This is only a navigation aid and does not encode another variable.
+Finally, the size of the cylinders and circles play a great part in the tactile world, giving the possibility of feeling the "size of the violence".
 
 ---
 
@@ -388,7 +329,7 @@ In the following mockups:
 
 ### Assembly 1 - Start
 
-**W-3 — 29 September to 5 October 2025**
+**W-3 - 29 September to 5 October 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -429,7 +370,7 @@ This is the starting point of the story. Fatalities are relatively low compared 
 
 ### Assembly 2
 
-**W-2 — 6 to 12 October 2025**
+**W-2 - 6 to 12 October 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -472,7 +413,7 @@ Compared with W-3, the cylinder grows from Size 2 to Size 3. The increase is mai
 
 ### Assembly 3
 
-**W-1 — 13 to 19 October 2025**
+**W-1 - 13 to 19 October 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -518,7 +459,7 @@ The total falls compared with W-2 but remains in the same physical size class. S
 
 ### Assembly 4 - El Fasher Week
 
-**W0 — 20 to 26 October 2025**
+**W0 - 20 to 26 October 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -570,7 +511,7 @@ The bottom actor icon also changes from the Government of Sudan to SFA.
 
 ### Assembly 5
 
-**W+1 — 27 October to 2 November 2025**
+**W+1 - 27 October to 2 November 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -623,7 +564,7 @@ The total drops sharply after W0, but it remains much higher than in the three p
 
 ### Assembly 6
 
-**W+2 — 3 to 9 November 2025**
+**W+2 - 3 to 9 November 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -679,7 +620,7 @@ At W+2, one-sided fatalities disappear from the weekly total. The red top positi
 
 ### Assembly 7 - End
 
-**W+3 — 10 to 16 November 2025**
+**W+3 - 10 to 16 November 2025**
 
 | **Feature** | **Value** | **Component and Size** |
 |-------------|-----------:|------------------------|
@@ -740,7 +681,9 @@ The final week follows the pattern already seen in W+2. The red one-sided add-on
 
 ## Knowledge: What can we learn from it?
 
-The tangible representation turns the seven-week sequence into a physical pattern that can be understood without reading a numerical table.
+The tangible representation turns the seven-week sequence into a physical pattern that can be understood without reading a numerical table: 
+
+> A relatively state-based violence pattern in the weeks before W0 is interrupted by an exceptional increase in fatalities dominated by one-sided violence, followed by a rapid decline and a return to a state-based pattern in the following weeks.
 
 The first three cylinders establish a relatively stable pre-W0 situation. Their sizes remain between Size 2 and Size 3, and state-based violence is the dominant fatality category.
 
@@ -749,7 +692,7 @@ The fourth cylinder creates a strong break in this pattern:
 ```text
 Total fatalities:
 
-87 → 344 → 226 → 59,517 → 1,234 → 163 → 119
+87 -> 344 -> 226 -> 59,517 -> 1,234 -> 163 -> 119
                     ↑
                     W0
 ```
@@ -759,7 +702,7 @@ The violence composition changes at the same point:
 ```text
 One-sided fatalities:
 
-3 → 12 → 6 → 58,746 → 1,194 → 0 → 0
+3 -> 12 -> 6 -> 58,746 -> 1,194 -> 0 -> 0
                  ↑
                  W0
 ```
@@ -769,7 +712,7 @@ Before W0, the orange state-based component is dominant. During W0, the red one-
 The actor sequence reinforces the same temporal structure:
 
 ```text
-🏠 → 🏠 → 🏠 → 🏛️ → 🏛️ → 🏠 → 🏠
+🏠 -> 🏠 -> 🏠 -> 🏛️ -> 🏛️ -> 🏠 -> 🏠
                     ↑
                     W0
 ```
@@ -790,66 +733,32 @@ For a blind user, the same story can be explored without relying on color. The u
 
 ```text
 TOP column
-→ evolution of one-sided fatalities
+-> evolution of one-sided fatalities
 
 LEFT column
-→ evolution of state-based fatalities
+-> evolution of state-based fatalities
 
 RIGHT column
-→ evolution of non-state fatalities
+-> evolution of non-state fatalities
 
 BOTTOM column
-→ evolution of the main actor
+-> evolution of the main actor
 ```
 
 The size of the cylinders and add-ons can also be compared directly by touch.
 
 ---
 
-## Limitations and Conclusions
+## Limitations
 
-The representation deliberately simplifies the original data in order to remain readable and accessible.
+The representation **deliberately simplifies the original data** in order to remain readable and accessible.
 
-The first limitation is the temporal window: only seven weeks are shown. This gives a clear before-and-after story around W0 but does not represent the full Sudan conflict.
+The first limitation is the **temporal window**: only seven weeks are shown. This gives a clear before-and-after story around W0 but does not represent the full Sudan conflict.
 
-The second limitation is discretization. Exact fatality values are converted into five physical size classes. This makes tactile comparison possible, but two different numerical values may use the same physical size.
+The second limitation is **discretization**. Exact fatality values are converted into five physical size classes. This makes tactile comparison possible, **but two different numerical values may use the same physical size**.
 
-The third limitation concerns the main actor. The actor is selected using an estimated fatality score derived from the available actor-level metrics. It is therefore a compact storytelling variable rather than a complete description of all actors active during the week.
+The third limitation concerns the **main actor**. The actor is selected using an estimated fatality score derived from the available actor-level metrics. It is therefore a compact storytelling variable rather than a complete description of all actors active during the week.
 
-The selected period also contains no non-state events. The cyan right-side column is consequently empty throughout the seven cylinders. This is not missing information: the repeated absence communicates that non-state violence does not contribute to the fatality pattern in this specific window.
+The **selected period also contains no non-state events**. The cyan right-side column is consequently empty throughout the seven cylinders. This is not missing information: the repeated absence communicates that non-state violence does not contribute to the fatality pattern in this specific window.
 
-Finally, the accessibility choices are based on fixed positions, tactile size differences, distinct actor shapes and explicit orientation aids. The design should still be tested through touch to verify that the sizes and icons are easy to distinguish in practice.
-
-The final tangible representation can be summarized as:
-
-```text
-7 CYLINDERS
-    ↓
-7 WEEKS
-
-CYLINDER SIZE
-    ↓
-TOTAL FATALITIES
-
-🔴 TOP
-    ↓
-ONE-SIDED FATALITIES
-
-🟠 LEFT
-    ↓
-STATE-BASED FATALITIES
-
-🔵 RIGHT
-    ↓
-NON-STATE FATALITIES
-
-🏠 / 🏛️ / 🏭 BOTTOM
-    ↓
-MAIN ACTOR
-
-BOTTOM → TOP
-    ↓
-PAST → FUTURE
-```
-
-The completed tower tells a compact physical story: a relatively state-based pattern in the weeks before W0 is interrupted by an exceptional increase in fatalities dominated by one-sided violence, followed by a rapid decline and a return to a state-based pattern in the following weeks.
+Finally, the accessibility choices are based on fixed positions, tactile size differences, distinct actor shapes and explicit orientation aids, which might not be enough.
