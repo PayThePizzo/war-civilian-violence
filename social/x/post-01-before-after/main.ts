@@ -1,4 +1,4 @@
-/**
+ /**
  * X post 1 - "What happens around major episodes of one-sided violence?"
  * Static, non-interactive counterpart of Web 4's event-window matrix
  * (web/src/viz/event-windows/EventWindowMatrix.ts, VIZ.md §4): same
@@ -14,6 +14,7 @@ import { loadEventWindows, loadMetadata } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
 import { formatCount, formatMonthYear } from "../../shared/format";
 import type { EventWindow } from "../../shared/types";
+import contextImageUrl from "../../images/ElFasher.jpg";
 
 const ROOT_ID = "social-root";
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -21,6 +22,8 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 // Matches x-right-col's actual content box: 1600 canvas - 2*64 padding - 420 left
 // col - 48 gap = 1004, so charts fill .x-right-col edge to edge (see style.css).
 const CHART_WIDTH = 1004;
+// Left gutter for the y-scale labels; both charts and the header rows share it so weeks line up.
+const LEFT_GUTTER = 52;
 const MAIN_CHART_HEIGHT = 380;
 const DOT_STRIP_HEIGHT = 60;
 const TOP_MARGIN = 24; // room for the axis label / chart legend above the plot area
@@ -126,10 +129,9 @@ async function render(): Promise<void> {
   leftCol.className = "x-left-col";
   leftCol.append(
     buildHeadline(),
-    buildSubtitle(),
+    buildSubtitle(combatBand),
     Object.assign(document.createElement("div"), { className: "spacer" }),
-    buildStatCallout(higher, total),
-    buildFinding(combatBand),
+    buildContextImage(),
     buildFooter(metadata.country, metadata.analysis_start, metadata.analysis_end),
   );
 
@@ -141,6 +143,7 @@ async function render(): Promise<void> {
     buildMainChart(combatBand, weeks),
     buildPanelLabel("ONE-SIDED CIVILIAN FATALITIES", "dot area ∝ median one-sided civilian fatalities"),
     buildDotStrip(civilianBand, weeks),
+    buildStatCallout(higher, total),
   );
 
   root.innerHTML = "";
@@ -156,11 +159,19 @@ function buildHeadline(): HTMLHeadingElement {
   return headline;
 }
 
-function buildSubtitle(): HTMLParagraphElement {
+function buildSubtitle(combatBand: readonly BandPoint[]): HTMLParagraphElement {
   const subtitle = document.createElement("p");
   subtitle.className = "social-subtitle";
+  // Supported by combatBand: median combat_event_count stays within a narrow range
+  // (see the chart) across the full before/after window, with no sustained rise or
+  // fall approaching T0 - so the honest description is "modest variation", not a
+  // dramatic pattern. Descriptive only; no causal or motive claim.
+  const medians = combatBand.map((point) => point.median).filter((value): value is number => value !== null);
+  const spread = medians.length > 0 ? Math.max(...medians) - Math.min(...medians) : 0;
   subtitle.textContent =
-    "Combat activity and civilian-fatality levels in the weeks before and after each episode's peak week (T0). A description of temporal association, not a causal analysis.";
+    spread <= Math.max(...medians, 1) * 0.5
+      ? "Combat-event activity changed only modestly around major civilian-violence peaks, with no consistent increase before T0."
+      : "Combat-event activity changed substantially around major civilian-violence peaks.";
   return subtitle;
 }
 
@@ -169,43 +180,41 @@ function buildStatCallout(higher: number, total: number): HTMLDivElement {
   box.className = "stat-callout";
   const label = document.createElement("p");
   label.className = "stat-callout-label";
-  label.textContent = "Descriptive statistic";
+  label.textContent = "Key Finding";
   const text = document.createElement("p");
   text.className = "stat-callout-text";
-  text.textContent = `${higher} of ${total} episodes with a complete 8-week window had higher combat activity in the four weeks before T0 than in the previous four.`;
+  text.textContent = `${higher} of ${total} episodes with a complete 8-week window had higher combat activity in the four weeks before El Fasher's Massacre than in the previous four.`;
   box.append(label, text);
   return box;
 }
 
-function buildFinding(combatBand: readonly BandPoint[]): HTMLDivElement {
-  const finding = document.createElement("div");
-  finding.className = "social-finding";
-  const label = document.createElement("p");
-  label.className = "social-finding-label";
-  label.textContent = "Main finding";
-  const text = document.createElement("p");
-  text.className = "social-finding-text";
-  // Supported by combatBand: median combat_event_count stays within a narrow range
-  // (see the chart) across the full before/after window, with no sustained rise or
-  // fall approaching T0 - so the honest description is "modest variation", not a
-  // dramatic pattern. Descriptive only; no causal or motive claim.
-  const medians = combatBand.map((point) => point.median).filter((value): value is number => value !== null);
-  const spread = medians.length > 0 ? Math.max(...medians) - Math.min(...medians) : 0;
-  text.textContent =
-    spread <= Math.max(...medians, 1) * 0.5
-      ? "Combat-event activity changed only modestly around major civilian-violence peaks, with no consistent increase before T0."
-      : "Combat-event activity changed substantially around major civilian-violence peaks.";
-  finding.append(label, text);
-  return finding;
+/** Satellite before/after pair (images/Sudan.jpg) with a small caption, in the left column's free space. */
+function buildContextImage(): HTMLElement {
+  const figure = document.createElement("figure");
+  figure.className = "context-figure";
+  const image = document.createElement("img");
+  image.className = "context-image";
+  image.src = contextImageUrl;
+  image.alt = "Two satellite images of the same airfield, before and after a large fire with dense black smoke";
+  const caption = document.createElement("figcaption");
+  caption.className = "context-caption";
+  caption.textContent = "Satellite imagery of El Fasher's massacre site";
+  figure.append(image, caption);
+  return figure;
 }
 
-function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLParagraphElement {
+function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLDivElement {
+  const wrap = document.createElement("div");
   const footer = document.createElement("p");
   footer.className = "social-footer";
   const start = new Date(`${analysisStart}T00:00:00.000Z`);
   const end = new Date(`${analysisEnd}T00:00:00.000Z`);
   footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
-  return footer;
+  const note = document.createElement("p");
+  note.className = "social-footer-note";
+  note.textContent = "Each episode's 8-week window is defined by the pipeline. Only weeks with observed data contribute to the median and IQR.";
+  wrap.append(footer, note);
+  return wrap;
 }
 
 function buildRangeLabels(beforeWeeks: number, afterWeeks: number): HTMLDivElement {
@@ -215,7 +224,7 @@ function buildRangeLabels(beforeWeeks: number, afterWeeks: number): HTMLDivEleme
   before.textContent = `${beforeWeeks} weeks before`;
   const t0 = document.createElement("span");
   t0.className = "t0-label";
-  t0.textContent = "T0";
+  t0.textContent = "T0 (El Fasher Massacre)";
   const after = document.createElement("span");
   after.textContent = `${afterWeeks} weeks after`;
   row.append(before, t0, after);
@@ -256,7 +265,7 @@ function buildMainChart(band: readonly BandPoint[], weeks: readonly number[]): S
   plot.setAttribute("transform", `translate(0,${TOP_MARGIN})`);
   svg.append(plot);
 
-  const x = scaleLinear().domain([weeks[0], weeks[weeks.length - 1]]).range([0, CHART_WIDTH]);
+  const x = scaleLinear().domain([weeks[0], weeks[weeks.length - 1]]).range([LEFT_GUTTER, CHART_WIDTH]);
   const yMax = max(band, (point) => point.q3 ?? 0) ?? 1;
   const y = scaleLinear().domain([0, yMax]).range([plotHeight, 0]).nice();
 
@@ -282,12 +291,22 @@ function buildMainChart(band: readonly BandPoint[], weeks: readonly number[]): S
   linePath.setAttribute("stroke-width", "3");
   plot.append(linePath);
 
-  // Minimal y-axis: just the top gridline value, not a dense tick grid.
+  // Count scale: labels only, right-aligned in the left gutter, no gridlines.
+  for (const tick of y.ticks(4)) {
+    const tickLabel = svgEl("text");
+    tickLabel.setAttribute("x", String(LEFT_GUTTER - 8));
+    tickLabel.setAttribute("y", String(y(tick) + 4));
+    tickLabel.setAttribute("text-anchor", "end");
+    tickLabel.setAttribute("class", "axis-y-tick");
+    tickLabel.textContent = formatCount(tick);
+    plot.append(tickLabel);
+  }
+
   const axisLabel = svgEl("text");
   axisLabel.setAttribute("x", "0");
   axisLabel.setAttribute("y", "-6");
   axisLabel.setAttribute("class", "axis-y-label");
-  axisLabel.textContent = `Median combat events / week (up to ${formatCount(Math.round(yMax))})`;
+  axisLabel.textContent = "Median combat events / week";
   plot.append(axisLabel);
 
   appendChartLegend(plot);
@@ -354,7 +373,7 @@ function buildDotStrip(band: readonly BandPoint[], weeks: readonly number[]): SV
   plot.setAttribute("transform", `translate(0,${TOP_MARGIN})`);
   svg.append(plot);
 
-  const x = scaleLinear().domain([weeks[0], weeks[weeks.length - 1]]).range([0, CHART_WIDTH]);
+  const x = scaleLinear().domain([weeks[0], weeks[weeks.length - 1]]).range([LEFT_GUTTER, CHART_WIDTH]);
   const maxValue = max(band, (point) => point.median ?? 0) ?? 1;
   // Capped below the strip's true half-height so even the single largest dot (typically
   // relative week 0, the civilian-fatality peak by construction) leaves visible margin
@@ -364,7 +383,7 @@ function buildDotStrip(band: readonly BandPoint[], weeks: readonly number[]): SV
   const centerY = plotHeight / 2;
 
   const baseline = svgEl("line");
-  baseline.setAttribute("x1", "0");
+  baseline.setAttribute("x1", String(LEFT_GUTTER));
   baseline.setAttribute("x2", String(CHART_WIDTH));
   baseline.setAttribute("y1", String(centerY));
   baseline.setAttribute("y2", String(centerY));
