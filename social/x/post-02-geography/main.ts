@@ -140,7 +140,6 @@ async function render(): Promise<void> {
     buildLegend(),
     buildCalloutList(callouts),
     Object.assign(document.createElement("div"), { className: "spacer" }),
-    buildFinding(),
     buildFooter(metadata.country, metadata.analysis_start, metadata.analysis_end),
   );
 
@@ -242,23 +241,6 @@ function buildCalloutList(callouts: readonly Callout[]): HTMLDivElement {
   return list;
 }
 
-function buildFinding(): HTMLDivElement {
-  const finding = document.createElement("div");
-  finding.className = "social-finding";
-  const label = document.createElement("p");
-  label.className = "social-finding-label";
-  label.textContent = "Main finding";
-  const text = document.createElement("p");
-  text.className = "social-finding-text";
-  // Supported by the plotted cells: the single busiest cell (callout 2, the highest
-  // one-sided civilian toll) shows a one-sided share far below the cell singled out
-  // in callout 1 - so intensity and one-sided concentration are not the same thing.
-  // Descriptive spatial comparison only; no tactical intent or causal claim.
-  text.textContent = "High conflict activity did not always coincide with a high share of one-sided violence.";
-  finding.append(label, text);
-  return finding;
-}
-
 function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLDivElement {
   const wrap = document.createElement("div");
   const start = new Date(`${analysisStart}T00:00:00.000Z`);
@@ -268,7 +250,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
   const note = document.createElement("p");
   note.className = "social-footer-note";
-  note.textContent = "H3 spatial aggregation";
+  note.textContent = "Each hexagon is one H3 cell, aggregated across the full analysis period.";
   wrap.append(footer, note);
   return wrap;
 }
