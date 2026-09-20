@@ -165,14 +165,14 @@ async function render(): Promise<void> {
 function buildHeadline(): HTMLHeadingElement {
   const headline = document.createElement("h1");
   headline.className = "social-headline";
-  headline.textContent = "Combat and civilian targeting do not occupy space in the same way";
+  headline.textContent = "Sudan's war looks different on the ground";
   return headline;
 }
 
 function buildSubtitle(): HTMLParagraphElement {
   const subtitle = document.createElement("p");
   subtitle.className = "social-subtitle";
-  subtitle.textContent = "Each hexagon is one H3 cell, aggregated across the full analysis period.";
+  subtitle.textContent = "Civilian targeting is distributed differently from the main concentrations of armed conflict.";
   return subtitle;
 }
 
