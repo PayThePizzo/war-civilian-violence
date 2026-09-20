@@ -70,14 +70,14 @@ async function render(): Promise<void> {
 function buildHeadline(): HTMLHeadingElement {
   const headline = document.createElement("h1");
   headline.className = "social-headline";
-  headline.textContent = "Not all armed actors show the same violence profile";
+  headline.textContent = "Sudan's armed actors leave very different civilian tolls";
   return headline;
 }
 
 function buildSubtitle(): HTMLParagraphElement {
   const subtitle = document.createElement("p");
   subtitle.className = "social-subtitle";
-  subtitle.textContent = "Share of each actor's own recorded events that were one-sided violence against civilians.";
+  subtitle.textContent = "RSF and SFA recorded one-sided violence in roughly a quarter of their events, while the Government of Sudan showed a much lower share.";
   return subtitle;
 }
 
@@ -193,7 +193,7 @@ function buildChartAnnotation(): HTMLDivElement {
   const text = document.createElement("p");
   text.className = "social-finding-text";
   text.innerHTML =
-    "RSF (Rapid Support Forces) and SFA (Sudan Armed Forces): about one quarter of recorded events were one-sided.<br>Government of Sudan: 4%.";
+    "Looking at each actor’s own recorded events, 27% of RSF events and 25% of SFA events were classified as one-sided violence, compared with 4% for the Government of Sudan.";
   finding.append(label, text);
   return finding;
 }
