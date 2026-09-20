@@ -9,6 +9,7 @@
 .social-subtitle {
   font-size: 21px;
   margin-bottom: 20px;
+  max-width: none;
 }
 
 .social-divider {
@@ -56,7 +57,7 @@
 .actor-name {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 24px;
+  font-size: 26px;
   color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
@@ -104,17 +105,9 @@
 
 .actor-context {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted);
   margin: 8px 0 0;
-}
-
-.chart-annotation {
-  font-family: var(--font-sans);
-  font-size: 15px;
-  color: var(--ink);
-  line-height: 1.5;
-  margin: 4px 0 0;
 }
 
 .zero-share-note {
@@ -138,5 +131,5 @@
 }
 
 .social-finding-text {
-  font-size: 30px;
+  font-size: 24px;
 }

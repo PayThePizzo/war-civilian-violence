@@ -47,11 +47,7 @@ async function render(): Promise<void> {
   const displayed = selectDisplayActors(data.actorProfiles);
   if (displayed.length === 0) throw new Error("No eligible_for_web3 actors found");
 
-  // Same selection/order as before (never re-derives eligibility or ranking) - only the
-  // rendering splits here: a 0% actor gets a line in the summary note below the chart
-  // instead of a full-size bar indistinguishable in length from the others at this scale.
   const barActors = displayed.filter((a) => a.one_sided_event_share > 0);
-  const zeroShareActors = displayed.filter((a) => a.one_sided_event_share === 0);
 
   root.innerHTML = "";
   root.append(
@@ -60,10 +56,7 @@ async function render(): Promise<void> {
     buildDivider(),
     buildChartBlock(barActors),
     buildChartAnnotation(),
-    buildZeroShareNote(zeroShareActors),
-    buildMethodNote(),
     buildDivider(),
-    buildFinding(),
     buildFooter(data.metadata.country, data.metadata.analysis_start, data.metadata.analysis_end),
   );
 
@@ -175,49 +168,16 @@ function buildLollipopRow(actor: ActorProfile, domainMax: number, minCount: numb
   return row;
 }
 
-/** Short, factual annotation next to the chart - no motive or causal wording. */
-function buildChartAnnotation(): HTMLParagraphElement {
-  const note = document.createElement("p");
-  note.className = "chart-annotation";
-  note.innerHTML =
-    "RSF and SFA: about one quarter of recorded events were one-sided.<br>Government of Sudan: 4%.";
-  return note;
-}
-
-/**
- * Compact, visually secondary line for eligible actors that never registered a
- * one-sided event (share === 0) - listed by name only, no chart row, so the
- * lollipop panel stays limited to actors with a non-zero share to plot.
- */
-function buildZeroShareNote(actors: readonly ActorProfile[]): HTMLParagraphElement | DocumentFragment {
-  if (actors.length === 0) return document.createDocumentFragment();
-  const note = document.createElement("p");
-  note.className = "zero-share-note";
-  const names = actors.map((a) => a.actor_name).join(" · ");
-  note.textContent = `Other eligible actors with 0% one-sided events: ${names}`;
-  return note;
-}
-
-function buildMethodNote(): HTMLParagraphElement {
-  const note = document.createElement("p");
-  note.className = "method-note";
-  note.textContent = "Position = one-sided event share · Size = total recorded events";
-  return note;
-}
-
-function buildFinding(): HTMLDivElement {
+function buildChartAnnotation(): HTMLDivElement {
   const finding = document.createElement("div");
   finding.className = "social-finding";
   const label = document.createElement("p");
   label.className = "social-finding-label";
-  label.textContent = "Main finding";
+  label.textContent = "Key Finding";
   const text = document.createElement("p");
   text.className = "social-finding-text";
-  // Supported by the displayed rows: the two most active armed actors, RSF and SFA, show
-  // one-sided shares around a quarter of their own recorded events, while the Government
-  // of Sudan - with more total events than either - shows a share near zero. Descriptive
-  // comparison only; no motive or causal explanation implied.
-  text.textContent = "Actors with substantial conflict activity showed very different shares of one-sided violence.";
+  text.innerHTML =
+    "RSF (Rapid Support Forces) and SFA (Sudan Armed Forces): about one quarter of recorded events were one-sided.<br>Government of Sudan: 4%.";
   finding.append(label, text);
   return finding;
 }
