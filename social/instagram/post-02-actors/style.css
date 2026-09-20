@@ -46,6 +46,34 @@
   gap: 28px;
 }
 
+.actor-row-sfa,
+.actor-row-rsf,
+.actor-row-sudan-gov {
+  position: relative;
+  overflow: hidden;
+}
+
+.actor-row-sfa::before,
+.actor-row-rsf::before,
+.actor-row-sudan-gov::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--actor-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.actor-row-sfa > *,
+.actor-row-rsf > *,
+.actor-row-sudan-gov > * {
+  position: relative;
+  z-index: 1;
+}
+
 .actor-row-head {
   display: flex;
   align-items: baseline;

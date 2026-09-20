@@ -11,6 +11,10 @@ import { loadSocialData } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
 import { formatCount, formatMonthYear, formatPercent } from "../../shared/format";
 import type { ActorProfile } from "../../shared/types";
+import sfaImageUrl from "../../images/SFA.png";
+import rsfImageUrl from "../../images/RSF.png";
+
+const sudanGovImageUrl = new URL("../../images/SudanGov.JPG", import.meta.url).href;
 
 const ROOT_ID = "social-root";
 
@@ -126,7 +130,19 @@ function dotDiameterPx(count: number, minCount: number, maxCount: number): numbe
 
 function buildLollipopRow(actor: ActorProfile, domainMax: number, minCount: number, maxCount: number): HTMLDivElement {
   const row = document.createElement("div");
-  row.className = "actor-row";
+  const isSfa = actor.actor_name === "SFA";
+  const isRsf = actor.actor_name === "RSF";
+  const isSudanGov = actor.actor_name === "Government of Sudan";
+  row.className = isSfa
+    ? "actor-row actor-row-sfa"
+    : isRsf
+      ? "actor-row actor-row-rsf"
+      : isSudanGov
+        ? "actor-row actor-row-sudan-gov"
+        : "actor-row";
+  if (isSfa) row.style.setProperty("--actor-image", `url("${sfaImageUrl}")`);
+  if (isRsf) row.style.setProperty("--actor-image", `url("${rsfImageUrl}")`);
+  if (isSudanGov) row.style.setProperty("--actor-image", `url("${sudanGovImageUrl}")`);
 
   const head = document.createElement("div");
   head.className = "actor-row-head";
