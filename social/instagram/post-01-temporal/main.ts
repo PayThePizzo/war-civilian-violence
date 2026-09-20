@@ -22,8 +22,10 @@ const EVENT_SERIES: ReadonlyArray<{ key: keyof WeeklyMetric; label: string; colo
 ];
 
 const CHART_WIDTH = 920;
-const MAIN_CHART_HEIGHT = 340;
-const SHARE_CHART_HEIGHT = 110;
+// Left gutter reserved for the y-scale labels so they never sit on top of the data.
+const LEFT_GUTTER = 52;
+const MAIN_CHART_HEIGHT = 295;
+const SHARE_CHART_HEIGHT = MAIN_CHART_HEIGHT;
 
 interface AnnotatedWeek {
   week: Pick<WeeklyMetric, "week_start" | "one_sided_event_share" | "one_sided_civilian_fatalities" | "event_count">;
@@ -46,18 +48,15 @@ async function render(): Promise<void> {
 
   const mainBlock = buildChartBlock("WEEKLY VIOLENCE", "events per week", buildMainChart(weekly, annotations));
   mainBlock.append(buildSwatches());
+  mainBlock.classList.add("chart-block--spaced");
 
   root.innerHTML = "";
   root.append(
     buildHeadline(),
     buildSubtitle(),
-    buildDivider(),
     mainBlock,
-    buildDivider(),
     buildChartBlock("ONE-SIDED SHARE", "% of that week's events", buildShareChart(weekly, annotations)),
     buildAnnotationList(annotations),
-    buildDivider(),
-    buildFinding(),
     buildFooter(data.metadata.country, data.metadata.analysis_start, data.metadata.analysis_end),
   );
 
@@ -109,7 +108,7 @@ function selectAnnotatedWeeks(weekly: WeeklyMetric[]): AnnotatedWeek[] {
 function buildHeadline(): HTMLHeadingElement {
   const headline = document.createElement("h1");
   headline.className = "social-headline";
-  headline.textContent = "When does one-sided violence become more prominent?";
+  headline.textContent = "Beyond the Frontlines: The Rise of Targeted Civilian Killings in Sudan";
   return headline;
 }
 
@@ -117,14 +116,8 @@ function buildSubtitle(): HTMLParagraphElement {
   const subtitle = document.createElement("p");
   subtitle.className = "social-subtitle";
   subtitle.textContent =
-    "Weekly composition of recorded violence in Sudan - state-based, non-state, and one-sided against civilians.";
+    "As clashes intensify, deliberate attacks against unarmed civilians have reached unprecedented levels.";
   return subtitle;
-}
-
-function buildDivider(): HTMLHRElement {
-  const hr = document.createElement("hr");
-  hr.className = "social-divider";
-  return hr;
 }
 
 function buildChartBlock(title: string, unit: string, svg: SVGSVGElement): HTMLDivElement {
@@ -181,7 +174,7 @@ function buildMainChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): S
   svg.append(plot);
 
   const [start, end] = extent(weekly, (row) => row.week_start) as [Date, Date];
-  const x = scaleUtc().domain([start, end]).range([0, CHART_WIDTH]);
+  const x = scaleUtc().domain([start, end]).range([LEFT_GUTTER, CHART_WIDTH]);
   const yMax = max(weekly, (row) => row.state_based_event_count + row.non_state_event_count + row.one_sided_event_count) ?? 1;
   const y = scaleLinear().domain([0, yMax]).range([plotHeight, 0]).nice();
 
@@ -220,13 +213,25 @@ function buildMainChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): S
   // Minimal axis: a single baseline plus the first/last calendar year, no tick grid -
   // "simpler axes than the web visualization" per the brief.
   const baseline = svgEl("line");
-  baseline.setAttribute("x1", "0");
+  baseline.setAttribute("x1", String(LEFT_GUTTER));
   baseline.setAttribute("x2", String(CHART_WIDTH));
   baseline.setAttribute("y1", String(plotHeight));
   baseline.setAttribute("y2", String(plotHeight));
   baseline.setAttribute("stroke", "var(--axis)");
   baseline.setAttribute("stroke-width", "1");
   plot.append(baseline);
+
+  // Count scale, styled like the share panel: labels only, right-aligned in the left gutter,
+  // no gridlines.
+  for (const tick of y.ticks(3)) {
+    const label = svgEl("text");
+    label.setAttribute("x", String(LEFT_GUTTER - 8));
+    label.setAttribute("y", String(y(tick) + 4));
+    label.setAttribute("text-anchor", "end");
+    label.setAttribute("class", "axis-share-label axis-count-label");
+    label.textContent = formatCount(tick);
+    plot.append(label);
+  }
 
   for (const [date, anchor] of [
     [start, "start"],
@@ -248,7 +253,8 @@ function buildMainChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): S
 /** 0-100% line/area of one_sided_event_share; the exact metric Web 1's share panel plots. */
 function buildShareChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): SVGSVGElement {
   const plotHeight = SHARE_CHART_HEIGHT;
-  const totalHeight = TOP_MARGIN + plotHeight;
+  // Small bottom pad so the "0%" label, centered on the baseline, isn't clipped by the svg.
+  const totalHeight = TOP_MARGIN + plotHeight + 8;
   const svg = svgEl("svg");
   svg.setAttribute("width", String(CHART_WIDTH));
   svg.setAttribute("height", String(totalHeight));
@@ -261,7 +267,7 @@ function buildShareChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): 
   svg.append(plot);
 
   const [start, end] = extent(weekly, (row) => row.week_start) as [Date, Date];
-  const x = scaleUtc().domain([start, end]).range([0, CHART_WIDTH]);
+  const x = scaleUtc().domain([start, end]).range([LEFT_GUTTER, CHART_WIDTH]);
   const y = scaleLinear().domain([0, 1]).range([plotHeight, 0]);
 
   type Point = { date: Date; value: number };
@@ -288,44 +294,21 @@ function buildShareChart(weekly: WeeklyMetric[], annotations: AnnotatedWeek[]): 
   line.setAttribute("stroke-width", "2.5");
   plot.append(line);
 
-  // Only the 0% and 100% bounds are labeled, inside the plot area - "very limited
-  // gridlines" per the brief.
+  // Only 0%, 50% and 100% are labeled, in the left gutter, with no gridlines.
   for (const value of [0, 1]) {
-    const gridline = svgEl("line");
-    gridline.setAttribute("x1", "0");
-    gridline.setAttribute("x2", String(CHART_WIDTH));
-    gridline.setAttribute("y1", String(y(value)));
-    gridline.setAttribute("y2", String(y(value)));
-    gridline.setAttribute("stroke", "var(--border)");
-    gridline.setAttribute("stroke-width", "1");
-    plot.append(gridline);
-
     const label = svgEl("text");
-    label.setAttribute("x", "6");
-    label.setAttribute("y", String(y(value) + (value === 0 ? -4 : 14)));
-    label.setAttribute("text-anchor", "start");
+    label.setAttribute("x", String(LEFT_GUTTER - 8));
+    label.setAttribute("y", String(y(value) + 4));
+    label.setAttribute("text-anchor", "end");
     label.setAttribute("class", "axis-share-label");
     label.textContent = formatPercent(value);
     plot.append(label);
   }
 
-  // Subtle midpoint reference (dashed, no gridline weight) so "is this week above or
-  // below half" reads at a glance without competing with the 0%/100% bounds.
-  const midline = svgEl("line");
-  midline.setAttribute("x1", "0");
-  midline.setAttribute("x2", String(CHART_WIDTH));
-  midline.setAttribute("y1", String(y(0.5)));
-  midline.setAttribute("y2", String(y(0.5)));
-  midline.setAttribute("stroke", "var(--border)");
-  midline.setAttribute("stroke-width", "1");
-  midline.setAttribute("stroke-dasharray", "2,3");
-  midline.setAttribute("opacity", "0.7");
-  plot.append(midline);
-
   const midLabel = svgEl("text");
-  midLabel.setAttribute("x", "6");
-  midLabel.setAttribute("y", String(y(0.5) - 4));
-  midLabel.setAttribute("text-anchor", "start");
+  midLabel.setAttribute("x", String(LEFT_GUTTER - 8));
+  midLabel.setAttribute("y", String(y(0.5) + 4));
+  midLabel.setAttribute("text-anchor", "end");
   midLabel.setAttribute("class", "axis-share-label axis-share-label-mid");
   midLabel.textContent = formatPercent(0.5);
   plot.append(midLabel);
@@ -408,23 +391,6 @@ function buildAnnotationList(annotations: AnnotatedWeek[]): HTMLDivElement {
   return list;
 }
 
-function buildFinding(): HTMLDivElement {
-  const finding = document.createElement("div");
-  finding.className = "social-finding";
-  const label = document.createElement("p");
-  label.className = "social-finding-label";
-  label.textContent = "Main finding";
-  const text = document.createElement("p");
-  text.className = "social-finding-text";
-  // Supported by the plotted data: one_sided_event_share swings between 0% and 100% across
-  // weeks (stdev ~0.19 against a mean of ~0.26) with isolated spikes rather than a level
-  // trend - see the annotated weeks above. Description of association only, not causation.
-  text.textContent =
-    "One-sided violence was concentrated in particular phases of the conflict rather than remaining constant over time.";
-  finding.append(label, text);
-  return finding;
-}
-
 function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLDivElement {
   const wrap = document.createElement("div");
   const start = new Date(`${analysisStart}T00:00:00.000Z`);
@@ -434,7 +400,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
   const note = document.createElement("p");
   note.className = "social-footer-note";
-  note.textContent = "Events aggregated weekly by UCDP date_start";
+  note.textContent = "Weekly composition of recorded violence in Sudan. Events aggregated weekly by UCDP date_start";
   wrap.append(footer, note);
   return wrap;
 }
