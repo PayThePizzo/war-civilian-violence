@@ -21,6 +21,7 @@ import { loadH3Metrics, loadMetadata } from "../../shared/data";
 import { violenceColors } from "../../shared/colors";
 import { formatCount, formatMonthYear, formatPercent } from "../../shared/format";
 import type { H3Metric } from "../../shared/types";
+import contextImageUrl from "../../images/Sudan.jpg";
 
 // ISO 3166-1 numeric code for Sudan, as used by world-atlas's TopoJSON feature ids.
 const SUDAN_NUMERIC_ID = "729";
@@ -140,6 +141,7 @@ async function render(): Promise<void> {
     buildLegend(),
     buildCalloutList(callouts),
     Object.assign(document.createElement("div"), { className: "spacer" }),
+    buildContextImage(),
     buildFooter(metadata.country, metadata.analysis_start, metadata.analysis_end),
   );
 
@@ -152,6 +154,10 @@ async function render(): Promise<void> {
 
   root.innerHTML = "";
   root.append(leftCol, rightCol);
+
+  // Wait for the photo to decode so the export never captures a half-loaded image.
+  const image = leftCol.querySelector("img");
+  if (image) await image.decode();
 
   document.body.dataset.renderState = "ready";
 }
@@ -241,6 +247,21 @@ function buildCalloutList(callouts: readonly Callout[]): HTMLDivElement {
   return list;
 }
 
+/** Satellite before/after pair (images/Sudan.jpg) with a small caption, in the left column's free space. */
+function buildContextImage(): HTMLElement {
+  const figure = document.createElement("figure");
+  figure.className = "context-figure";
+  const image = document.createElement("img");
+  image.className = "context-image";
+  image.src = contextImageUrl;
+  image.alt = "Two satellite images of the same airfield, before and after a large fire with dense black smoke";
+  const caption = document.createElement("figcaption");
+  caption.className = "context-caption";
+  caption.textContent = "Before and After of Khartoum's Airport (1)";
+  figure.append(image, caption);
+  return figure;
+}
+
 function buildFooter(country: string, analysisStart: string, analysisEnd: string): HTMLDivElement {
   const wrap = document.createElement("div");
   const start = new Date(`${analysisStart}T00:00:00.000Z`);
@@ -249,9 +270,7 @@ function buildFooter(country: string, analysisStart: string, analysisEnd: string
   footer.className = "social-footer";
   footer.textContent = `UCDP Georeferenced Event Dataset (GED) · ${country} · ${formatMonthYear(start)}-${formatMonthYear(end)}`;
   const note = document.createElement("p");
-  note.className = "social-footer-note";
-  note.textContent = "Each hexagon is one H3 cell, aggregated across the full analysis period.";
-  wrap.append(footer, note);
+  note.className = "social-footer-note";  wrap.append(footer, note);
   return wrap;
 }
 
@@ -373,7 +392,7 @@ function buildMap(cells: readonly CellAggregate[], callouts: readonly Callout[])
   coverageCaption.setAttribute("y", String(MAP_HEIGHT - 18));
   coverageCaption.setAttribute("class", "map-coverage-caption");
   coverageCaption.textContent =
-    "Hexagons shown at a uniform display size; position is each cell's true center.";
+    "Each hexagon is an H3 cell, aggregated across the full period andshown at a uniform display size. Their position is each cell's true center.";
   svg.append(coverageCaption);
 
   const maxEventCount = d3max(cells, (c) => c.eventCount) ?? 1;

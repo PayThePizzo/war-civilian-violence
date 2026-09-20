@@ -29,6 +29,7 @@ const MIME_TYPES = {
   '.csv': 'text/csv',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.jpg': 'image/jpeg',
   '.woff2': 'font/woff2',
 };
 
