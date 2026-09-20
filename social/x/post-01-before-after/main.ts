@@ -155,7 +155,7 @@ async function render(): Promise<void> {
 function buildHeadline(): HTMLHeadingElement {
   const headline = document.createElement("h1");
   headline.className = "social-headline";
-  headline.textContent = "What happens around major episodes of violence against civilians?";
+  headline.textContent = "Before the killings, no clear warning in the fighting";
   return headline;
 }
 
@@ -170,7 +170,7 @@ function buildSubtitle(combatBand: readonly BandPoint[]): HTMLParagraphElement {
   const spread = medians.length > 0 ? Math.max(...medians) - Math.min(...medians) : 0;
   subtitle.textContent =
     spread <= Math.max(...medians, 1) * 0.5
-      ? "Combat-event activity changed only modestly around major civilian-violence peaks, with no consistent increase before T0."
+      ? "Across major episodes of civilian violence in Sudan, combat activity showed no consistent surge in the weeks leading up to the peak."
       : "Combat-event activity changed substantially around major civilian-violence peaks.";
   return subtitle;
 }
@@ -195,7 +195,7 @@ function buildContextImage(): HTMLElement {
   const image = document.createElement("img");
   image.className = "context-image";
   image.src = contextImageUrl;
-  image.alt = "Two satellite images of the same airfield, before and after a large fire with dense black smoke";
+  image.alt = "Satellite imagery of El Fasher's massacre site";
   const caption = document.createElement("figcaption");
   caption.className = "context-caption";
   caption.textContent = "Satellite imagery of El Fasher's massacre site";
